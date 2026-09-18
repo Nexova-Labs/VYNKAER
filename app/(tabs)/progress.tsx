@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -78,8 +78,9 @@ export default function ProgressScreen() {
     [history]
   );
 
+  const [now] = useState(() => Date.now());
+
   const stats = useMemo(() => {
-    const now = Date.now();
     const inLastDays = (days: number) =>
       ordered.filter((s) => now - new Date(s.date).getTime() <= days * DAY_MS).length;
 
@@ -108,7 +109,7 @@ export default function ProgressScreen() {
       cardioMinutes,
       adherence,
     };
-  }, [ordered, profile.sessionsPerWeek]);
+  }, [ordered, profile.sessionsPerWeek, now]);
 
   const trends = useMemo(() => {
     const series: TrendSeries[] = [];

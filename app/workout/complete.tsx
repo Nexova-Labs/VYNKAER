@@ -15,8 +15,21 @@ export default function WorkoutCompleteScreen() {
   const [strongest, setStrongest] = useState('');
   const [weakest, setWeakest] = useState('');
   const [notes, setNotes] = useState('');
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
+
+  if (saved != null) {
+    return (
+      <ScreenContainer scroll={false} contentStyle={styles.centerFill}>
+        <Text style={styles.savedEyebrow}>SESSION LOGGED</Text>
+        <Text style={styles.savedTitle}>The next session starts here.</Text>
+        <Text style={styles.savedBody}>
+          {saved} sets recorded. Progression and modality have been recalculated for your next workout.
+        </Text>
+        <Button label="Return Home" onPress={() => router.replace('/(tabs)/home')} fullWidth style={{ marginTop: spacing.xxl }} />
+      </ScreenContainer>
+    );
+  }
 
   if (!activeWorkout) {
     return (
@@ -41,21 +54,8 @@ export default function WorkoutCompleteScreen() {
       notes: notes.trim() || undefined,
     });
     setSaving(false);
-    setSaved(true);
+    setSaved(setsLogged);
   };
-
-  if (saved) {
-    return (
-      <ScreenContainer scroll={false} contentStyle={styles.centerFill}>
-        <Text style={styles.savedEyebrow}>SESSION LOGGED</Text>
-        <Text style={styles.savedTitle}>The next session starts here.</Text>
-        <Text style={styles.savedBody}>
-          {setsLogged} sets recorded. Progression and modality have been recalculated for your next workout.
-        </Text>
-        <Button label="Return Home" onPress={() => router.replace('/(tabs)/home')} fullWidth style={{ marginTop: spacing.xxl }} />
-      </ScreenContainer>
-    );
-  }
 
   return (
     <ScreenContainer contentStyle={{ paddingTop: spacing.lg }}>

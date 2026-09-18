@@ -6,7 +6,13 @@ import { Button, Card, EmptyState, Pill, ScreenContainer, SectionHeader, StatTil
 import { EXERCISE_LIBRARY } from '../../src/data/exercises';
 import { useAppState } from '../../src/state';
 import { colors, radius, spacing, typography } from '../../src/theme';
-import { formatRepRange, formatWeight, modalityLabel, movementPatternLabel } from '../../src/utils/format';
+import {
+  formatExerciseLoad,
+  formatExerciseTarget,
+  formatRepRange,
+  modalityLabel,
+  movementPatternLabel,
+} from '../../src/utils/format';
 
 export default function HomeScreen() {
   const { profile, trainingState, history, activeWorkout, currentPlan, startWorkout, regeneratePlan } = useAppState();
@@ -100,8 +106,10 @@ export default function HomeScreen() {
                 <View style={{ flex: 1 }}>
                   <Text style={styles.exerciseName}>{def.name}</Text>
                   <Text style={styles.exerciseMeta}>
-                    {ex.targetSets} × {formatRepRange(ex.targetRepMin, ex.targetRepMax)} ·{' '}
-                    {formatWeight(ex.recommendedLoad)}
+                    {ex.targetSets} × {formatExerciseTarget(def.movementPattern, ex.targetRepMin, ex.targetRepMax)}
+                    {formatExerciseLoad(def.movementPattern, ex.recommendedLoad)
+                      ? ` · ${formatExerciseLoad(def.movementPattern, ex.recommendedLoad)}`
+                      : ''}
                   </Text>
                 </View>
                 <Pill label={movementPatternLabel(def.movementPattern)} tone="neutral" />

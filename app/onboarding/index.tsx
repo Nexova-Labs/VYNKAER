@@ -1,13 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 import { Button } from '../../src/components';
 import { useAppState } from '../../src/state';
 import { colors, spacing, typography } from '../../src/theme';
-
-const { width } = Dimensions.get('window');
 
 const SLIDES = [
   {
@@ -33,7 +31,7 @@ const SLIDES = [
 export default function OnboardingScreen() {
   const { completeOnboarding } = useAppState();
   const [index, setIndex] = useState(0);
-  const listRef = useRef<FlatList>(null);
+  const slide = SLIDES[index];
 
   const finish = async () => {
     await completeOnboarding();
@@ -45,9 +43,7 @@ export default function OnboardingScreen() {
       void finish();
       return;
     }
-    const nextIndex = index + 1;
-    listRef.current?.scrollToIndex({ index: nextIndex, animated: true });
-    setIndex(nextIndex);
+    setIndex(index + 1);
   };
 
   return (
@@ -58,22 +54,11 @@ export default function OnboardingScreen() {
         </Text>
       </View>
 
-      <FlatList
-        ref={listRef}
-        data={SLIDES}
-        keyExtractor={(item) => item.key}
-        horizontal
-        pagingEnabled
-        scrollEnabled={false}
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <View style={[styles.slide, { width }]}>
-            {item.eyebrow ? <Text style={styles.brandmark}>{item.eyebrow}</Text> : null}
-            <Text style={styles.title}>{item.title}</Text>
-            {item.body ? <Text style={styles.body}>{item.body}</Text> : null}
-          </View>
-        )}
-      />
+      <View style={styles.slide}>
+        {slide.eyebrow ? <Text style={styles.brandmark}>{slide.eyebrow}</Text> : null}
+        <Text style={styles.title}>{slide.title}</Text>
+        {slide.body ? <Text style={styles.body}>{slide.body}</Text> : null}
+      </View>
 
       <View style={styles.footer}>
         <View style={styles.dots}>

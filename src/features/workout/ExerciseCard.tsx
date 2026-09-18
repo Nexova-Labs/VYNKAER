@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { Exercise, ExerciseProgressionState, SetLog, WorkoutExercise } from '../../types';
 import { Button, Card, Pill } from '../../components';
 import { colors, spacing, typography } from '../../theme';
-import { formatRepRange, formatWeight, movementPatternLabel } from '../../utils/format';
+import { formatExerciseLoad, formatExerciseTarget, formatWeight, movementPatternLabel } from '../../utils/format';
 import { SetRow } from './SetRow';
 
 interface ExerciseCardProps {
@@ -43,9 +43,11 @@ export function ExerciseCard({
           </Text>
           <Text style={styles.name}>{definition.name}</Text>
           <Text style={styles.target}>
-            {workoutExercise.targetSets} sets × {formatRepRange(workoutExercise.targetRepMin, workoutExercise.targetRepMax)}
-            {'  ·  '}
-            {formatWeight(workoutExercise.recommendedLoad)}
+            {workoutExercise.targetSets} sets ×{' '}
+            {formatExerciseTarget(definition.movementPattern, workoutExercise.targetRepMin, workoutExercise.targetRepMax)}
+            {formatExerciseLoad(definition.movementPattern, workoutExercise.recommendedLoad)
+              ? `  ·  ${formatExerciseLoad(definition.movementPattern, workoutExercise.recommendedLoad)}`
+              : ''}
           </Text>
         </View>
         {workoutExercise.substitutedFromExerciseId ? <Pill label="Substituted" tone="warning" /> : null}
@@ -68,6 +70,7 @@ export function ExerciseCard({
           <SetRow
             key={set.setNumber}
             set={set}
+            mode={definition.movementPattern === 'CONDITIONING' ? 'cardio' : 'strength'}
             onChange={(patch) => onSetChange(set.setNumber, patch)}
             onToggleComplete={() => onToggleComplete(set.setNumber)}
             onRemove={workoutExercise.sets.length > 1 ? () => onRemoveSet(set.setNumber) : undefined}

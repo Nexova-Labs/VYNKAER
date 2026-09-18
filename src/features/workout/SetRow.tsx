@@ -10,30 +10,34 @@ interface SetRowProps {
   onChange: (patch: Partial<SetLog>) => void;
   onToggleComplete: () => void;
   onRemove?: () => void;
+  mode?: 'strength' | 'cardio';
 }
 
-export function SetRow({ set, onChange, onToggleComplete, onRemove }: SetRowProps) {
+export function SetRow({ set, onChange, onToggleComplete, onRemove, mode = 'strength' }: SetRowProps) {
   const [weightText, setWeightText] = useState(String(set.weight));
   const [repsText, setRepsText] = useState(String(set.reps));
+  const isCardio = mode === 'cardio';
 
   return (
     <View style={styles.row}>
-      <Text style={styles.setLabel}>SET {set.setNumber}</Text>
+      <Text style={styles.setLabel}>{isCardio ? 'SESSION' : `SET ${set.setNumber}`}</Text>
 
-      <View style={styles.field}>
-        <TextInput
-          value={weightText}
-          onChangeText={(t) => {
-            setWeightText(t);
-            const num = parseFloat(t);
-            if (!Number.isNaN(num)) onChange({ weight: num });
-          }}
-          keyboardType="decimal-pad"
-          style={styles.input}
-          accessibilityLabel={`Set ${set.setNumber} weight in kilograms`}
-        />
-        <Text style={styles.unit}>kg</Text>
-      </View>
+      {isCardio ? null : (
+        <View style={styles.field}>
+          <TextInput
+            value={weightText}
+            onChangeText={(t) => {
+              setWeightText(t);
+              const num = parseFloat(t);
+              if (!Number.isNaN(num)) onChange({ weight: num });
+            }}
+            keyboardType="decimal-pad"
+            style={styles.input}
+            accessibilityLabel={`Set ${set.setNumber} weight in kilograms`}
+          />
+          <Text style={styles.unit}>kg</Text>
+        </View>
+      )}
 
       <View style={styles.field}>
         <TextInput
@@ -45,9 +49,9 @@ export function SetRow({ set, onChange, onToggleComplete, onRemove }: SetRowProp
           }}
           keyboardType="number-pad"
           style={styles.input}
-          accessibilityLabel={`Set ${set.setNumber} reps`}
+          accessibilityLabel={isCardio ? 'Minutes completed' : `Set ${set.setNumber} reps`}
         />
-        <Text style={styles.unit}>reps</Text>
+        <Text style={styles.unit}>{isCardio ? 'min' : 'reps'}</Text>
       </View>
 
       <Pressable

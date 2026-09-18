@@ -46,6 +46,18 @@ export function formatRepRange(min: number, max: number): string {
   return `${min}–${max} reps`;
 }
 
+export function formatExerciseTarget(pattern: MovementPattern, min: number, max: number): string {
+  if (pattern === 'CONDITIONING') {
+    return min === max ? `${min} min` : `${min}–${max} min`;
+  }
+  return formatRepRange(min, max);
+}
+
+export function formatExerciseLoad(pattern: MovementPattern, kg: number): string | null {
+  if (pattern === 'CONDITIONING') return null;
+  return formatWeight(kg);
+}
+
 export function formatDate(iso: string): string {
   const date = new Date(iso);
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });

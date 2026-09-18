@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
 import * as Haptics from 'expo-haptics';
 
-import { colors, radius, spacing, touchTarget, typography } from '../theme';
+import { colors, radius, spacing, touchTarget } from '../theme';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
