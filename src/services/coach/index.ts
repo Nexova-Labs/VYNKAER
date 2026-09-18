@@ -1,0 +1,1 @@
+export { DemoCoachProvider } from './DemoCoachProvider';
