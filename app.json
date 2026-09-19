@@ -11,10 +11,12 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.nexovalabs.vynkaertraining"
+      "bundleIdentifier": "com.nexovalabs.vynkaertraining",
+      "buildNumber": "1"
     },
     "android": {
       "package": "com.nexovalabs.vynkaertraining",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#0a0a0b",
         "foregroundImage": "./assets/android-icon-foreground.png",
