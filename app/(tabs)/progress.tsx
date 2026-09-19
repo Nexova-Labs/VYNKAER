@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 
 import { Card, EmptyState, ScreenContainer, SectionHeader, StatTile } from '../../src/components';
 import { useAppState } from '../../src/state';
-import { colors, radius, spacing, typography } from '../../src/theme';
+import { colors, fontFamily, radius, spacing, typography } from '../../src/theme';
 import { formatDate, modalityLabel } from '../../src/utils/format';
 import { EXERCISE_LIBRARY } from '../../src/data/exercises';
 import type { Milestone, WorkoutSession } from '../../src/types';
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
   },
   trendDelta: {
     ...typography.caption,
-    fontWeight: '800',
+    fontFamily: fontFamily.monoBold,
     color: colors.textSecondary,
   },
   trendDeltaPositive: {

@@ -5,26 +5,29 @@ import { router } from 'expo-router';
 
 import { Button } from '../../src/components';
 import { useAppState } from '../../src/state';
-import { colors, spacing, typography } from '../../src/theme';
+import { colors, fontFamily, spacing, typography } from '../../src/theme';
 
 const SLIDES = [
   {
     key: 'brand',
     eyebrow: 'VYNKÆR',
     title: 'Discipline becomes data.',
-    body: '',
+    body: 'FORGED, NOT BORN.',
+    doctrine: true,
   },
   {
     key: 'continuity',
     eyebrow: '',
     title: 'Every set becomes context.',
     body: 'Your previous training informs what comes next.',
+    doctrine: false,
   },
   {
     key: 'forward',
     eyebrow: '',
     title: 'Train forward.',
-    body: '',
+    body: 'TRAIN. ENDURE. ADAPT. ASCEND.',
+    doctrine: true,
   },
 ] as const;
 
@@ -57,7 +60,7 @@ export default function OnboardingScreen() {
       <View style={styles.slide}>
         {slide.eyebrow ? <Text style={styles.brandmark}>{slide.eyebrow}</Text> : null}
         <Text style={styles.title}>{slide.title}</Text>
-        {slide.body ? <Text style={styles.body}>{slide.body}</Text> : null}
+        {slide.body ? <Text style={slide.doctrine ? styles.doctrine : styles.body}>{slide.body}</Text> : null}
       </View>
 
       <View style={styles.footer}>
@@ -96,21 +99,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xxl,
   },
   brandmark: {
-    fontSize: 16,
-    fontWeight: '900',
-    letterSpacing: 4,
+    fontFamily: fontFamily.displayBold,
+    fontSize: 18,
+    letterSpacing: 5,
     color: colors.accentSoft,
     marginBottom: spacing.lg,
   },
   title: {
     ...typography.heroTitle,
-    fontSize: 40,
   },
   body: {
     ...typography.bodyMuted,
     marginTop: spacing.md,
     fontSize: 16,
     lineHeight: 24,
+  },
+  doctrine: {
+    ...typography.doctrine,
+    marginTop: spacing.md,
   },
   footer: {
     paddingHorizontal: spacing.xxl,

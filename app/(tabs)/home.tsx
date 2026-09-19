@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { Button, Card, EmptyState, Pill, ScreenContainer, SectionHeader, StatTile } from '../../src/components';
 import { EXERCISE_LIBRARY } from '../../src/data/exercises';
 import { useAppState } from '../../src/state';
-import { colors, radius, spacing, typography } from '../../src/theme';
+import { colors, fontFamily, radius, spacing, typography } from '../../src/theme';
 import {
   formatExerciseLoad,
   formatExerciseTarget,
@@ -40,23 +41,19 @@ export default function HomeScreen() {
 
       {activeWorkout ? (
         <Card elevated style={styles.hero}>
+          <HeroGlow />
           <Pill label={`In progress · ${modalityLabel(activeWorkout.modality)}`} />
-          <Text style={styles.heroTitle}>
-            WORKOUT {activeWorkout.workoutNumber}
-            {'\n'}
-            {activeWorkout.focus}
-          </Text>
+          <Text style={styles.heroNumber}>WORKOUT {activeWorkout.workoutNumber}</Text>
+          <Text style={styles.heroFocus}>{activeWorkout.focus}</Text>
           <Text style={styles.heroBody}>You have a session already underway. Pick up where you left off.</Text>
           <Button label="RESUME WORKOUT" onPress={handleStart} fullWidth style={{ marginTop: spacing.lg }} />
         </Card>
       ) : currentPlan ? (
         <Card elevated style={styles.hero}>
+          <HeroGlow />
           <Pill label={`Next session · ${modalityLabel(currentPlan.modality)}`} />
-          <Text style={styles.heroTitle}>
-            WORKOUT {trainingState.currentWorkoutNumber}
-            {'\n'}
-            {currentPlan.focus}
-          </Text>
+          <Text style={styles.heroNumber}>WORKOUT {trainingState.currentWorkoutNumber}</Text>
+          <Text style={styles.heroFocus}>{currentPlan.focus}</Text>
           <View style={styles.metaRow}>
             <MetaChip label={`Target ${formatRepRange(profile.primaryRepRange[0], profile.primaryRepRange[1])}`} />
             <MetaChip label={`Effort ${currentPlan.targetRPE}/10`} />
@@ -121,6 +118,19 @@ export default function HomeScreen() {
   );
 }
 
+// The system's one signature flourish (DESIGN.md Overview): a single soft
+// copper glow, always this one corner, never repeated elsewhere on screen.
+function HeroGlow() {
+  return (
+    <LinearGradient
+      colors={['rgba(183,90,55,0.32)', 'rgba(183,90,55,0)']}
+      start={{ x: 0.9, y: 0.05 }}
+      end={{ x: 0.35, y: 0.75 }}
+      style={[styles.heroGlow, { pointerEvents: 'none' }]}
+    />
+  );
+}
+
 function MetaChip({ label }: { label: string }) {
   return (
     <View style={styles.metaChip}>
@@ -177,11 +187,26 @@ const styles = StyleSheet.create({
   },
   hero: {
     marginBottom: spacing.lg,
+    overflow: 'hidden',
   },
-  heroTitle: {
-    ...typography.heroTitle,
-    fontSize: 30,
+  heroGlow: {
+    position: 'absolute',
+    top: -60,
+    right: -60,
+    width: 220,
+    height: 220,
+    borderRadius: 110,
+  },
+  heroNumber: {
+    fontFamily: fontFamily.monoBold,
+    fontSize: 26,
+    letterSpacing: 0,
+    color: colors.textPrimary,
     marginTop: spacing.md,
+    marginBottom: 2,
+  },
+  heroFocus: {
+    ...typography.h2,
     marginBottom: spacing.sm,
   },
   heroBody: {
@@ -246,8 +271,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   exerciseNumLabel: {
+    fontFamily: fontFamily.monoBold,
     color: colors.accentSoft,
-    fontWeight: '800',
   },
   exerciseName: {
     ...typography.body,

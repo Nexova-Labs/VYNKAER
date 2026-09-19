@@ -1,5 +1,9 @@
 # Product
 
+## Platform
+
+adaptive
+
 ## Positioning
 
 VYNKÆR Training is not another AI workout generator. Generic tools answer "what workout should I do today?" — a question that resets to zero every time. VYNKÆR answers a harder, more useful question: **what should this athlete do next, given everything they have already done?**

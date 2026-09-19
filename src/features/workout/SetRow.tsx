@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import type { SetLog } from '../../types';
-import { colors, radius, spacing, typography } from '../../theme';
+import { colors, fontFamily, radius, spacing, typography } from '../../theme';
 
 interface SetRowProps {
   set: SetLog;
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   },
   field: {
     flex: 1,
+    minWidth: 0,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.backgroundElevated,
@@ -99,19 +100,21 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
+    minWidth: 0,
+    fontFamily: fontFamily.monoBold,
     color: colors.textPrimary,
     fontSize: 15,
-    fontWeight: '700',
     paddingVertical: 10,
     minHeight: 44,
   },
   unit: {
     ...typography.caption,
     fontSize: 10,
+    flexShrink: 0,
   },
   check: {
-    width: 40,
-    height: 40,
+    width: 44,
+    height: 44,
     borderRadius: radius.sm,
     borderWidth: 1,
     borderColor: colors.border,
@@ -124,8 +127,9 @@ const styles = StyleSheet.create({
     borderColor: colors.success,
   },
   remove: {
-    width: 28,
-    height: 28,
+    width: 44,
+    height: 44,
+    marginLeft: spacing.xs,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 
-import { colors, radius, spacing, typography } from '../../theme';
+import { colors, fontFamily, radius, spacing, typography } from '../../theme';
 
 const DEFAULT_SECONDS = 90;
 
@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   time: {
+    fontFamily: fontFamily.monoBold,
     fontSize: 24,
-    fontWeight: '800',
     color: colors.textPrimary,
   },
   skip: {
