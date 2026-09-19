@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import Animated, { Easing, FadeIn, FadeInDown, FadeOut } from 'react-native-reanimated';
 
-import { Button } from '../../src/components';
+import { Button, Crest } from '../../src/components';
 import { useAppState } from '../../src/state';
 import { colors, fontFamily, spacing, typography } from '../../src/theme';
 
@@ -14,6 +15,7 @@ const SLIDES = [
     title: 'Discipline becomes data.',
     body: 'FORGED, NOT BORN.',
     doctrine: true,
+    crest: true,
   },
   {
     key: 'continuity',
@@ -21,6 +23,7 @@ const SLIDES = [
     title: 'Every set becomes context.',
     body: 'Your previous training informs what comes next.',
     doctrine: false,
+    crest: false,
   },
   {
     key: 'forward',
@@ -28,6 +31,7 @@ const SLIDES = [
     title: 'Train forward.',
     body: 'TRAIN. ENDURE. ADAPT. ASCEND.',
     doctrine: true,
+    crest: false,
   },
 ] as const;
 
@@ -58,9 +62,20 @@ export default function OnboardingScreen() {
       </View>
 
       <View style={styles.slide}>
-        {slide.eyebrow ? <Text style={styles.brandmark}>{slide.eyebrow}</Text> : null}
-        <Text style={styles.title}>{slide.title}</Text>
-        {slide.body ? <Text style={slide.doctrine ? styles.doctrine : styles.body}>{slide.body}</Text> : null}
+        <Animated.View
+          key={slide.key}
+          entering={FadeIn.duration(360).easing(Easing.out(Easing.cubic))}
+          exiting={FadeOut.duration(160)}
+        >
+          {slide.crest ? (
+            <Animated.View entering={FadeInDown.duration(560).delay(80)} style={styles.crestWrap}>
+              <Crest size={56} tone="copper" />
+            </Animated.View>
+          ) : null}
+          {slide.eyebrow ? <Text style={styles.brandmark}>{slide.eyebrow}</Text> : null}
+          <Text style={styles.title}>{slide.title}</Text>
+          {slide.body ? <Text style={slide.doctrine ? styles.doctrine : styles.body}>{slide.body}</Text> : null}
+        </Animated.View>
       </View>
 
       <View style={styles.footer}>
@@ -97,6 +112,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: spacing.xxl,
+  },
+  crestWrap: {
+    marginBottom: spacing.lg,
   },
   brandmark: {
     fontFamily: fontFamily.displayBold,

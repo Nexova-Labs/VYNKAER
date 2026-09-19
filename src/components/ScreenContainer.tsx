@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colors, spacing } from '../theme';
+import { GrainTexture } from './GrainTexture';
 
 interface ScreenContainerProps {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ interface ScreenContainerProps {
 export function ScreenContainer({ children, scroll = true, style, contentStyle }: ScreenContainerProps) {
   return (
     <SafeAreaView style={[styles.root, style]} edges={['top', 'left', 'right']}>
+      <GrainTexture />
       {scroll ? (
         <ScrollView
           contentContainerStyle={[styles.content, contentStyle]}

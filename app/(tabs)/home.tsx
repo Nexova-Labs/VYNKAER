@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import Animated, {
+  Easing,
+  FadeInDown,
+  FadeInUp,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 
-import { Button, Card, EmptyState, Pill, ScreenContainer, SectionHeader, StatTile } from '../../src/components';
+import { Button, Card, Crest, EmptyState, Pill, ScreenContainer, SectionHeader, StatTile } from '../../src/components';
 import { EXERCISE_LIBRARY } from '../../src/data/exercises';
 import { useAppState } from '../../src/state';
 import { colors, fontFamily, radius, spacing, typography } from '../../src/theme';
@@ -40,31 +50,41 @@ export default function HomeScreen() {
       </View>
 
       {activeWorkout ? (
-        <Card elevated style={styles.hero}>
-          <HeroGlow />
-          <Pill label={`In progress · ${modalityLabel(activeWorkout.modality)}`} />
-          <Text style={styles.heroNumber}>WORKOUT {activeWorkout.workoutNumber}</Text>
-          <Text style={styles.heroFocus}>{activeWorkout.focus}</Text>
-          <Text style={styles.heroBody}>You have a session already underway. Pick up where you left off.</Text>
-          <Button label="RESUME WORKOUT" onPress={handleStart} fullWidth style={{ marginTop: spacing.lg }} />
-        </Card>
+        <Animated.View entering={FadeInUp.duration(420).easing(Easing.out(Easing.cubic))}>
+          <Card elevated style={styles.hero}>
+            <HeroGlow />
+            <View style={styles.heroCrest}>
+              <Crest size={40} tone="copper" />
+            </View>
+            <Pill label={`In progress · ${modalityLabel(activeWorkout.modality)}`} />
+            <Text style={styles.heroNumber}>WORKOUT {activeWorkout.workoutNumber}</Text>
+            <Text style={styles.heroFocus}>{activeWorkout.focus}</Text>
+            <Text style={styles.heroBody}>You have a session already underway. Pick up where you left off.</Text>
+            <Button label="RESUME WORKOUT" onPress={handleStart} fullWidth style={{ marginTop: spacing.lg }} />
+          </Card>
+        </Animated.View>
       ) : currentPlan ? (
-        <Card elevated style={styles.hero}>
-          <HeroGlow />
-          <Pill label={`Next session · ${modalityLabel(currentPlan.modality)}`} />
-          <Text style={styles.heroNumber}>WORKOUT {trainingState.currentWorkoutNumber}</Text>
-          <Text style={styles.heroFocus}>{currentPlan.focus}</Text>
-          <View style={styles.metaRow}>
-            <MetaChip label={`Target ${formatRepRange(profile.primaryRepRange[0], profile.primaryRepRange[1])}`} />
-            <MetaChip label={`Effort ${currentPlan.targetRPE}/10`} />
-            <MetaChip label={`~${currentPlan.estimatedDurationMinutes} min`} />
-            {trainingState.activeLimitations.length > 0 ? <MetaChip label="Conservative" /> : null}
-          </View>
-          <View style={styles.actionsRow}>
-            <Button label="START WORKOUT" onPress={handleStart} style={{ flex: 1 }} />
-            <Button label="Regenerate" onPress={regeneratePlan} variant="secondary" style={{ flex: 1 }} />
-          </View>
-        </Card>
+        <Animated.View entering={FadeInUp.duration(420).easing(Easing.out(Easing.cubic))}>
+          <Card elevated style={styles.hero}>
+            <HeroGlow />
+            <View style={styles.heroCrest}>
+              <Crest size={40} tone="copper" />
+            </View>
+            <Pill label={`Next session · ${modalityLabel(currentPlan.modality)}`} />
+            <Text style={styles.heroNumber}>WORKOUT {trainingState.currentWorkoutNumber}</Text>
+            <Text style={styles.heroFocus}>{currentPlan.focus}</Text>
+            <View style={styles.metaRow}>
+              <MetaChip label={`Target ${formatRepRange(profile.primaryRepRange[0], profile.primaryRepRange[1])}`} />
+              <MetaChip label={`Effort ${currentPlan.targetRPE}/10`} />
+              <MetaChip label={`~${currentPlan.estimatedDurationMinutes} min`} />
+              {trainingState.activeLimitations.length > 0 ? <MetaChip label="Conservative" /> : null}
+            </View>
+            <View style={styles.actionsRow}>
+              <Button label="START WORKOUT" onPress={handleStart} style={{ flex: 1 }} />
+              <Button label="Regenerate" onPress={regeneratePlan} variant="secondary" style={{ flex: 1 }} />
+            </View>
+          </Card>
+        </Animated.View>
       ) : (
         <EmptyState title="Preparing your session" body="Loading your training context." />
       )}
@@ -96,21 +116,23 @@ export default function HomeScreen() {
             const def = EXERCISE_LIBRARY.find((e) => e.id === ex.exerciseId);
             if (!def) return null;
             return (
-              <Card key={ex.exerciseId} style={styles.exerciseRow}>
-                <View style={styles.exerciseNum}>
-                  <Text style={styles.exerciseNumLabel}>{String(i + 1).padStart(2, '0')}</Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.exerciseName}>{def.name}</Text>
-                  <Text style={styles.exerciseMeta}>
-                    {ex.targetSets} × {formatExerciseTarget(def.movementPattern, ex.targetRepMin, ex.targetRepMax)}
-                    {formatExerciseLoad(def.movementPattern, ex.recommendedLoad)
-                      ? ` · ${formatExerciseLoad(def.movementPattern, ex.recommendedLoad)}`
-                      : ''}
-                  </Text>
-                </View>
-                <Pill label={movementPatternLabel(def.movementPattern)} tone="neutral" />
-              </Card>
+              <Animated.View key={ex.exerciseId} entering={FadeInDown.duration(320).delay(i * 55)}>
+                <Card style={styles.exerciseRow}>
+                  <View style={styles.exerciseNum}>
+                    <Text style={styles.exerciseNumLabel}>{String(i + 1).padStart(2, '0')}</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.exerciseName}>{def.name}</Text>
+                    <Text style={styles.exerciseMeta}>
+                      {ex.targetSets} × {formatExerciseTarget(def.movementPattern, ex.targetRepMin, ex.targetRepMax)}
+                      {formatExerciseLoad(def.movementPattern, ex.recommendedLoad)
+                        ? ` · ${formatExerciseLoad(def.movementPattern, ex.recommendedLoad)}`
+                        : ''}
+                    </Text>
+                  </View>
+                  <Pill label={movementPatternLabel(def.movementPattern)} tone="neutral" />
+                </Card>
+              </Animated.View>
             );
           })}
       </View>
@@ -120,14 +142,33 @@ export default function HomeScreen() {
 
 // The system's one signature flourish (DESIGN.md Overview): a single soft
 // copper glow, always this one corner, never repeated elsewhere on screen.
+// Breathes slowly rather than sitting static — "ambient warmth," per DESIGN.md.
 function HeroGlow() {
+  const breath = useSharedValue(0.75);
+
+  useEffect(() => {
+    breath.value = withRepeat(
+      withSequence(
+        withTiming(1, { duration: 2600, easing: Easing.inOut(Easing.sin) }),
+        withTiming(0.75, { duration: 2600, easing: Easing.inOut(Easing.sin) })
+      ),
+      -1,
+      false
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `breath` is a stable Reanimated shared-value ref.
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(() => ({ opacity: breath.value }));
+
   return (
-    <LinearGradient
-      colors={['rgba(183,90,55,0.32)', 'rgba(183,90,55,0)']}
-      start={{ x: 0.9, y: 0.05 }}
-      end={{ x: 0.35, y: 0.75 }}
-      style={[styles.heroGlow, { pointerEvents: 'none' }]}
-    />
+    <Animated.View style={[styles.heroGlow, animatedStyle]} pointerEvents="none">
+      <LinearGradient
+        colors={['rgba(183,90,55,0.32)', 'rgba(183,90,55,0)']}
+        start={{ x: 0.9, y: 0.05 }}
+        end={{ x: 0.35, y: 0.75 }}
+        style={StyleSheet.absoluteFill}
+      />
+    </Animated.View>
   );
 }
 
@@ -196,6 +237,13 @@ const styles = StyleSheet.create({
     width: 220,
     height: 220,
     borderRadius: 110,
+    overflow: 'hidden',
+  },
+  heroCrest: {
+    position: 'absolute',
+    top: spacing.lg,
+    right: spacing.lg,
+    opacity: 0.85,
   },
   heroNumber: {
     fontFamily: fontFamily.monoBold,

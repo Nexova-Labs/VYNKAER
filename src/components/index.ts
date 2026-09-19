@@ -5,3 +5,5 @@ export { Pill } from './Pill';
 export { StatTile } from './StatTile';
 export { SectionHeader } from './SectionHeader';
 export { EmptyState } from './EmptyState';
+export { Crest } from './Crest';
+export { GrainTexture } from './GrainTexture';

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { colors, radius, spacing, touchTarget } from '../theme';
 
@@ -18,6 +19,8 @@ interface ButtonProps {
   haptic?: boolean;
 }
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 export function Button({
   label,
   onPress,
@@ -29,6 +32,12 @@ export function Button({
   accessibilityLabel,
   haptic = true,
 }: ButtonProps) {
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
   const handlePress = () => {
     if (disabled || loading) return;
     if (haptic) void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -36,18 +45,26 @@ export function Button({
   };
 
   return (
-    <Pressable
+    <AnimatedPressable
       onPress={handlePress}
+      onPressIn={() => {
+        // eslint-disable-next-line react-hooks/immutability -- Reanimated shared values are mutated via `.value` by design.
+        scale.value = withSpring(0.96, { damping: 16, stiffness: 320 });
+      }}
+      onPressOut={() => {
+        // eslint-disable-next-line react-hooks/immutability -- Reanimated shared values are mutated via `.value` by design.
+        scale.value = withSpring(1, { damping: 14, stiffness: 260 });
+      }}
       disabled={disabled || loading}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityState={{ disabled: disabled || loading }}
-      style={({ pressed }) => [
+      style={[
         styles.base,
         variantStyles[variant],
         fullWidth && styles.fullWidth,
         (disabled || loading) && styles.disabled,
-        pressed && !disabled && !loading && styles.pressed,
+        animatedStyle,
         style,
       ]}
     >
@@ -58,7 +75,7 @@ export function Button({
           {label}
         </Text>
       )}
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -73,9 +90,6 @@ const styles = StyleSheet.create({
   },
   fullWidth: {
     width: '100%',
-  },
-  pressed: {
-    opacity: 0.85,
   },
   disabled: {
     opacity: 0.45,

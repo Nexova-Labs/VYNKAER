@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring } from 'react-native-reanimated';
 
 import type { SetLog } from '../../types';
 import { colors, fontFamily, radius, spacing, typography } from '../../theme';
@@ -13,10 +14,21 @@ interface SetRowProps {
   mode?: 'strength' | 'cardio';
 }
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 export function SetRow({ set, onChange, onToggleComplete, onRemove, mode = 'strength' }: SetRowProps) {
   const [weightText, setWeightText] = useState(String(set.weight));
   const [repsText, setRepsText] = useState(String(set.reps));
   const isCardio = mode === 'cardio';
+
+  const scale = useSharedValue(1);
+  useEffect(() => {
+    if (set.completed) {
+      scale.value = withSequence(withSpring(1.18, { damping: 9, stiffness: 420 }), withSpring(1, { damping: 10, stiffness: 260 }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `scale` is a stable Reanimated shared-value ref.
+  }, [set.completed]);
+  const checkAnimatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
 
   return (
     <View style={styles.row}>
@@ -54,15 +66,15 @@ export function SetRow({ set, onChange, onToggleComplete, onRemove, mode = 'stre
         <Text style={styles.unit}>{isCardio ? 'min' : 'reps'}</Text>
       </View>
 
-      <Pressable
+      <AnimatedPressable
         onPress={onToggleComplete}
-        style={[styles.check, set.completed && styles.checkDone]}
+        style={[styles.check, set.completed && styles.checkDone, checkAnimatedStyle]}
         accessibilityRole="button"
         accessibilityLabel={set.completed ? `Set ${set.setNumber} completed, tap to undo` : `Mark set ${set.setNumber} complete`}
         accessibilityState={{ selected: set.completed }}
       >
         <Ionicons name="checkmark" size={18} color={set.completed ? colors.success : colors.textTertiary} />
-      </Pressable>
+      </AnimatedPressable>
 
       {onRemove ? (
         <Pressable onPress={onRemove} accessibilityRole="button" accessibilityLabel={`Remove set ${set.setNumber}`} style={styles.remove}>
