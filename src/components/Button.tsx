@@ -3,7 +3,7 @@ import { ActivityIndicator, Pressable, StyleSheet, Text, ViewStyle } from 'react
 import * as Haptics from 'expo-haptics';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { colors, radius, spacing, touchTarget } from '../theme';
+import { colors, radius, shadow, spacing, touchTarget } from '../theme';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
@@ -62,6 +62,7 @@ export function Button({
       style={[
         styles.base,
         variantStyles[variant],
+        variant === 'primary' && shadow.card,
         fullWidth && styles.fullWidth,
         (disabled || loading) && styles.disabled,
         animatedStyle,
@@ -71,7 +72,12 @@ export function Button({
       {loading ? (
         <ActivityIndicator color={variant === 'primary' ? colors.white : colors.textPrimary} />
       ) : (
-        <Text style={[styles.label, variant === 'primary' ? styles.labelOnAccent : styles.labelOnPanel]}>
+        <Text
+          style={[
+            styles.label,
+            variant === 'primary' ? [styles.labelOnAccent, styles.labelPrimary] : styles.labelOnPanel,
+          ]}
+        >
           {label}
         </Text>
       )}
@@ -98,6 +104,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '700',
   },
+  labelPrimary: {
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    fontSize: 14,
+  },
   labelOnAccent: {
     color: colors.white,
   },
@@ -112,7 +123,7 @@ const variantStyles: Record<ButtonVariant, ViewStyle> = {
     borderColor: colors.accentStrong,
   },
   secondary: {
-    backgroundColor: colors.panel2,
+    backgroundColor: colors.controlBg,
     borderColor: colors.border,
   },
   ghost: {

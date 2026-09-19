@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import Svg, { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
 
-import { Card, EmptyState, ScreenContainer, SectionHeader, StatTile } from '../../src/components';
+import { Card, CardHeader, EmptyState, ScreenContainer, SectionHeader, StatTile, StatusTag } from '../../src/components';
 import { useAppState } from '../../src/state';
 import { colors, fontFamily, radius, spacing, typography } from '../../src/theme';
 import { formatDate, modalityLabel } from '../../src/utils/format';
@@ -67,6 +68,25 @@ function formatVolume(kg: number): string {
 function milestoneEyebrow(name: string): string {
   const stripped = name.replace(/^\d+\s*/, '').trim();
   return `${stripped} journey`;
+}
+
+// A session "PRs" if any exercise in it beat every completed top set logged
+// for that same exercise in every prior session — no fabricated categories,
+// just what the log actually shows.
+function sessionHasPR(session: WorkoutSession, priorSessions: WorkoutSession[]): boolean {
+  return session.exercises.some((ex) => {
+    const top = Math.max(0, ...ex.sets.filter((s) => s.completed).map((s) => s.weight));
+    if (top <= 0) return false;
+    const priorTop = Math.max(
+      0,
+      ...priorSessions.flatMap((s) =>
+        s.exercises
+          .filter((e) => e.exerciseId === ex.exerciseId)
+          .flatMap((e) => e.sets.filter((set) => set.completed).map((set) => set.weight))
+      )
+    );
+    return top > priorTop;
+  });
 }
 
 export default function ProgressScreen() {
@@ -179,27 +199,35 @@ export default function ProgressScreen() {
 
           <SectionHeader title="Recent sessions" caption="Last five" />
           <Card>
-            {recent.map((session, index) => (
-              <View
-                key={session.id}
-                style={[styles.sessionRow, index > 0 && styles.sessionRowDivided]}
-                accessibilityLabel={`Workout ${session.workoutNumber}, ${modalityLabel(session.modality)}, ${formatDate(
-                  session.date
-                )}`}
-              >
-                <View style={styles.sessionMeta}>
-                  <Text style={styles.sessionTitle}>
-                    Workout {session.workoutNumber} · {modalityLabel(session.modality)}
-                  </Text>
-                  <Text style={styles.sessionCaption}>
-                    {formatDate(session.date)} · {session.focus}
-                  </Text>
+            <CardHeader label="Session Log" meta={`${recent.length} SESSIONS`} />
+            {recent.map((session, index) => {
+              const orderedIndex = ordered.findIndex((s) => s.id === session.id);
+              const isPR = orderedIndex >= 0 && sessionHasPR(session, ordered.slice(0, orderedIndex));
+              return (
+                <View
+                  key={session.id}
+                  style={[styles.sessionRow, index > 0 && styles.sessionRowDivided]}
+                  accessibilityLabel={`Workout ${session.workoutNumber}, ${modalityLabel(session.modality)}, ${formatDate(
+                    session.date
+                  )}${isPR ? ', new personal record' : ''}`}
+                >
+                  <View style={styles.sessionMeta}>
+                    <View style={styles.sessionTitleRow}>
+                      <Text style={styles.sessionTitle}>
+                        Workout {session.workoutNumber} · {modalityLabel(session.modality)}
+                      </Text>
+                      {isPR ? <StatusTag label="PR" tone="current" /> : null}
+                    </View>
+                    <Text style={styles.sessionCaption}>
+                      {formatDate(session.date)} · {session.focus}
+                    </Text>
+                  </View>
+                  {session.feedback ? (
+                    <Text style={styles.sessionRpe}>RPE {session.feedback.sessionRPE.toFixed(1)}</Text>
+                  ) : null}
                 </View>
-                {session.feedback ? (
-                  <Text style={styles.sessionRpe}>RPE {session.feedback.sessionRPE.toFixed(1)}</Text>
-                ) : null}
-              </View>
-            ))}
+              );
+            })}
           </Card>
         </>
       )}
@@ -207,33 +235,71 @@ export default function ProgressScreen() {
   );
 }
 
+const CHART_W = 300;
+const CHART_H = 96;
+const CHART_PAD = 10;
+
 function TrendCard({ trend, onPress }: { trend: TrendSeries; onPress: () => void }) {
-  const max = Math.max(...trend.points.map((p) => p.topWeight));
+  const [selected, setSelected] = useState(trend.points.length - 1);
   const latest = trend.points[trend.points.length - 1].topWeight;
+  const values = trend.points.map((p) => p.topWeight);
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+  const span = Math.max(1, max - min);
+  const stepX = trend.points.length > 1 ? CHART_W / (trend.points.length - 1) : 0;
+
+  const coords = trend.points.map((point, index) => ({
+    x: trend.points.length > 1 ? index * stepX : CHART_W / 2,
+    y: CHART_H - CHART_PAD - ((point.topWeight - min) / span) * (CHART_H - CHART_PAD * 2),
+  }));
+  const linePath = coords.map((c, i) => `${i === 0 ? 'M' : 'L'} ${c.x.toFixed(1)} ${c.y.toFixed(1)}`).join(' ');
+  const areaPath = `${linePath} L ${coords[coords.length - 1].x.toFixed(1)} ${CHART_H} L ${coords[0].x.toFixed(1)} ${CHART_H} Z`;
+  const activePoint = trend.points[selected] ?? trend.points[trend.points.length - 1];
+  const gradientId = `trend-gradient-${trend.exerciseId}`;
 
   return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityLabel={`${trend.name} strength trend, open exercise detail`}
-      style={({ pressed }) => [styles.trendCard, pressed && styles.pressed]}
-    >
-      <View style={styles.barRow}>
-        {trend.points.map((point, index) => {
-          const ratio = max > 0 ? point.topWeight / max : 0;
-          const heightPercent = `${Math.max(12, Math.round(ratio * 100))}%` as const;
-          const isLast = index === trend.points.length - 1;
-          return (
-            <View key={`${point.sessionId}-${index}`} style={styles.barSlot}>
-              <View
-                style={[styles.bar, { height: heightPercent }, isLast && styles.barCurrent]}
-                accessibilityLabel={`${formatDate(point.date)}: ${point.topWeight} kilograms`}
-              />
-            </View>
-          );
-        })}
+    <View style={styles.trendCard}>
+      <View style={styles.trendCallout}>
+        <Text style={styles.trendCalloutLabel}>{formatDate(activePoint.date)}</Text>
+        <Text style={styles.trendCalloutValue}>{activePoint.topWeight} kg</Text>
       </View>
-      <View style={styles.trendFooter}>
+
+      <View style={styles.chartWrap}>
+        <Svg width="100%" height="100%" viewBox={`0 0 ${CHART_W} ${CHART_H}`} preserveAspectRatio="none">
+          <Defs>
+            <LinearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <Stop offset="0" stopColor={colors.accent} stopOpacity={0.35} />
+              <Stop offset="1" stopColor={colors.accent} stopOpacity={0} />
+            </LinearGradient>
+          </Defs>
+          <Path d={areaPath} fill={`url(#${gradientId})`} />
+          <Path d={linePath} stroke={colors.accent} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        </Svg>
+        {coords.map((c, index) => (
+          <Pressable
+            key={`${trend.points[index].sessionId}-${index}`}
+            onPress={(e) => {
+              e.stopPropagation();
+              setSelected(index);
+            }}
+            hitSlop={10}
+            style={[
+              styles.point,
+              { left: `${(c.x / CHART_W) * 100}%`, top: `${(c.y / CHART_H) * 100}%` },
+              index === selected && styles.pointActive,
+            ]}
+            accessibilityRole="button"
+            accessibilityLabel={`${formatDate(trend.points[index].date)}: ${trend.points[index].topWeight} kilograms`}
+          />
+        ))}
+      </View>
+
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={`Open ${trend.name} exercise detail`}
+        style={({ pressed }) => [styles.trendFooter, pressed && styles.pressed]}
+      >
         <View style={styles.trendLabels}>
           <Text style={styles.trendName}>{trend.name}</Text>
           <Text style={styles.trendCaption}>Top set {latest} kg</Text>
@@ -244,8 +310,8 @@ function TrendCard({ trend, onPress }: { trend: TrendSeries; onPress: () => void
             {trend.deltaPercent}%
           </Text>
         ) : null}
-      </View>
-    </Pressable>
+      </Pressable>
+    </View>
   );
 }
 
@@ -299,7 +365,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xxl,
   },
   trendCard: {
-    backgroundColor: colors.panel,
+    backgroundColor: colors.panel2,
     borderRadius: radius.xl,
     borderWidth: 1,
     borderColor: colors.border,
@@ -309,28 +375,43 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.85,
   },
-  barRow: {
+  trendCallout: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: colors.backgroundElevated,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    borderRadius: radius.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    marginBottom: spacing.md,
+  },
+  trendCalloutLabel: {
+    ...typography.caption,
+    color: colors.textSecondary,
+  },
+  trendCalloutValue: {
+    fontFamily: fontFamily.monoBold,
+    fontSize: 13,
+    color: colors.textPrimary,
+  },
+  chartWrap: {
     height: 96,
-    gap: spacing.xs,
+    position: 'relative',
   },
-  barSlot: {
-    flex: 1,
-    height: '100%',
-    justifyContent: 'flex-end',
+  point: {
+    position: 'absolute',
+    width: 10,
+    height: 10,
+    marginLeft: -5,
+    marginTop: -5,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: colors.accent,
+    backgroundColor: colors.backgroundElevated,
   },
-  bar: {
-    width: '100%',
-    maxWidth: 30,
-    alignSelf: 'center',
-    backgroundColor: colors.accentBorder,
-    borderTopLeftRadius: radius.sm,
-    borderTopRightRadius: radius.sm,
-    borderBottomLeftRadius: 3,
-    borderBottomRightRadius: 3,
-  },
-  barCurrent: {
+  pointActive: {
     backgroundColor: colors.accent,
   },
   trendFooter: {
@@ -379,7 +460,7 @@ const styles = StyleSheet.create({
   progressTrack: {
     height: 6,
     borderRadius: radius.pill,
-    backgroundColor: colors.panel2,
+    backgroundColor: colors.backgroundElevated,
     overflow: 'hidden',
   },
   progressFill: {
@@ -406,6 +487,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: spacing.sm,
   },
+  sessionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
   sessionTitle: {
     ...typography.body,
     fontWeight: '600',
@@ -416,8 +502,8 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   sessionRpe: {
-    ...typography.caption,
+    fontFamily: fontFamily.monoBold,
+    fontSize: 12,
     color: colors.textSecondary,
-    fontWeight: '700',
   },
 });

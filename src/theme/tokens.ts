@@ -10,6 +10,10 @@ export const colors = {
   panel: '#141417',
   panelElevated: '#191a1e',
   panel2: '#1c1c21', // Charcoal #202023 register
+  controlBg: '#2a2a2b', // Raised control surface — sits lighter than a card, for
+  // buttons/steppers/chips that live *on* a card and must read as interactive
+  // rather than informational (see colors.backgroundElevated for the inverse
+  // "recessed well" register used by inset readouts, tags and progress tracks).
   border: '#26262c',
   borderSubtle: '#1e1e23',
 

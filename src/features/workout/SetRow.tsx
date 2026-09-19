@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring } from 'react-native-reanimated';
 
 import type { SetLog } from '../../types';
+import { StatusTag } from '../../components';
 import { colors, fontFamily, radius, spacing, typography } from '../../theme';
 
 interface SetRowProps {
@@ -12,14 +13,16 @@ interface SetRowProps {
   onToggleComplete: () => void;
   onRemove?: () => void;
   mode?: 'strength' | 'cardio';
+  isCurrent?: boolean;
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export function SetRow({ set, onChange, onToggleComplete, onRemove, mode = 'strength' }: SetRowProps) {
+export function SetRow({ set, onChange, onToggleComplete, onRemove, mode = 'strength', isCurrent = false }: SetRowProps) {
   const [weightText, setWeightText] = useState(String(set.weight));
   const [repsText, setRepsText] = useState(String(set.reps));
   const isCardio = mode === 'cardio';
+  const rowState = set.completed ? 'done' : isCurrent ? 'current' : 'queued';
 
   const scale = useSharedValue(1);
   useEffect(() => {
@@ -31,8 +34,16 @@ export function SetRow({ set, onChange, onToggleComplete, onRemove, mode = 'stre
   const checkAnimatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
 
   return (
-    <View style={styles.row}>
-      <Text style={styles.setLabel}>{isCardio ? 'SESSION' : `SET ${set.setNumber}`}</Text>
+    <View style={[styles.row, rowState === 'current' && styles.rowCurrent, rowState === 'done' && styles.rowDone]}>
+      {rowState === 'current' ? <View style={styles.currentBar} /> : null}
+
+      <View style={styles.labelStack}>
+        <Text style={styles.setLabel}>{isCardio ? 'SESSION' : `SET ${set.setNumber}`}</Text>
+        <StatusTag
+          label={rowState === 'done' ? 'DONE' : rowState === 'current' ? 'NOW' : 'QUEUE'}
+          tone={rowState}
+        />
+      </View>
 
       {isCardio ? null : (
         <View style={styles.field}>
@@ -94,9 +105,36 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.borderSubtle,
   },
+  rowCurrent: {
+    position: 'relative',
+    borderBottomWidth: 0,
+    borderWidth: 1,
+    borderColor: colors.accent,
+    backgroundColor: colors.controlBg,
+    borderRadius: radius.md,
+    paddingHorizontal: spacing.sm,
+    paddingLeft: spacing.md,
+    marginVertical: 2,
+  },
+  rowDone: {
+    opacity: 0.55,
+  },
+  currentBar: {
+    position: 'absolute',
+    left: 0,
+    top: spacing.xs,
+    bottom: spacing.xs,
+    width: 3,
+    borderRadius: radius.pill,
+    backgroundColor: colors.accent,
+  },
+  labelStack: {
+    width: 52,
+    alignItems: 'flex-start',
+    gap: 3,
+  },
   setLabel: {
     ...typography.caption,
-    width: 52,
     fontWeight: '800',
   },
   field: {

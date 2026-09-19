@@ -17,7 +17,7 @@ export function Card({ style, elevated = false, children, ...rest }: CardProps) 
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.panel,
+    backgroundColor: colors.panel2,
     borderRadius: radius.xl,
     borderWidth: 1,
     borderColor: colors.border,

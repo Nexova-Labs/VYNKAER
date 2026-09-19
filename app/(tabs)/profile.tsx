@@ -104,7 +104,7 @@ export default function ProfileScreen() {
         <Text style={styles.subtitle}>These preferences shape generation and progression.</Text>
       </View>
 
-      <SectionHeader title="Training identity" />
+      <SectionHeader title="Training identity" caption={`${profile.sessionsPerWeek}x / week`} />
       <Card>
         <View style={styles.readRow}>
           <Text style={styles.readLabel}>Primary goal</Text>
@@ -196,7 +196,7 @@ export default function ProfileScreen() {
         </View>
       </Card>
 
-      <SectionHeader title="Conditioning" />
+      <SectionHeader title="Conditioning" caption={profile.conditioningEnabled ? 'Enabled' : 'Disabled'} />
       <Card>
         <View style={styles.switchRow}>
           <View style={styles.switchCopy}>
@@ -207,9 +207,9 @@ export default function ProfileScreen() {
             value={profile.conditioningEnabled}
             onValueChange={(value) => void updateProfile({ conditioningEnabled: value })}
             accessibilityLabel="Toggle conditioning finisher"
-            trackColor={{ false: colors.panel2, true: colors.accent }}
+            trackColor={{ false: colors.controlBg, true: colors.accent }}
             thumbColor={colors.textPrimary}
-            ios_backgroundColor={colors.panel2}
+            ios_backgroundColor={colors.controlBg}
           />
         </View>
         <View style={styles.divider} />
@@ -219,7 +219,10 @@ export default function ProfileScreen() {
         </View>
       </Card>
 
-      <SectionHeader title="Limitations" caption="Safety constraints" />
+      <SectionHeader
+        title="Limitations"
+        caption={`Safety constraints · ${profile.limitations.filter((l) => l.active).length} active`}
+      />
       <Card>
         {profile.limitations.length === 0 ? (
           <Text style={styles.readCaption}>No limitations recorded.</Text>
@@ -239,9 +242,9 @@ export default function ProfileScreen() {
                 value={limitation.active}
                 onValueChange={(value) => toggleLimitation(limitation, value)}
                 accessibilityLabel={`Toggle active limitation ${humanize(limitation.area)}`}
-                trackColor={{ false: colors.panel2, true: colors.accent }}
+                trackColor={{ false: colors.controlBg, true: colors.accent }}
                 thumbColor={colors.textPrimary}
-                ios_backgroundColor={colors.panel2}
+                ios_backgroundColor={colors.controlBg}
               />
             </View>
           ))
@@ -351,7 +354,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: colors.panel2,
+    backgroundColor: colors.controlBg,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -380,7 +383,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: colors.panel2,
+    backgroundColor: colors.controlBg,
   },
   chipSelected: {
     backgroundColor: colors.accentSurface,

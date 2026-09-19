@@ -13,7 +13,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { Button, Card, Crest, EmptyState, Pill, ScreenContainer, SectionHeader, StatTile } from '../../src/components';
+import { Button, Card, CardHeader, Crest, EmptyState, Pill, ScreenContainer, SectionHeader, StatTile } from '../../src/components';
 import { EXERCISE_LIBRARY } from '../../src/data/exercises';
 import { useAppState } from '../../src/state';
 import { colors, fontFamily, radius, spacing, typography } from '../../src/theme';
@@ -90,7 +90,7 @@ export default function HomeScreen() {
       )}
 
       <Card style={styles.stateCard}>
-        <Text style={styles.eyebrowSmall}>Athlete State</Text>
+        <CardHeader label="Athlete State" meta={`Workout ${trainingState.currentWorkoutNumber}`} />
         <View style={styles.statGrid}>
           <StatTile value={String(trainingState.sessionsCompleted)} label="Sessions" />
           <StatTile value={formatRepRange(profile.primaryRepRange[0], profile.primaryRepRange[1])} label="Rep target" />
@@ -201,10 +201,6 @@ const styles = StyleSheet.create({
     ...typography.eyebrow,
     marginBottom: spacing.xs,
   },
-  eyebrowSmall: {
-    ...typography.eyebrow,
-    marginBottom: spacing.md,
-  },
   title: {
     ...typography.title,
   },
@@ -314,7 +310,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: radius.sm,
-    backgroundColor: colors.panel2,
+    backgroundColor: colors.backgroundElevated,
     alignItems: 'center',
     justifyContent: 'center',
   },

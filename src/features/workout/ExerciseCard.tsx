@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import type { Exercise, ExerciseProgressionState, SetLog, WorkoutExercise } from '../../types';
-import { Button, Card, Pill } from '../../components';
+import { Button, Card, CardHeader, Pill } from '../../components';
 import { colors, spacing, typography } from '../../theme';
 import { formatExerciseLoad, formatExerciseTarget, formatWeight, movementPatternLabel } from '../../utils/format';
 import { SetRow } from './SetRow';
@@ -36,11 +36,11 @@ export function ExerciseCard({
 }: ExerciseCardProps) {
   return (
     <Card elevated>
+      <CardHeader
+        label={`EXERCISE ${index + 1} / ${total} · ${movementPatternLabel(definition.movementPattern)}`}
+      />
       <View style={styles.header}>
         <View style={{ flex: 1 }}>
-          <Text style={styles.eyebrow}>
-            EXERCISE {index + 1} / {total} · {movementPatternLabel(definition.movementPattern)}
-          </Text>
           <Text style={styles.name}>{definition.name}</Text>
           <Text style={styles.target}>
             {workoutExercise.targetSets} sets ×{' '}
@@ -66,16 +66,22 @@ export function ExerciseCard({
       </View>
 
       <View style={styles.sets}>
-        {workoutExercise.sets.map((set) => (
-          <SetRow
-            key={set.setNumber}
-            set={set}
-            mode={definition.movementPattern === 'CONDITIONING' ? 'cardio' : 'strength'}
-            onChange={(patch) => onSetChange(set.setNumber, patch)}
-            onToggleComplete={() => onToggleComplete(set.setNumber)}
-            onRemove={workoutExercise.sets.length > 1 ? () => onRemoveSet(set.setNumber) : undefined}
-          />
-        ))}
+        {(() => {
+          const nextIncomplete = [...workoutExercise.sets]
+            .sort((a, b) => a.setNumber - b.setNumber)
+            .find((s) => !s.completed);
+          return workoutExercise.sets.map((set) => (
+            <SetRow
+              key={set.setNumber}
+              set={set}
+              mode={definition.movementPattern === 'CONDITIONING' ? 'cardio' : 'strength'}
+              isCurrent={set.setNumber === nextIncomplete?.setNumber}
+              onChange={(patch) => onSetChange(set.setNumber, patch)}
+              onToggleComplete={() => onToggleComplete(set.setNumber)}
+              onRemove={workoutExercise.sets.length > 1 ? () => onRemoveSet(set.setNumber) : undefined}
+            />
+          ));
+        })()}
       </View>
 
       {workoutExercise.notes ? <Text style={styles.notes}>{workoutExercise.notes}</Text> : null}
@@ -99,11 +105,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginBottom: spacing.sm,
-  },
-  eyebrow: {
-    ...typography.eyebrow,
-    color: colors.textTertiary,
-    marginBottom: 4,
   },
   name: {
     ...typography.h2,

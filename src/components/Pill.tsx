@@ -14,7 +14,7 @@ export function Pill({ label, tone = 'accent' }: { label: string; tone?: 'accent
 
 const tones = {
   accent: { bg: colors.accentSurface, border: colors.accentBorder, text: colors.accentSoft },
-  neutral: { bg: colors.panel2, border: colors.border, text: colors.textSecondary },
+  neutral: { bg: colors.backgroundElevated, border: colors.border, text: colors.textSecondary },
   success: { bg: colors.successSurface, border: colors.success, text: colors.success },
   warning: { bg: colors.warningSurface, border: colors.warning, text: colors.warning },
   danger: { bg: colors.dangerSurface, border: colors.danger, text: colors.danger },

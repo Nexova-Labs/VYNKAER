@@ -14,9 +14,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button, Pill } from '../../src/components';
 import { useAppState } from '../../src/state';
-import { colors, radius, spacing, typography } from '../../src/theme';
+import { colors, fontFamily, radius, spacing, typography } from '../../src/theme';
 import { modalityLabel } from '../../src/utils/format';
-import type { CoachMessage } from '../../src/types';
+import type { AthleteProfile, CoachMessage, GeneratedWorkout, WorkoutAdaptation } from '../../src/types';
 
 // Local transcript shape: the Coach conversation is a live layer, not part of
 // the persisted domain state, so `applied` lives here rather than in CoachMessage.
@@ -47,6 +47,25 @@ let messageCounter = 0;
 function nextId(prefix: string): string {
   messageCounter += 1;
   return `${prefix}-${Date.now()}-${messageCounter}`;
+}
+
+// Only build a before/after diff where the adaptation actually carries a
+// clean numeric comparison — everything else (substitution, limitation
+// flags, EASIER/HARDER) falls back to just the label, rather than
+// fabricating a "current" value that isn't backed by real state.
+function buildAdaptationDiff(
+  adaptation: WorkoutAdaptation,
+  currentPlan: GeneratedWorkout | null,
+  profile: AthleteProfile
+): { current: string; proposed: string } | null {
+  if (adaptation.type === 'SHORTEN_DURATION' && adaptation.targetDurationMinutes != null) {
+    const currentMinutes = currentPlan?.estimatedDurationMinutes ?? profile.preferredDurationMinutes;
+    return { current: `${currentMinutes} min session`, proposed: `${adaptation.targetDurationMinutes} min session` };
+  }
+  if (adaptation.type === 'INCREASE_CARDIO' && adaptation.cardioDeltaMinutes != null) {
+    return { current: 'No change', proposed: `+${adaptation.cardioDeltaMinutes} min conditioning` };
+  }
+  return null;
 }
 
 export default function CoachScreen() {
@@ -149,6 +168,22 @@ export default function CoachScreen() {
                 <View style={styles.adaptationCard}>
                   <Text style={styles.adaptationEyebrow}>Proposed change</Text>
                   <Text style={styles.adaptationLabel}>{message.adaptation.label}</Text>
+                  {(() => {
+                    const diff = buildAdaptationDiff(message.adaptation, currentPlan, profile);
+                    if (!diff) return null;
+                    return (
+                      <View style={styles.diffRow}>
+                        <View style={styles.diffCol}>
+                          <Text style={styles.diffColLabel}>Current</Text>
+                          <Text style={styles.diffCurrent}>{diff.current}</Text>
+                        </View>
+                        <View style={styles.diffCol}>
+                          <Text style={[styles.diffColLabel, styles.diffColLabelProposed]}>Proposed</Text>
+                          <Text style={styles.diffProposed}>{diff.proposed}</Text>
+                        </View>
+                      </View>
+                    );
+                  })()}
                   {message.applied ? (
                     <View style={styles.appliedRow}>
                       <Pill label="Applied" tone="success" />
@@ -305,6 +340,39 @@ const styles = StyleSheet.create({
     ...typography.body,
     fontWeight: '600',
     marginBottom: spacing.md,
+  },
+  diffRow: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    paddingTop: spacing.sm,
+    marginBottom: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
+  diffCol: {
+    flex: 1,
+  },
+  diffColLabel: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+    color: colors.textTertiary,
+    marginBottom: 3,
+  },
+  diffColLabelProposed: {
+    color: colors.accentSoft,
+  },
+  diffCurrent: {
+    fontFamily: fontFamily.mono,
+    fontSize: 13,
+    color: colors.textTertiary,
+    textDecorationLine: 'line-through',
+  },
+  diffProposed: {
+    fontFamily: fontFamily.monoBold,
+    fontSize: 13,
+    color: colors.textPrimary,
   },
   applyButton: {
     minHeight: 44,

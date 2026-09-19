@@ -4,6 +4,8 @@ export { Button } from './Button';
 export { Pill } from './Pill';
 export { StatTile } from './StatTile';
 export { SectionHeader } from './SectionHeader';
+export { CardHeader } from './CardHeader';
+export { StatusTag } from './StatusTag';
 export { EmptyState } from './EmptyState';
 export { Crest } from './Crest';
 export { GrainTexture } from './GrainTexture';
