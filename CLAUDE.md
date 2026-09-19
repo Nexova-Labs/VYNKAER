@@ -42,7 +42,9 @@ src/state        AppStateContext is the one React context the whole app reads/wr
                  draft plan via generateWorkout, starting/logging/finishing a workout, applying
                  Coach adaptations, and persisting on every mutation. Screens never call a
                  repository or the engine directly — they go through this context.
-src/components   Generic, theme-driven UI primitives (Card, Button, Pill, StatTile, ScreenContainer...).
+src/components   Generic, theme-driven UI primitives (Card, CardHeader, Button, Pill, StatusTag,
+                 StatTile, ScreenContainer...). See DESIGN.md for the surface/color rules governing
+                 how these compose (e.g. what's allowed to sit inside a Card).
 src/features     Screen-specific but multi-file UI (currently just workout/: SetRow, ExerciseCard,
                  RestTimer, SessionProgress, used by app/(tabs)/train.tsx).
 src/theme        Design tokens (colors, spacing, radius, typography). Screens should not hardcode
@@ -63,3 +65,4 @@ app/             Expo Router file-based routes. app/(tabs)/ is the five-tab shel
 - `WorkoutExercise.targetRepMin/Max` is overloaded for conditioning entries — a `CONDITIONING`-pattern exercise stores **minutes**, not reps. Always format through `formatExerciseTarget`/`formatExerciseLoad` (`src/utils/format.ts`), never `formatRepRange`/`formatWeight` directly, when the exercise's `movementPattern` might be `CONDITIONING`.
 - Screens must not render before `AppStateProvider` has finished its initial AsyncStorage load — it renders its own loading view internally and only mounts `children` (and therefore the router) once `profile`/`trainingState`/`settings` are all loaded, so `useAppState()` is safe to call unconditionally in any screen under `app/`.
 - Persisted keys live in `StorageKeys` (`src/services/storage/storage.ts`) — add new persisted state there rather than inlining string keys.
+- `Card`'s background is `colors.panel2`. Anything nested inside a `Card` must use `colors.backgroundElevated` (recessed — badges, wells, tracks) or `colors.controlBg` (raised — buttons, chips, the active `SetRow`), never `colors.panel2` itself, or it visually disappears into the card. See DESIGN.md's "Recessed/Raised Rule."

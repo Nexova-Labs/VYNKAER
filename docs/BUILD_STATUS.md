@@ -29,6 +29,21 @@ These were caught by actually clicking through the app, not just typechecking/te
 2. **Cardio exercises displayed "20 reps · Bodyweight" instead of "20 min".** `WorkoutExercise.targetRepMin/Max` is reused to carry minutes for `CONDITIONING`-pattern exercises; Home and the Train exercise card were formatting it through the generic rep/weight formatters. Added `formatExerciseTarget`/`formatExerciseLoad` (`src/utils/format.ts`) that branch on `movementPattern`, and gave `SetRow` a `mode="cardio"` variant that labels its second field "min" and hides the weight field.
 3. **Session-complete confirmation ("SESSION LOGGED") never showed — silently fell back to "No session to finish".** `workout/complete.tsx` checked `!activeWorkout` before checking the local `saved` flag; `finishWorkout` clears `activeWorkout` before the `saved` state update lands, so the empty-state guard won this race. Fixed by checking `saved` first and capturing the sets-logged count into that state instead of reading it off `activeWorkout` after the fact.
 
+## Post-V1: UI polish pass against an external reference (2026-09-19)
+
+The user shared a Google AI Studio–generated web prototype as a visual-direction reference (kept locally, untracked, under `reference/hotlink-ui-builder/` — not part of the app). Audit finding: the reference uses the same accent hex, three-typeface system, and dark-obsidian/copper palette `src/theme/tokens.ts` already encodes — it is not a different brand, so this was a polish/consistency pass on existing screens using existing tokens, not a redesign. See `DESIGN.md` for the resulting system-level changes (now current); summary of what changed in the app:
+
+- `Card` moved to a lighter, more distinct surface (`colors.panel2`) for real depth against the page background; added `colors.controlBg` for raised interactive surfaces nested in a card (see DESIGN.md's "Recessed/Raised Rule"), and fixed every place that collided with the new `Card` tone (`Button` secondary, `Pill` neutral, `StatusTag` done, Home's exercise-index chip, Profile's chips/stepper/switch track, Progress's milestone progress track).
+- Added `CardHeader` and `StatusTag` shared primitives (`src/components`).
+- Train's set ledger now shows DONE / NOW / QUEUE row states, with the current set lifted onto `control-bg` with a copper left accent bar.
+- Progress's strength trend went from a bar chart to an interactive SVG line+gradient chart (`react-native-svg`) with a tappable point callout, and recent sessions now carry a real PR badge derived from actual logged history (not a fabricated category).
+- Coach's proposed adaptations now show a struck-through current vs. bold proposed value when the adaptation carries a clean numeric comparison (`SHORTEN_DURATION`, `INCREASE_CARDIO`); other adaptation types still fall back to just the label rather than fabricating a "current" value.
+- `Button`'s primary variant now bakes in uppercase/tracked labels and `shadow.card`, instead of screens hand-setting uppercase copy per call site.
+
+Verification: `npx tsc --noEmit` and `npx expo lint` clean, `npx jest src/engine` (42 tests) passing, full loop re-verified in-browser (web target) across all five tabs — including a bug caught and fixed during that pass: `TrendCard`'s outer `Pressable` had a nested `Pressable` per chart point, which is an invalid DOM nesting (`<button>` inside `<button>`) on web; fixed by making only the card's footer row navigable and leaving the chart's point dots as sibling `Pressable`s.
+
+`reference/hotlink-ui-builder/` is excluded from `tsconfig.json`'s project so its own (unrelated, Vite/web) TypeScript errors don't pollute `npm run typecheck` output for this app.
+
 ## Known gaps / deliberately deferred (not blockers for V1)
 
 - App icon/splash are still the default Expo template assets — no VYNKÆR-branded icon has been designed.

@@ -48,7 +48,7 @@ Open **Profile → Data → Reset demo data**. This restores Athlete 001, the 13
 3. **Start Workout** → Train: log sets, adjust weight/reps, use the rest timer, skip or substitute an exercise.
 4. **Finish & Save** → rate session effort, knee/limitation before and after, cardio minutes → **Session Logged**.
 5. Back on Home, the workout number has advanced, modality has rotated, and load recommendations reflect what was just logged.
-6. Progress reflects the new session immediately (trend bars, volume, adherence).
+6. Progress reflects the new session immediately (strength trend chart, volume, adherence).
 7. Coach can propose a change (e.g. "I only have 40 minutes") — nothing is modified until **APPLY CHANGE** is tapped.
 8. Close and reopen the app — an in-progress workout, or the freshly generated next one, is exactly where you left it.
 

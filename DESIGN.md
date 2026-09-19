@@ -6,6 +6,7 @@ colors:
   background-elevated: "#111114"
   panel: "#141417"
   panel-2: "#1c1c21"
+  control-bg: "#2a2a2b"
   border: "#26262c"
   border-subtle: "#1e1e23"
   text-primary: "#f5f4f1"
@@ -74,7 +75,7 @@ components:
     height: "48px"
     padding: "0 16px"
   button-secondary:
-    backgroundColor: "{colors.panel-2}"
+    backgroundColor: "{colors.control-bg}"
     textColor: "{colors.text-primary}"
     rounded: "{rounded.md}"
     height: "48px"
@@ -92,7 +93,7 @@ components:
     height: "48px"
     padding: "0 16px"
   card:
-    backgroundColor: "{colors.panel}"
+    backgroundColor: "{colors.panel-2}"
     rounded: "{rounded.xl}"
     padding: "16px"
   pill-accent:
@@ -104,6 +105,12 @@ components:
     backgroundColor: "{colors.background-elevated}"
     rounded: "{rounded.md}"
     padding: "12px"
+  status-tag:
+    doneBackgroundColor: "{colors.control-bg}"
+    currentBackgroundColor: "{colors.worn-copper}"
+    queuedBackgroundColor: "{colors.background-elevated}"
+    rounded: "{rounded.sm}"
+    padding: "2px 8px"
 ---
 
 # Design System: VYNKÆR Training
@@ -135,9 +142,10 @@ Calibrated directly against the **VYNKÆR Apparel Brand Bible** (Collection 001 
 
 ### Neutral
 - **Void / Obsidian** (`#0a0a0b`, brand bible's Obsidian): app background.
-- **Raised Void** (`#111114`): `backgroundElevated` — stat tiles, empty states, input fields, rest-timer-adjacent surfaces.
-- **Panel** (`#141417`): default `Card` background.
-- **Panel 2 / Charcoal** (`#1c1c21`, brand bible's Charcoal register): raised interior surfaces — secondary button fill, progress-track background.
+- **Raised Void** (`#111114`): `backgroundElevated` — stat tiles, empty states, progress-bar tracks, and every *recessed* surface nested inside a `Card` (a numbered badge, a "queued" status tag, an inset input well). One step brighter than page background, so it reads as instrumentation sitting *on* a card rather than another card.
+- **Panel** (`#141417`): legacy default surface, now scoped to a single remaining consumer (the Coach message composer's text input). Not used for `Card`.
+- **Panel 2 / Charcoal** (`#1c1c21`, brand bible's Charcoal register): the default `Card` background — meaningfully lighter than page background so a card reads with real depth rather than blending into it.
+- **Control Surface** (`#2a2a2b`, `controlBg`): *raised* interior surfaces that must read as interactive when they sit on top of a `Card` — secondary button fill, stepper buttons, unselected chips, a "done" status tag, the current/active `SetRow`. This is the inverse of `backgroundElevated`: recessed = informational, raised = actionable. Never used as a page-level or `Card` background itself.
 - **Border** (`#26262c`): the one hairline used between any two interactive/panel surfaces.
 - **Border Subtle** (`#1e1e23`): internal dividers *within* a single card (e.g. `SetRow` bottom rule) — never between two separate panels.
 - **Text Primary** (`#efe9e2`, warm Ash-register off-white), **Text Secondary** (`#9a948d`), **Text Tertiary** (`#6c6a68`): the three-step reading hierarchy — body copy, muted supporting copy, and disabled/caption-adjacent copy respectively. Warm-tinted per the brand bible's Ash (`#B8B1A7`), not a cool/pure grey.
@@ -148,7 +156,9 @@ Calibrated directly against the **VYNKÆR Apparel Brand Bible** (Collection 001 
 - **Danger / Blood Oath** (`#b23c42` on `#241414`, tinted toward the brand bible's Blood Oath `#98181D`): destructive actions only — the `Reset demo data` button is the only current consumer. `colors.bloodOath` (`#98181d`) is the raw brand value, held for the rare campaign-style mark; it is not yet wired to any screen and must stay rare if it is.
 
 ### Named Rules
-**The Single Fill Rule.** Solid copper fill is reserved for the primary `Button` variant only. Every other accent-toned element — pills, eyebrows, the rest-timer label — uses a *tinted surface* (`copper-surface` / `copper-border`) with *tinted text* (`faded-copper-glow`), never a solid fill. This is what keeps "one warm light source" true even though the accent color appears in many places. Blood Oath red follows the same discipline from the other end: it is the brand's actual primary accent per the bible, but in this UI it is scoped to danger/critical states only, so it never competes with copper as a second "warm" signal on the same screen.
+**The Single Fill Rule.** Solid copper fill is reserved for the primary `Button` variant, plus one narrow, named exception: the `current` tone on a `StatusTag`, which marks the single ledger row the athlete is meant to act on right now (Train's `NOW` set, Progress's `PR` badge). Every other accent-toned element — pills, eyebrows, the rest-timer label — uses a *tinted surface* (`copper-surface` / `copper-border`) with *tinted text* (`faded-copper-glow`), never a solid fill. Because a `StatusTag` only ever appears attached to one row at a time within its list, this exception doesn't reintroduce a second competing "warm" focal point — it is the same "one warm light source" spent on a list row instead of a screen corner. Any *new* solid-copper-fill treatment beyond these two is a DESIGN.md-level decision, not a one-screen experiment. Blood Oath red follows the same discipline from the other end: it is the brand's actual primary accent per the bible, but in this UI it is scoped to danger/critical states only, so it never competes with copper as a second "warm" signal on the same screen.
+
+**The Recessed/Raised Rule.** Every neutral surface nested inside a `Card` picks a direction relative to the card, never the card's own tone. Recessed (`background-elevated`, one step darker than the card) marks something informational — a badge, a queued row, an inset readout. Raised (`control-bg`, one step lighter than the card) marks something actionable — a button, a stepper, a chip, the one `SetRow` currently being logged. A new component nested in a card should never reuse `panel-2` for its own fill; that is the collision this rule exists to prevent.
 
 ## Typography
 
@@ -200,22 +210,26 @@ Four radius steps plus a pill, each tied to a size class rather than a component
 
 ### Buttons
 - **Shape:** 14px radius (`rounded.md`), 48px minimum height (the enforced touch-target floor), 1px border on every variant including ghost (ghost's border is transparent, not absent, so the layout never shifts between variants).
-- **Primary:** `worn-copper` fill / `live-rust` border / white label — reserved for exactly one primary action per screen.
-- **Secondary:** `panel-2` fill / `border` border / `text-primary` label.
+- **Primary:** `worn-copper` fill / `live-rust` border / white label, uppercase with 1px letter-spacing baked into the variant (not hand-set per screen), plus `shadow.card` for extra weight on the one action the screen wants tapped — reserved for exactly one primary action per screen. Still `shadow.card`, the system's only shadow value (see The One Shadow Rule) — the "heavier" read comes from pairing it with the copper fill, not a second shadow token.
+- **Secondary:** `control-bg` fill / `border` border / `text-primary` label — a *raised* surface so it stays legible as a tappable control when it sits on a `Card` (see The Recessed/Raised Rule).
 - **Ghost:** transparent fill and border, `text-primary` label — used for tertiary actions row (`Add set` / `Substitute` / `Skip`).
 - **Danger:** `danger-surface` fill / `danger` border and label — destructive actions only.
 - **Press / disabled:** pressed state drops opacity to 0.85 (not a scale or color change); disabled drops to 0.45. Every press additionally fires `Haptics.impactAsync(Light)` by default — this is a felt, not just visual, state change, and is the clearest expression of the "tactile and precise" component philosophy.
 
 ### Pills
-- **Style:** 999px radius, 1px border, tinted surface + tinted text per tone (`accent` uses `copper-surface`/`copper-border`/`faded-copper-glow`; `neutral`/`success`/`warning`/`danger` each pair a surface, border, and text color from the same semantic family). Label is always 11px/800/uppercase with 0.8px tracking.
+- **Style:** 999px radius, 1px border, tinted surface + tinted text per tone (`accent` uses `copper-surface`/`copper-border`/`faded-copper-glow`; `neutral` uses `background-elevated`/`border`/`text-secondary` — a *recessed* tone, since a `Pill` is informational, not a control; `success`/`warning`/`danger` each pair a surface, border, and text color from the same semantic family). Label is always 11px/800/uppercase with 0.8px tracking.
 - **Never solid-filled** — this is what separates a `Pill` from the primary `Button` (see The Single Fill Rule).
 
 ### Cards
 - **Corner:** 22px radius (`rounded.xl`).
-- **Background:** `panel`.
+- **Background:** `panel-2` — meaningfully lighter than page background (see The Recessed/Raised Rule for what goes inside it).
 - **Shadow:** none at rest; `shadow.card` only when `elevated` is passed (see Elevation & Depth).
 - **Border:** 1px `border`.
 - **Internal padding:** 16px (`spacing.lg`).
+- **Header slot (`CardHeader`, optional):** a left-aligned Cinzel eyebrow label with an optional right-aligned mono meta value ("Athlete State" / "Workout 14") — the opening row a card reaches for when it needs to name itself and surface one small fact, in place of hand-rolled per-card eyebrow text. Skip it where a `SectionHeader` directly above the card already states the same title; stacking the identical label twice (once as a section title, once as a card header) is a duplication bug, not a feature — give the `CardHeader`, or the `SectionHeader`'s own `caption`, a genuinely different value instead.
+
+### Status Tags
+Small row-state badges (`done` / `current` / `queued`) for ledger-style lists where a glance needs to distinguish "already happened," "happening now," and "hasn't happened yet" — currently the Train screen's set ledger (`DONE` / `NOW` / `QUEUE`) and Progress's recent-session PR badge (reusing the `current` tone). Distinct from `Pill`: a `Pill` is a standalone label, a `StatusTag` is always attached to a specific row and follows The Recessed/Raised Rule — `done` and `queued` are informational (raised/recessed neutral tones), `current` is the one state allowed a solid copper fill outside of a primary `Button`, because it is marking the single row the athlete is meant to act on right now — the same "one warm light source, spent deliberately" logic as the Hero Glow, applied to a list row instead of a screen corner.
 
 ### Hero Glow (signature flourish)
 A single soft copper radial glow, positioned top-right inside Home's hero `Card` only (`overflow: hidden` on the card clips it to the rounded corner). Implemented as a 220×220 circular `expo-linear-gradient` (`rgba(183,90,55,0.32)` → transparent, diagonal from the top-right corner), `pointerEvents: 'none'`, rendered first so content stacks above it. This is the system's one deliberate visual risk — it never appears twice on the same screen, and it never appears on any screen but Home's hero.
@@ -226,13 +240,18 @@ A single soft copper radial glow, positioned top-right inside Home's hero `Card`
 - **Content:** numeral value + uppercase caption label, no border color variation by value (no red/green stat tiles today).
 
 ### Set Rows (signature component)
-The Train screen's core interaction unit — a single logging row with a weight field, a reps field, and a completion check, separated from the next row by a `border-subtle` rule (not a full card boundary). Fields are `background-elevated` boxes with 10px radius and a 44px-minimum-height input. The completion check is a 40×40 button that goes from `background-elevated`/`border` to `success-surface`/`success` on tap — no intermediate animation state today, a direct state swap.
+The Train screen's core interaction unit — a single logging row with a weight field, a reps field, and a completion check. Each row carries one of three states, tagged with a `StatusTag` next to its set number:
+- **Queued** (not yet reached): no background fill, sits flush against the card, separated from the next row by a `border-subtle` rule (not a full card boundary) — the system's default, quietest state.
+- **Current** (the next unlogged set): lifts off the card onto `control-bg`, gets a 1px `worn-copper` border, and a 3px copper accent bar down its left edge — the one row on the whole screen the athlete's eye should land on first.
+- **Done** (logged): same flush layout as queued, opacity dropped to 0.55 — present but visually settled, not competing with the current row.
+
+Fields are `background-elevated` boxes with 10px radius and a 44px-minimum-height input, recessed relative to whichever row state they sit inside (including the raised `current` row — see The Recessed/Raised Rule). The completion check is a 40×40 button that goes from `background-elevated`/`border` to `success-surface`/`success` on tap — no intermediate animation state today, a direct state swap.
 
 ### Rest Timer (signature component)
 Appears inline on Train immediately after a set is marked complete. Copper-tinted throughout (`copper-surface` fill, `copper-border` border) — the one place besides the primary button where the accent registers as a full panel rather than just text. Fires a success-type haptic notification when the countdown reaches zero. This is the system's clearest "ambient warmth, not decoration" moment: the copper surface appears exactly when the athlete is meant to notice it, and nowhere else on the same screen.
 
 ### Progress Bars
-- **Style:** 6px track height, `pill` radius, `panel-2` track / `worn-copper` fill. Used identically for session-completion progress (Train) and milestone-stage progress (Progress) — one progress-bar language across the app, no per-screen variants.
+- **Style:** 6px track height, `pill` radius, `background-elevated` track (recessed, per The Recessed/Raised Rule) / `worn-copper` fill. Used identically for session-completion progress (Train) and milestone-stage progress (Progress) — one progress-bar language across the app, no per-screen variants.
 
 ### Navigation
 - **Style:** fixed bottom tab bar, 5 destinations (Home, Train, Progress, Coach, Profile), `background-elevated` fill, 1px `border` top rule. Active icon + label in `faded-copper-glow`; inactive in `text-tertiary`. Icons swap between an outline glyph (inactive) and a filled glyph (active) rather than changing color alone — a second, redundant signal for the active tab beyond color.
@@ -240,13 +259,16 @@ Appears inline on Train immediately after a set is marked complete. Copper-tinte
 ## Do's and Don'ts
 
 ### Do:
-- **Do** reserve solid copper fill for exactly one primary `Button` per screen (The Single Fill Rule).
+- **Do** reserve solid copper fill for the primary `Button` and the `StatusTag` `current` tone only — nothing else (The Single Fill Rule).
 - **Do** treat completed/success states as their own color family (`success`/`success-surface`) — never reuse the brand accent to mean "done."
 - **Do** pair every primary interaction with a light haptic impact, and every "timer reaches zero" moment with a success-type haptic notification.
 - **Do** keep card-internal separation to `border-subtle` dividers rather than nesting a second card.
+- **Do** pick `background-elevated` (recessed) or `control-bg` (raised) for anything nested inside a `Card`, based on whether it's informational or actionable (The Recessed/Raised Rule) — never `panel-2`, which is the card's own tone.
+- **Do** reuse `CardHeader`/`StatusTag` for a new card-opening label or row-state badge rather than hand-rolling another one-off `Text` + `StyleSheet` pair.
 
 ### Don't:
 - **Don't** add `shadow.card` to a `Card` unless it is deliberately the one focal card on the screen (The One Shadow Rule).
 - **Don't** introduce a second typeface (e.g. a monospace face for numerals) without recording the decision here first — it has been discussed but is not yet implemented.
-- **Don't** use badges, streak counters, confetti, or other gamified point systems anywhere in the product (binding per `docs/PRODUCT.md`).
+- **Don't** use badges, streak counters, confetti, or other gamified point systems anywhere in the product (binding per `docs/PRODUCT.md`). `StatusTag` is a row-state indicator reflecting real logged state, not a gamification device — it never awards anything.
 - **Don't** apply the eyebrow/label uppercase-and-tracked treatment to body copy — it is reserved for section eyebrows and micro-labels only.
+- **Don't** stack a `CardHeader` label on top of an identical `SectionHeader` title directly above the same card — fold the extra fact into the `SectionHeader`'s own `caption` instead (see Cards).

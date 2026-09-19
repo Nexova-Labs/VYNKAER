@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   track: {
     height: 6,
     borderRadius: radius.pill,
-    backgroundColor: colors.panel2,
+    backgroundColor: colors.backgroundElevated,
     overflow: 'hidden',
   },
   fill: {
