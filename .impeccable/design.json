@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-18T17:28:11Z",
+  "title": "Design System: VYNKÆR Training",
+  "extensions": {
+    "colorMeta": {
+      "worn-copper": { "role": "primary", "displayName": "Worn Copper", "canonical": "#b75a37", "tonalRamp": ["#241611", "#3b2318", "#5c3421", "#844628", "#b75a37", "#d4713f", "#e6b08e", "#f4dcc8"] },
+      "live-rust": { "role": "primary", "displayName": "Live Rust", "canonical": "#d4713f", "tonalRamp": ["#2b1a10", "#452a19", "#6b3f24", "#a1592f", "#d4713f", "#e2915f", "#eeb691", "#f8ddc7"] },
+      "faded-copper-glow": { "role": "primary", "displayName": "Faded Copper Glow", "canonical": "#e6b08e", "tonalRamp": ["#2c2019", "#453228", "#6c4c3a", "#a1734e", "#c8926a", "#e6b08e", "#f0cbb2", "#f9e6d8"] },
+      "background": { "role": "neutral", "displayName": "Void", "canonical": "#0a0a0b" },
+      "background-elevated": { "role": "neutral", "displayName": "Raised Void", "canonical": "#111114" },
+      "panel": { "role": "neutral", "displayName": "Panel", "canonical": "#141417" },
+      "panel-2": { "role": "neutral", "displayName": "Panel 2", "canonical": "#1c1c21" },
+      "border": { "role": "neutral", "displayName": "Border", "canonical": "#26262c" },
+      "border-subtle": { "role": "neutral", "displayName": "Border Subtle", "canonical": "#1e1e23" },
+      "text-primary": { "role": "neutral", "displayName": "Text Primary", "canonical": "#f5f4f1" },
+      "text-secondary": { "role": "neutral", "displayName": "Text Secondary", "canonical": "#9a9aa3" },
+      "text-tertiary": { "role": "neutral", "displayName": "Text Tertiary", "canonical": "#6c6c74" },
+      "success": { "role": "semantic", "displayName": "Success", "canonical": "#7ea583" },
+      "warning": { "role": "semantic", "displayName": "Warning", "canonical": "#c98a4b" },
+      "danger": { "role": "semantic", "displayName": "Danger", "canonical": "#c15c5c" }
+    },
+    "typographyMeta": {
+      "hero": { "displayName": "Hero", "purpose": "Home screen primary headline only." },
+      "title": { "displayName": "Title", "purpose": "Screen-level titles." },
+      "headline": { "displayName": "Headline", "purpose": "Card and section titles." },
+      "body": { "displayName": "Body", "purpose": "Default reading copy." },
+      "numeral": { "displayName": "Numeral", "purpose": "Stat-tile values and standalone measurements. Set in IBMPlexMono_700Bold — the one place the mono face appears at display size." },
+      "label": { "displayName": "Label / Eyebrow", "purpose": "Section eyebrows and micro-labels, usually faded-copper-glow, uppercase, tracked." },
+      "mono": { "displayName": "Mono (measured values)", "purpose": "IBM Plex Mono, Medium/Bold. Every standalone measured numeral outside the Numeral role: SetRow weight/reps inputs, Rest Timer countdown, Home's WORKOUT number, numbered exercise badges, Progress trend delta." }
+    },
+    "shadows": [
+      { "name": "card", "value": "0 10px 24px rgba(0,0,0,0.35)", "purpose": "The only shadow token in the system. Applied only to the one focal Card per screen via the `elevated` prop." }
+    ],
+    "motion": [
+      { "name": "fast", "value": "140ms", "purpose": "Declared in tokens.ts for press-state transitions. Not yet wired to an explicit Animated call anywhere in the app; current press feedback is an instant opacity swap (0.85) plus haptic impact." },
+      { "name": "base", "value": "220ms", "purpose": "Declared, not yet consumed. Candidate duration for card/sheet entrances and tab transitions." },
+      { "name": "slow", "value": "340ms", "purpose": "Declared, not yet consumed. Candidate duration for progress-bar fills and milestone-stage transitions." }
+    ],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single primary action per screen. Fires a light haptic impact on press.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">START WORKOUT</button>",
+      "css": ".ds-btn { min-height: 48px; border-radius: 14px; padding: 0 16px; border: 1px solid transparent; font-size: 15px; font-weight: 700; } .ds-btn-primary { background: #b75a37; border-color: #d4713f; color: #ffffff; } .ds-btn-primary:hover { background: #c46540; } .ds-btn-primary:focus-visible { outline: 2px solid #e6b08e; outline-offset: 2px; } .ds-btn-primary:active { opacity: 0.85; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Second action on a screen that already has a primary (e.g. Regenerate next to Start Workout).",
+      "html": "<button class=\"ds-btn ds-btn-secondary\">Regenerate</button>",
+      "css": ".ds-btn-secondary { background: #1c1c21; border: 1px solid #26262c; color: #f5f4f1; min-height: 48px; border-radius: 14px; padding: 0 16px; font-size: 15px; font-weight: 700; } .ds-btn-secondary:hover { background: #232329; } .ds-btn-secondary:focus-visible { outline: 2px solid #e6b08e; outline-offset: 2px; } .ds-btn-secondary:active { opacity: 0.85; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Tertiary row actions (Add set / Substitute / Skip).",
+      "html": "<button class=\"ds-btn ds-btn-ghost\">Substitute</button>",
+      "css": ".ds-btn-ghost { background: transparent; border: 1px solid transparent; color: #f5f4f1; min-height: 48px; border-radius: 14px; padding: 0 16px; font-size: 15px; font-weight: 700; } .ds-btn-ghost:hover { background: rgba(255,255,255,0.04); } .ds-btn-ghost:focus-visible { outline: 2px solid #e6b08e; outline-offset: 2px; } .ds-btn-ghost:active { opacity: 0.85; }"
+    },
+    {
+      "name": "Accent Pill",
+      "kind": "chip",
+      "refersTo": "pill-accent",
+      "description": "Tinted-surface label, never a solid fill — used for eyebrow-style status (e.g. 'Next session · Mixed').",
+      "html": "<span class=\"ds-pill\">NEXT SESSION · MIXED</span>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; border: 1px solid #3b302d; background: #1d1614; color: #e6b08e; font-size: 11px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Flat at rest. Add box-shadow only for the one focal card per screen.",
+      "html": "<div class=\"ds-card\"><p class=\"ds-card-body\">Card content</p></div>",
+      "css": ".ds-card { background: #141417; border: 1px solid #26262c; border-radius: 22px; padding: 16px; } .ds-card-body { color: #f5f4f1; font-size: 15px; margin: 0; } .ds-card--elevated { box-shadow: 0 10px 24px rgba(0,0,0,0.35); }"
+    },
+    {
+      "name": "Stat Tile",
+      "kind": "custom",
+      "refersTo": "stat-tile",
+      "description": "One numeral + one uppercase caption label. Used in 2-up fluid grids.",
+      "html": "<div class=\"ds-stat\"><span class=\"ds-stat-value\">47</span><span class=\"ds-stat-label\">Sessions</span></div>",
+      "css": ".ds-stat { flex-grow: 1; flex-basis: 47%; border: 1px solid #26262c; border-radius: 14px; background: #111114; padding: 12px; display: flex; flex-direction: column; } .ds-stat-value { font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 26px; color: #f5f4f1; margin-bottom: 2px; } .ds-stat-label { font-size: 11px; font-weight: 500; letter-spacing: 0.6px; text-transform: uppercase; color: #9a9aa3; }"
+    },
+    {
+      "name": "Hero Glow",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The system's one signature flourish: a soft copper radial glow, top-right corner of Home's hero Card only, never repeated elsewhere on a screen.",
+      "html": "<div class=\"ds-hero\"><div class=\"ds-hero-glow\"></div><p class=\"ds-hero-body\">Hero card content</p></div>",
+      "css": ".ds-hero { position: relative; overflow: hidden; background: #141417; border: 1px solid #26262c; border-radius: 22px; padding: 16px; } .ds-hero-glow { position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 110px; background: radial-gradient(circle at 70% 30%, rgba(183,90,55,0.32), rgba(183,90,55,0) 70%); pointer-events: none; } .ds-hero-body { position: relative; color: #f5f4f1; margin: 0; }"
+    },
+    {
+      "name": "Set Row",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The Train screen's core logging unit: weight field, reps field, completion check.",
+      "html": "<div class=\"ds-setrow\"><span class=\"ds-setrow-label\">SET 1</span><div class=\"ds-setrow-field\"><input class=\"ds-setrow-input\" value=\"54\" /><span class=\"ds-setrow-unit\">kg</span></div><div class=\"ds-setrow-field\"><input class=\"ds-setrow-input\" value=\"12\" /><span class=\"ds-setrow-unit\">reps</span></div><button class=\"ds-setrow-check ds-setrow-check--done\" aria-label=\"Set 1 completed, tap to undo\">✓</button></div>",
+      "css": ".ds-setrow { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #1e1e23; } .ds-setrow-label { width: 52px; font-size: 12px; font-weight: 800; color: #9a9aa3; } .ds-setrow-field { flex: 1; display: flex; align-items: center; background: #111114; border: 1px solid #26262c; border-radius: 10px; padding: 0 8px; } .ds-setrow-input { flex: 1; min-width: 0; background: transparent; border: none; color: #f5f4f1; font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 15px; padding: 10px 0; min-height: 44px; } .ds-setrow-unit { font-size: 10px; color: #9a9aa3; } .ds-setrow-check { width: 40px; height: 40px; border-radius: 10px; border: 1px solid #26262c; background: #111114; color: #6c6c74; display: flex; align-items: center; justify-content: center; } .ds-setrow-check--done { background: #182420; border-color: #7ea583; color: #7ea583; }"
+    },
+    {
+      "name": "Rest Timer",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Copper-tinted panel shown inline after a set completes; fires a success haptic at zero.",
+      "html": "<div class=\"ds-rest\"><div><span class=\"ds-rest-label\">REST</span><span class=\"ds-rest-time\">1:24</span></div><button class=\"ds-rest-skip\">Skip</button></div>",
+      "css": ".ds-rest { display: flex; align-items: center; justify-content: space-between; background: #1d1614; border: 1px solid #3b302d; border-radius: 14px; padding: 12px 16px; } .ds-rest-label { display: block; font-size: 12px; font-weight: 500; color: #e6b08e; text-transform: uppercase; } .ds-rest-time { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 24px; font-weight: 700; color: #f5f4f1; } .ds-rest-skip { min-height: 44px; padding: 8px 12px; background: transparent; border: none; font-size: 12px; font-weight: 700; color: #e6b08e; }"
+    },
+    {
+      "name": "Progress Bar",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "One progress-bar language for both session-completion and milestone-stage progress.",
+      "html": "<div class=\"ds-progress\"><div class=\"ds-progress-fill\" style=\"width: 64%\"></div></div>",
+      "css": ".ds-progress { height: 6px; border-radius: 999px; background: #1c1c21; overflow: hidden; } .ds-progress-fill { height: 100%; border-radius: 999px; background: #b75a37; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Gym",
+    "overview": "Premium through restraint, not ornamentation — closer to a well-made watch than a fitness app. VYNKÆR's interface sits in near-total darkness with one warm light source: the copper accent, spent on exactly one focal element per screen (a primary button, a progress fill, a rest-timer readout) and never repeated as decoration. Everything else — panels, borders, secondary text — stays quiet enough that the one warm element is never in competition.\n\nConfirmed visual rejections (from docs/PRODUCT.md and the current implementation): no badges, streaks, or gamified point systems; no neon gradients or cartoon \"AI fitness\" imagery; no generic SaaS dashboard clichés (gradient hero, hero-metric-plus-sparkline card template); no exclamation-point copy.",
+    "keyCharacteristics": [
+      "Near-black ground with warm-tinted (never pure-grey) neutrals",
+      "One accent color, spent on one element per screen",
+      "Flat surfaces at rest; shadow appears only on the one card the user acts on next",
+      "Haptic feedback on every primary interaction — the \"click\" is felt, not just seen",
+      "Two typefaces, strict roles: system sans for every word, IBM Plex Mono for every standalone measured numeral",
+      "One hero glow (radial copper, top-right corner) — the signature flourish, never repeated elsewhere on a screen"
+    ],
+    "rules": [
+      { "name": "The Single Fill Rule", "body": "Solid copper fill is reserved for the primary Button variant only. Every other accent-toned element — pills, eyebrows, the rest-timer label — uses a tinted surface with tinted text, never a solid fill.", "section": "colors" },
+      { "name": "The Measured-Value Rule", "body": "Every human-authored word renders in the system sans; every standalone measured numeral renders in IBM Plex Mono Bold. Never mixed within one sentence, never applied to a unit word next to a number. Extending it to a new element is a DESIGN.md-level decision.", "section": "typography" },
+      { "name": "The One Shadow Rule", "body": "There is exactly one shadow value in the system. If a screen seems to need a second, heavier shadow, fix the layout, not the shadow scale.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do reserve solid copper fill for exactly one primary Button per screen (The Single Fill Rule).",
+      "Do treat completed/success states as their own color family — never reuse the brand accent to mean \"done.\"",
+      "Do pair every primary interaction with a light haptic impact, and every \"timer reaches zero\" moment with a success-type haptic notification.",
+      "Do keep card-internal separation to border-subtle dividers rather than nesting a second card."
+    ],
+    "donts": [
+      "Don't add shadow.card to a Card unless it is deliberately the one focal card on the screen (The One Shadow Rule).",
+      "Don't mix the mono numeral face into a sentence, or apply it to a unit word (\"kg\", \"reps\") next to a number.",
+      "Don't use badges, streak counters, confetti, or other gamified point systems anywhere in the product.",
+      "Don't apply the eyebrow/label uppercase-and-tracked treatment to body copy — it is reserved for section eyebrows and micro-labels only."
+    ]
+  }
+}
