@@ -1,0 +1,88 @@
+# Start here: 4 November 2026
+
+## Where things stand
+
+- **Branch:** `feature/osmium-foundation-2026-11-03` on `Nexova-Labs/VYNKAER` (remote `nexova`). Base `8a81ce5` = `nexova/main`. `main` is untouched.
+- **App state:** unchanged at runtime. It still boots as VYNKÆR Training with copper tokens. typecheck ✅, lint ✅, 42/42 tests ✅; `expo-doctor` has 3 pre-existing failures.
+- **Added:** `docs/osmium/*`, `src/theme/osmium.ts` (not imported), `assets/brand/osmium/reference/*.png` (approved references, not production assets).
+- **Remote naming trap:** locally, `origin` is the personal fork `yovneeshkhadun/VYNKAER`, which is **one commit behind**. Push and PR against `nexova`. Run `git fetch nexova` before starting.
+
+## Before writing code
+
+```bash
+git fetch nexova
+git switch feature/osmium-foundation-2026-11-03
+npm ci
+npm run typecheck && npm run lint && npm run test -- --runInBand
+```
+
+These decisions block later steps but not tasks 1–3. Get an owner on each today:
+1. Fonts: Instrument Serif + Inter stand-ins, or licence Canela / Neue Haas? (blocks task 4)
+2. Who delivers the vector logo masters, and when? (blocks icon/splash; BRAND_ASSET_MANIFEST.md §3)
+3. Bundle ID / scheme: keep `com.nexovalabs.vynkaertraining` + `vynkaer`, or change to OSMIUM before auth? (blocks step 11)
+4. Where the coach lives in 4-tab navigation (TARGET_ARCHITECTURE.md §3, option (a) recommended). (blocks task 5)
+
+---
+
+## Task 1: Fix history overwrite and double progression (D1, D2), test-first
+
+**Why first:** both defects corrupt the athlete's record, which is the asset the whole product is built on. Neither is visual, so they don't conflict with design work.
+
+- **Files likely to change**
+  - `src/services/storage/storage.ts`: split `readJSON` into a result that distinguishes `missing` from `unreadable`
+  - `src/services/storage/workoutRepository.ts`, `athleteRepository.ts`, `trainingStateRepository.ts`: seed only on `missing`. On `unreadable`, keep the raw value under a quarantine key and throw or return an error state
+  - `src/state/AppStateContext.tsx` `finishWorkout`: store the **performed** load (`ex.recommendedLoad`, or better, the working weight from completed sets) as `lastLoad`, matching `seed.ts`
+  - New: `src/services/storage/__tests__/repositories.test.ts`, `src/state/__tests__/finishWorkout.test.ts` (extract the progression-update block into a pure function in `src/state/` so it can be tested without rendering)
+  - `jest` setup: use `@react-native-async-storage/async-storage/jest/async-storage-mock`
+- **Intended behavior:** a corrupt or unreadable key never replaces data with the seed. After a clean top-of-range session at load L, the next plan recommends L + increment, not L + 2×increment.
+- **Dependencies:** none. **Do not modify `src/engine/`.**
+- **Acceptance criteria:** the new tests fail on the current code and pass after the fix; the 42 existing engine tests pass unchanged; `git diff --stat src/engine` is empty.
+- **Verify:** `npx jest src/state src/services`; `npm run test -- --runInBand`; then in the browser (`preview_start vynkaer-web`) log a session with all sets at the top of the range, finish, and confirm on Home that the new load is exactly +1 increment.
+
+## Task 2: Toolchain hygiene (expo-doctor to green)
+
+- **Files likely to change:** `package.json`, `package-lock.json`, `app.json` (remove `newArchEnabled`), `.gitignore` (add `.env`).
+- **Intended behavior:** dependencies aligned to SDK 57 patch versions; `react-native-worklets` declared; no dead config.
+- **Commands:** `npx expo install --check` (accept the SDK 57 patch bumps only), `npx expo install react-native-worklets`. **Do not** run `npm audit fix --force` (it proposes Expo 51 / SDK 58).
+- **Dependencies:** none (can run in parallel with task 1; it touches different files).
+- **Acceptance criteria:** `npx expo-doctor` reports 0 failed checks; typecheck, lint and tests are clean; `npm audit --omit=dev` re-run and the delta recorded in CODEBASE_AUDIT.md §7.3.
+- **Verify:** the commands above, plus `npm run web` boots and Home renders (Reanimated `FadeInUp` still animates).
+
+## Task 3: Activate OSMIUM colour tokens
+
+- **Files likely to change**
+  - `src/theme/tokens.ts`: `export const colors = osmiumColors` (import from `./osmium`), and update the header comment
+  - `app/(tabs)/home.tsx`: remove the copper `LinearGradient` hero glow (line ~166, the only hard-coded colour)
+  - `app/(tabs)/_layout.tsx`: `tabBarActiveTintColor` → `colors.accent` (instrument blue = selection)
+  - `app.json`: `backgroundColor`, adaptive icon and splash `backgroundColor` → `#000000` (no image changes)
+  - `src/state/AppStateContext.tsx`: loading spinner colour stays on `accentSoft` (now titanium). Nothing to do unless it reads poorly
+- **Intended behavior:** the whole app renders black/graphite/titanium/silver with instrument blue only on focus, selection and the primary action. No copper anywhere.
+- **Dependencies:** task 1 merged first is preferred (so screenshots show correct loads), but not required.
+- **Acceptance criteria:** `git grep -n "975a36\|b97140\|d9a578\|183,90,55"` → no hits in `src/` or `app/`; typecheck clean (proves key parity); each of the 5 screens plus onboarding, complete and exercise/[id] screenshotted at 375×812 with no clipped text and no invisible nested surfaces (the Recessed/Raised Rule).
+- **Verify:** `preview_start vynkaer-web` → walk onboarding → Home → Start → log a set → Finish → Progress → exercise detail → Coach (apply a proposal) → Profile; check the console for errors; take screenshots.
+
+## Task 4: Typography foundation (install alongside, then switch)
+
+- **Files likely to change:** `package.json` (add `@expo-google-fonts/inter` and `@expo-google-fonts/instrument-serif`, after confirming both exist and work with SDK 57), `app/_layout.tsx` (`useFonts` adds the new faces; keep the old ones for now), `src/theme/tokens.ts` (`fontFamily` gains `ui`, `uiMedium`, `uiSemiBold`; `typography.eyebrow` → Inter 500 uppercase titanium; `title`/`heroTitle` → Instrument Serif; `numeral` keeps Plex Mono and adds `fontVariant: ['tabular-nums']`), plus the 7 files reading `fontFamily.*`.
+- **Intended behavior:** v2 hierarchy, with a display serif for human prompts, a neo-grotesk for everything else and tabular data numerals. No Cinzel visible.
+- **Dependencies:** task 3; decision 1 above (stand-ins vs licensed faces).
+- **Acceptance criteria:** `git grep -n "Cinzel" app src` shows only `_layout.tsx` imports (removal comes in a follow-up once confirmed); the micro size is never below 11pt; Home's hero fits in ≤ 2 lines at 375px; splash hides only after the fonts load (existing behavior).
+- **Verify:** browser pass as in task 3; check the network panel for font loads; spot-check Dynamic Type / browser zoom at 200%.
+
+## Task 5: Four-destination navigation shell
+
+- **Files likely to change:** `app/(tabs)/_layout.tsx` (4 tabs), rename `home.tsx` → `today.tsx` and `train.tsx` → `training.tsx`, new `app/(tabs)/recovery.tsx` (honest empty state: "Recovery check-ins arrive in a later build. Limitations are managed in Settings for now." No fake data), move `profile.tsx` → `app/settings/index.tsx` with a header entry button, coach as a `coach` modal route plus an entry point on Today (option (a)); update every `href`/`router.push` (`grep -rn "(tabs)/" app src`); `app/index.tsx` redirect target.
+- **Intended behavior:** Today · Training · Progress · Recovery tabs; Settings and Coach one tap away from Today; all existing functionality still reachable.
+- **Dependencies:** task 3 (so the shell is built in OSMIUM colours); decision 4.
+- **Acceptance criteria:** `npm run typecheck` clean (typed routes catch stale links); every previous capability reachable (start, log, finish, progress drill-down, coach apply, profile edit, reset demo data); no route 404s on web.
+- **Verify:** browser walk-through of every route; `read_console_messages` free of router warnings; screenshots of the 4 tabs.
+
+---
+
+## Do not do tomorrow
+
+- Do not replace any `assets/*.png` (wait for the vector masters; BRAND_ASSET_MANIFEST.md).
+- Do not change `bundleIdentifier`, `package`, `scheme`, `slug` or the `vynkaer.*` storage keys.
+- Do not touch `src/engine/` except for additive types in step 5+, with tests first.
+- Do not add an AI provider key or deploy Supabase.
+- Do not merge to `main` without approval.
