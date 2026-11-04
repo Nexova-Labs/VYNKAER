@@ -38,6 +38,8 @@ On 4 Nov the owner asked for the masters to be redrawn in-house. Five SVGs now l
 
 ## 2. Current VYNKÆR assets → OSMIUM replacements
 
+> **Status:** the six image slots and background colours below were replaced on 4 Nov 2026 with **draft** art generated from §1b (the "Current file / content" columns describe the VYNKÆR originals). The in-app `Crest`, the "VYNKÆR" text literals and store metadata are still outstanding.
+
 | Slot | Config key (`app.json`) | Current file | Current content | OSMIUM replacement | Spec for the replacement |
 |---|---|---|---|---|---|
 | App icon (iOS + fallback) | `expo.icon` | `assets/icon.png` 1024² RGBA | VYNKÆR crest on obsidian/copper (`680637a`) | **Eclipse symbol (A)** | 1024×1024, **no alpha** for iOS (App Store rejects transparency), `#000000` background, symbol ≈ 75% of canvas (12.5% clear space each side per v2), sRGB |

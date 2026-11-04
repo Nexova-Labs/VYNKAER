@@ -7,12 +7,15 @@
 **Branch:** `feature/osmium-foundation-2026-11-03`, cut from `nexova/main` @ `8a81ce5`
 **Prepared:** 3 November 2026
 
-This folder is the hand-off between Phase 0 (audit and preparation, tonight) and Phase 1 (implementation, from 4 November). Nothing here changes runtime behavior. The app on this branch still boots as VYNKÆR Training with the copper theme. The only code added is a parallel token module that nothing imports (`src/theme/osmium.ts`), plus the three approved logo PNGs stored as reference files.
+**Start with [PROJECT_STATUS.md](PROJECT_STATUS.md), the overall résumé.**
+
+This folder is the hand-off between Phase 0 (audit and preparation, tonight) and Phase 1 (implementation, from 4 November). The in-app UI is unchanged: it still boots as VYNKÆR Training with the copper theme. Beyond the docs, the branch adds a parallel token module that nothing imports (`src/theme/osmium.ts`), the three approved logo PNGs (reference), draft SVG logo masters, OSMIUM app identifiers and OSMIUM launcher/splash/favicon images (see [PROJECT_STATUS.md](PROJECT_STATUS.md)).
 
 ## Read in this order
 
 | # | Document | What it answers |
 |---|---|---|
+| 0 | [PROJECT_STATUS.md](PROJECT_STATUS.md) | Overall résumé: what was done, results, decisions, what is next |
 | 1 | [TOMORROW_START_HERE.md](TOMORROW_START_HERE.md) | The first five tasks, with files, acceptance criteria and how to verify each one |
 | 2 | [CODEBASE_AUDIT.md](CODEBASE_AUDIT.md) | What the repo actually contains, check results, verified bugs, security, technical debt |
 | 3 | [VYNKAER_TO_OSMIUM_GAP_ANALYSIS.md](VYNKAER_TO_OSMIUM_GAP_ANALYSIS.md) | A Retain / Refactor / Extend / Replace / Build new verdict for each area |

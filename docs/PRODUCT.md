@@ -1,5 +1,7 @@
 # Product
 
+> **Superseded by [osmium/PRODUCT_VISION.md](osmium/PRODUCT_VISION.md)** (OSMIUM positioning, four destinations, trust rules). Kept as the record of the V1 product definition; the philosophy and no-medical-claims rules here still apply.
+
 ## Platform
 
 adaptive

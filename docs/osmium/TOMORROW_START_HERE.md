@@ -3,8 +3,8 @@
 ## Where things stand
 
 - **Branch:** `feature/osmium-foundation-2026-11-03` on `Nexova-Labs/VYNKAER` (remote `nexova`). Base `8a81ce5` = `nexova/main`. `main` is untouched.
-- **App state:** unchanged at runtime. It still boots as VYNKÆR Training with copper tokens. typecheck ✅, lint ✅, 42/42 tests ✅; `expo-doctor` has 3 pre-existing failures.
-- **Added:** `docs/osmium/*`, `src/theme/osmium.ts` (not imported), `assets/brand/osmium/reference/*.png` (approved references, not production assets).
+- **App state:** in-app UI unchanged (VYNKÆR screens, copper tokens). typecheck ✅, lint ✅, 42/42 tests ✅; `expo-doctor` has 3 pre-existing failures. See `git log` for the latest commit.
+- **Added so far:** `docs/osmium/*`, `src/theme/osmium.ts` (not imported), approved logo PNGs (reference), draft SVG masters (`assets/brand/osmium/source/`), OSMIUM `app.json` identifiers, and OSMIUM launcher icon / splash / favicon (draft artwork regenerated from the SVGs; not verified on a device).
 - **Remote naming trap:** locally, `origin` is the personal fork `yovneeshkhadun/VYNKAER`, which is **one commit behind**. Push and PR against `nexova`. Run `git fetch nexova` before starting.
 
 ## Before writing code
@@ -54,7 +54,7 @@ npm run typecheck && npm run lint && npm run test -- --runInBand
   - `src/theme/tokens.ts`: `export const colors = osmiumColors` (import from `./osmium`), and update the header comment
   - `app/(tabs)/home.tsx`: remove the copper `LinearGradient` hero glow (line ~166, the only hard-coded colour)
   - `app/(tabs)/_layout.tsx`: `tabBarActiveTintColor` → `colors.accent` (instrument blue = selection)
-  - `app.json`: `backgroundColor`, adaptive icon and splash `backgroundColor` → `#000000` (no image changes)
+  - `app.json`: background colours are **already** `#000000` (done 4 Nov with the icon swap)
   - `src/state/AppStateContext.tsx`: loading spinner colour stays on `accentSoft` (now titanium). Nothing to do unless it reads poorly
 - **Intended behavior:** the whole app renders black/graphite/titanium/silver with instrument blue only on focus, selection and the primary action. No copper anywhere.
 - **Dependencies:** task 1 merged first is preferred (so screenshots show correct loads), but not required.
@@ -81,8 +81,8 @@ npm run typecheck && npm run lint && npm run test -- --runInBand
 
 ## Do not do tomorrow
 
-- Do not replace any `assets/*.png` (wait for the vector masters; BRAND_ASSET_MANIFEST.md).
-- Do not change `bundleIdentifier`, `package`, `scheme`, `slug` or the `vynkaer.*` storage keys.
+- The launcher icon, splash and favicon are **draft** OSMIUM art. Swap in designer-approved masters later (BRAND_ASSET_MANIFEST.md §4); do not redraw them again.
+- `bundleIdentifier`, `package`, `scheme` and `slug` are already OSMIUM. Do **not** rename the `vynkaer.*` storage keys.
 - Do not touch `src/engine/` except for additive types in step 5+, with tests first.
 - Do not add an AI provider key or deploy Supabase.
 - Do not merge to `main` without approval.

@@ -1,5 +1,7 @@
 # Architecture
 
+> Describes the code as it runs today. The end state and migration sequence are in [osmium/TARGET_ARCHITECTURE.md](osmium/TARGET_ARCHITECTURE.md) and [osmium/IMPLEMENTATION_ROADMAP.md](osmium/IMPLEMENTATION_ROADMAP.md); known defects in this layer are listed in [osmium/CODEBASE_AUDIT.md §5](osmium/CODEBASE_AUDIT.md).
+
 ## Layering
 
 ```

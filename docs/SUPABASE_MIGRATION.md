@@ -1,5 +1,7 @@
 # Supabase migration path (future — not required for V1)
 
+> **Audit note (Nov 2026):** the draft schema below needs changes before use: `athletes.user_id` should be `unique`; RLS policies need explicit `WITH CHECK`; locally generated ids (`prefix-base36-random`) are not valid `uuid`s, so switch `generateId` to UUID v4 before syncing; add export/delete functions. Details: [osmium/CODEBASE_AUDIT.md §7.2](osmium/CODEBASE_AUDIT.md) and [osmium/TARGET_ARCHITECTURE.md §5-7](osmium/TARGET_ARCHITECTURE.md).
+
 V1 is intentionally local-first: one athlete, `AsyncStorage`, no network dependency. This document describes how the same domain model would move to Supabase for cross-device sync and multi-athlete support, without changing the training engine or the state-layer contract screens already depend on.
 
 ## Why the migration is low-risk

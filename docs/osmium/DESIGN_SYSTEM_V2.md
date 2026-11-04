@@ -107,7 +107,9 @@ Loaded in `app/_layout.tsx` via `@expo-google-fonts/*`, all SIL OFL:
 
 `fontFamily.*` is read in 7 files. The fonts gate the splash screen, so the app renders nothing until they load or error.
 
-### 4.2 OSMIUM roles → proposed open-licence stand-ins
+### 4.2 OSMIUM roles → open-licence stand-ins
+
+**Decision (4 Nov 2026):** ship on the open stand-ins below now; licensing Canela / Neue Haas is deferred to before public launch. Not yet installed.
 
 | v2 role | v2 reference | Proposed stand-in | Licence | Replaces |
 |---|---|---|---|---|

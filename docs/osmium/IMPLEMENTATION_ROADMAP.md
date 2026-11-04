@@ -4,6 +4,15 @@ This adds engineering detail to the hand-off *Product & Engineering Roadmap* (ph
 
 **Step 0 (pre-flight) is a prerequisite for everything:** fix data-integrity defects D1/D2 and the toolchain doctor findings. Visual work must not ship on top of a progression bug.
 
+## Status (4 Nov 2026)
+
+| Step | State |
+|---|---|
+| Phase 0 (audit, docs, tokens module, brand drafts, identifiers, icons) | **Done** |
+| 0 Pre-flight | Not started (D1, D2, doctor findings still open) |
+| 1 Colour tokens | Prepared (`src/theme/osmium.ts`); `app.json` background colours already `#000000`; runtime theme not switched |
+| 2–12 | Not started |
+
 ## Dependency graph
 
 ```
@@ -26,7 +35,7 @@ This adds engineering detail to the hand-off *Product & Engineering Roadmap* (ph
 
 ### Step 1: Design system integration (colours)
 - **Depends on:** 0.
-- **Scope:** `src/theme/tokens.ts` `colors` → `osmiumColors`. Remove the copper hero glow (`home.tsx:166`). Tab active tint → `accent`. `app.json` bg colours → `#000000` (config only, no image swaps).
+- **Scope:** `src/theme/tokens.ts` `colors` → `osmiumColors`. Remove the copper hero glow (`home.tsx:166`). Tab active tint → `accent`. (`app.json` bg colours and launcher/splash images were already switched on 4 Nov.)
 - **Risk:** low contrast in places that relied on copper for emphasis; `accentSoft`→titanium flattens some eyebrows (intended).
 - **Acceptance:** `grep -rn "#975a36\|accentSoft" src/theme/tokens.ts` shows no copper; every screen checked in the browser at 375×812 with screenshots; no text pair below 4.5:1 (DESIGN_SYSTEM_V2.md §3.5).
 

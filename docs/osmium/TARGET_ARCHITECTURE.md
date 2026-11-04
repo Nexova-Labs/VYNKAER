@@ -62,7 +62,7 @@ app/
   workout/complete.tsx, exercise/[id].tsx  (kept)
 ```
 
-**Open decision: where the Coach lives.** v2 asks for "persistent access to the coach". The options are:
+**Decided (4 Nov 2026): option (a).** *Original framing:* where the Coach lives. v2 asks for "persistent access to the coach". The options are:
 - **(a)** A coach composer embedded at the bottom of Today, plus a `coach` modal route reachable from any tab header. *Recommended.* It keeps 4 tabs and puts the coach one tap from anywhere.
 - **(b)** Coach as the Today tab itself, with Home's plan card at the top of the conversation.
 - **(c)** A floating action button on every tab. Rejected because it adds chrome and clutter.

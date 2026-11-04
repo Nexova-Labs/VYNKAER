@@ -4,7 +4,7 @@
 
 - [x] Phase 0 — Inspect repo & existing HTML prototype (`reference/vynkaer-training-v1-demo.html`)
 - [x] Phase 1 — Foundation (Expo Router + TS, theme tokens, bottom nav, persistence architecture)
-- [x] Phase 2 — Domain model (types, 23-exercise library, Athlete 001 seed, 13-session history, training state)
+- [x] Phase 2 — Domain model (types, 24-exercise library, Athlete 001 seed, 13-session history, training state)
 - [x] Phase 3 — Training engine (rotation, progression, safety, generator) — 42 passing unit tests
 - [x] Phase 4 — Home
 - [x] Phase 5 — Active workout (Train) — logging, rest timer, skip/substitute, session completion
@@ -31,7 +31,7 @@ These were caught by actually clicking through the app, not just typechecking/te
 
 ## Post-V1: UI polish pass against an external reference (2026-09-19)
 
-The user shared a Google AI Studio–generated web prototype as a visual-direction reference (kept locally, untracked, under `reference/hotlink-ui-builder/` — not part of the app). Audit finding: the reference uses the same accent hex, three-typeface system, and dark-obsidian/copper palette `src/theme/tokens.ts` already encodes — it is not a different brand, so this was a polish/consistency pass on existing screens using existing tokens, not a redesign. See `DESIGN.md` for the resulting system-level changes (now current); summary of what changed in the app:
+The user shared a Google AI Studio–generated web prototype as a visual-direction reference (tracked under `reference/hotlink-ui-builder/` since `8a81ce5` (originally kept untracked) — not part of the app). Audit finding: the reference uses the same accent hex, three-typeface system, and dark-obsidian/copper palette `src/theme/tokens.ts` already encodes — it is not a different brand, so this was a polish/consistency pass on existing screens using existing tokens, not a redesign. See `DESIGN.md` for the resulting system-level changes (now current); summary of what changed in the app:
 
 - `Card` moved to a lighter, more distinct surface (`colors.panel2`) for real depth against the page background; added `colors.controlBg` for raised interactive surfaces nested in a card (see DESIGN.md's "Recessed/Raised Rule"), and fixed every place that collided with the new `Card` tone (`Button` secondary, `Pill` neutral, `StatusTag` done, Home's exercise-index chip, Profile's chips/stepper/switch track, Progress's milestone progress track).
 - Added `CardHeader` and `StatusTag` shared primitives (`src/components`).
@@ -46,7 +46,11 @@ Verification: `npx tsc --noEmit` and `npx expo lint` clean, `npx jest src/engine
 
 ## Known gaps / deliberately deferred (not blockers for V1)
 
-- App icon/splash are still the default Expo template assets — no VYNKÆR-branded icon has been designed.
+- ~~App icon/splash are still the default Expo template assets~~ Resolved: VYNKÆR crest icons were added in `680637a`, then replaced by draft OSMIUM eclipse icons on 2026-11-04 (see the Phase 0 section below).
 - No physical iOS/Android device or simulator was available in this environment; verification was done via `expo start --web` (react-native-web) plus static review of native-specific code (haptics, safe-area, `Switch`). Recommend a simulator/device pass before shipping.
 - Coach transcript is not persisted across app restarts (by design for V1 — see `docs/PRODUCT.md`/`CLAUDE.md`, this was an explicit scope decision, not an oversight).
 - Rotation sequence (`profile.rotationSequence`) is read-only in Profile UI — editable in the data model, no UI control yet (avoided building a control with no real effect path in the time available).
+
+## OSMIUM migration, Phase 0 (2026-11-03 / 04)
+
+V1 is unchanged functionally. Phase 0 added the OSMIUM audit, design system spec, architecture and roadmap under [`osmium/`](osmium/), a parallel token module (`src/theme/osmium.ts`, not yet imported), draft SVG logo masters, OSMIUM app identifiers and launcher/splash/favicon images. Checks after Phase 0: typecheck ✅, lint ✅, 42/42 tests ✅, `expo-doctor` 3 pre-existing failures. See [osmium/PROJECT_STATUS.md](osmium/PROJECT_STATUS.md).

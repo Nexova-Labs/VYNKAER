@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+> **OSMIUM migration in progress (branch `feature/osmium-foundation-2026-11-03`).** Read [docs/osmium/PROJECT_STATUS.md](docs/osmium/PROJECT_STATUS.md) first. Standing rules for this migration: do not modify `src/engine/` (additive types only, tests first); keep the `vynkaer.*` AsyncStorage keys; never add an AI key to the bundle; every consequential coach change needs explicit approval; no fabricated recovery or performance data. `src/theme/osmium.ts` holds the approved OSMIUM tokens (same keys as `colors`, not yet imported by the app).
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Commands
@@ -56,7 +58,7 @@ app/             Expo Router file-based routes. app/(tabs)/ is the five-tab shel
 
 ### The core loop (how a screen actually changes what happens next)
 
-`AppStateContext` holds `currentPlan: GeneratedWorkout | null` (a draft, recomputed by `generateWorkout` whenever training state changes) and `activeWorkout: WorkoutSession | null` (frozen the moment "Start Workout" is pressed, then mutated in place as sets are logged). Coach adaptations and manual Train-screen actions (skip/substitute) both go through `applyStructuralAdaptation` (`src/state/adaptation.ts`) against whichever of the two currently exists — this is why the Coach can never silently change a workout: every adaptation is staged as a `WorkoutAdaptation` proposal in the UI and only applied when the athlete taps **APPLY CHANGE**.
+`AppStateContext` holds `currentPlan: GeneratedWorkout | null` (a draft, recomputed by `generateWorkout` at specific call sites: boot, regenerate, finish, profile update and reset. It is **not** recomputed after a coach `FLAG_LIMITATION`, a known defect, D5 in the audit) and `activeWorkout: WorkoutSession | null` (frozen the moment "Start Workout" is pressed, then mutated in place as sets are logged). Coach adaptations and manual Train-screen actions (skip/substitute) both go through `applyStructuralAdaptation` (`src/state/adaptation.ts`) against whichever of the two currently exists — this is why the Coach can never silently change a workout: every adaptation is staged as a `WorkoutAdaptation` proposal in the UI and only applied when the athlete taps **APPLY CHANGE**.
 
 `finishWorkout` is the one place progression is recalculated: it runs `decideProgression` per logged exercise, rotates modality via `getNextModality`, appends the session to history, and regenerates `currentPlan` for the next visit to Home — this is the "history → generate → train → log → progress → next workout" loop the whole product is built around.
 

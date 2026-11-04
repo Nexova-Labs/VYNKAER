@@ -3,6 +3,8 @@
 **Audited:** 3 November 2026, branch `feature/osmium-foundation-2026-11-03` at base `8a81ce5` (`nexova/main`).
 **Method:** I read the source, not just the README. Every claim below was checked against the files named. Where something is inferred and not executed, it says so.
 
+> **Post-audit changes (4 Nov 2026):** the findings below describe the code as audited. Since then, `app.json` identifiers, launcher/splash/favicon images and docs changed; **no defect (D1-D10) has been fixed yet** and the `src/` runtime code is untouched. Typecheck/lint/tests were re-run after each commit with the same results.
+
 ---
 
 ## 0. Repository state at audit time

@@ -1,4 +1,6 @@
-# VYNKÆR Training
+# VYNKÆR Training → OSMIUM
+
+> **Status (4 Nov 2026): migration in progress.** The product is being renamed and rebranded to **OSMIUM — Private Human Performance Intelligence** (Nexova Labs). This repo is the existing VYNKÆR app being evolved, not rebuilt. The app identifiers (`app.json`), launcher icon, splash and favicon are already OSMIUM; the in-app UI (screens, copper theme, "VYNKÆR" copy) is **still VYNKÆR** until the Phase 1 visual migration. Start at [docs/osmium/PROJECT_STATUS.md](docs/osmium/PROJECT_STATUS.md) and [docs/osmium/README.md](docs/osmium/README.md). Work lives on `feature/osmium-foundation-2026-11-03`; `main` is untouched.
 
 *by Nexova Labs*
 
@@ -27,7 +29,7 @@ npm run android
 npm run web
 ```
 
-No environment variables, accounts, or API keys are needed. All data lives in `AsyncStorage` on-device.
+No environment variables, accounts, or API keys are needed. (`expo-doctor` currently reports 3 pre-existing issues; see [docs/osmium/CODEBASE_AUDIT.md §1.1](docs/osmium/CODEBASE_AUDIT.md).) All data lives in `AsyncStorage` on-device.
 
 ### Checks
 
