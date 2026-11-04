@@ -130,7 +130,7 @@ Loaded in `app/_layout.tsx` via `@expo-google-fonts/*`, all SIL OFL:
 1. Install the new families **alongside** the existing ones and add them to `useFonts` in `app/_layout.tsx`. Nothing switches yet.
 2. Add the new role names (`fontFamily.ui`, `fontFamily.display` re-pointed, etc.) in one commit, together with the colour swap.
 3. Migrate the 7 `fontFamily.*` call sites screen by screen.
-4. Remove Cinzel and EB Garamond from `package.json` and `useFonts` only after a `grep` shows no references.
+4. Remove Cinzel and EB Garamond from `package.json` and `useFonts` only after a `grep` shows no references. *(Done 4 Nov: no references remained.)*
 5. Verify in the browser at 375px. The type scale is larger than today's, so wrapping must be rechecked (the old Home hero already wrapped to 4 lines, see `.impeccable/critique`).
 
 ### 4.4 Type scale (`osmiumTypeScale`)

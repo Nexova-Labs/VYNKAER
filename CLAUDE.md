@@ -13,7 +13,7 @@ npm run android        # Android emulator
 npm run web             # Web (used for fast iteration/browser verification)
 npm run typecheck       # tsc --noEmit
 npm run lint             # expo lint (flat ESLint config, eslint-config-expo)
-npm run test             # jest (engine, storage and progression tests)
+npm run test             # jest (engine, storage, progression and coach approval tests)
 npx jest src/engine      # run only the training-engine test suite
 npx jest -t "8/8/8"      # run a single test by name pattern
 ```

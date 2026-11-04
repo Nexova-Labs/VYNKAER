@@ -1,9 +1,18 @@
-# Start here: 4 November 2026
+# Start here: next session
+
+> **Status (end of 4 Nov 2026):** all five tasks below are **done** (D1/D2 fixes, toolchain hygiene, OSMIUM colours, typography, four-destination navigation), plus roadmap step 4 (Today/Coach merge). 71 tests pass; `expo-doctor` 21/21. The task write-ups below are kept as the record of what was done and how it was verified.
+>
+> **Suggested next, in order:**
+> 1. D4 and D5 (roadmap step 0 leftovers): make a worse-pain report actually flag the limitation, and regenerate the draft plan after a Coach `FLAG_LIMITATION`. Test-first, as with D1/D2. D3 (use the weights actually logged) if wanted.
+> 2. Roadmap step 5, Training: substitution drawer, undo for remove/skip/substitute, exercise instructions, in-session limitation feedback.
+> 3. Roadmap step 2 leftovers: radii, spacing, motion, remove GrainTexture and Crest, reduced-motion, designed state variants.
+> 4. Roadmap step 6, Progress, then step 7, Recovery inputs.
+> 5. Designer sign-off on the draft SVG logos, then swap in the final icon set.
 
 ## Where things stand
 
 - **Branch:** `feature/osmium-foundation-2026-11-03` on `Nexova-Labs/VYNKAER` (remote `nexova`). Base `8a81ce5` = `nexova/main`. `main` is untouched.
-- **App state:** in-app **colours and fonts are OSMIUM** (tasks 3 and 4 done); screens, spacing/radii, navigation and copy are still VYNKÆR. typecheck ✅, lint ✅, 42/42 tests ✅; `expo-doctor` has 3 pre-existing failures. See `git log` for the latest commit.
+- **App state:** in-app **colours and fonts are OSMIUM** (tasks 3 and 4 done), navigation is four destinations and the Coach is merged into Today; spacing/radii, the grain texture, the crest mark and "VYNKÆR" copy are still VYNKÆR. typecheck ✅, lint ✅, 71/71 tests ✅; `expo-doctor` 21/21. See `git log` for the latest commit.
 - **Added so far:** `docs/osmium/*`, `src/theme/osmium.ts` (now live via `tokens.ts`), approved logo PNGs (reference), draft SVG masters (`assets/brand/osmium/source/`), OSMIUM `app.json` identifiers, and OSMIUM launcher icon / splash / favicon (draft artwork regenerated from the SVGs; not verified on a device).
 - **Remote naming trap:** locally, `origin` is the personal fork `yovneeshkhadun/VYNKAER`, which is **one commit behind**. Push and PR against `nexova`. Run `git fetch nexova` before starting.
 

@@ -19,7 +19,7 @@ This proposition already runs in the VYNKÆR codebase as the loop *history → g
 
 ## 3. The four destinations
 
-v2 allows **at most four primary destinations, with persistent access to the coach**. Today the app has five tabs (Home, Train, Progress, Coach, Profile). The target is:
+v2 allows **at most four primary destinations, with persistent access to the coach**. The app had five tabs (Home, Train, Progress, Coach, Profile) until 4 Nov 2026 and now has these four (Recovery is a shell with no check-ins yet). The target is:
 
 | Destination | Purpose | Built from (today) | Primary action |
 |---|---|---|---|

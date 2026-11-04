@@ -84,7 +84,7 @@ The token *architecture* works: one module, semantic keys, and zero hard-coded c
 
 ## 7. Training engine: **Retain**
 
-**Rationale:** it is deterministic, explainable, tested (42 passing, 63 with the state and storage tests) and isolated from React, storage and AI. It is the architectural embodiment of "a trainer that evolves with you". It needs no change for OSMIUM.
+**Rationale:** it is deterministic, explainable, tested (42 passing, 71 with the state, storage and coach tests) and isolated from React, storage and AI. It is the architectural embodiment of "a trainer that evolves with you". It needs no change for OSMIUM.
 
 **Adjacent fixes (state layer, not engine):** D2 (double increment) and D3 (logged weights and RPE) sit in `AppStateContext.finishWorkout`. The fix is to store the load *performed* and let the generator decide. That matches what the seed already does, so the engine stays as it is.
 

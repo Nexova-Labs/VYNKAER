@@ -36,7 +36,7 @@ No environment variables, accounts, or API keys are needed. `npx expo-doctor` pa
 ```bash
 npm run typecheck
 npm run lint
-npm run test         # 63 unit tests: training engine, storage repositories, progression update
+npm run test         # 71 unit tests: training engine, storage repositories, progression update, coach approval logic
 ```
 
 ### Resetting the seeded demo data
