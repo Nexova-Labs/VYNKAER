@@ -10,7 +10,7 @@ import { useAppState } from '../../src/state';
 import { colors, spacing, typography } from '../../src/theme';
 import { modalityLabel } from '../../src/utils/format';
 
-export default function TrainScreen() {
+export default function TrainingScreen() {
   const {
     activeWorkout,
     trainingState,
@@ -27,12 +27,12 @@ export default function TrainScreen() {
 
   if (!activeWorkout) {
     return (
-      <ScreenContainer scroll={false} contentStyle={styles.emptyRoot}>
+      <ScreenContainer scroll={false} contentStyle={styles.emptyRoot} tabTitle="Training">
         <EmptyState
           title="No active session"
-          body="Start today's workout from Home. The next session is generated from your training history."
+          body="Start today's workout from Today. The next session is generated from your training history."
         />
-        <Button label="Go to Home" onPress={() => router.push('/(tabs)/home')} style={{ marginTop: spacing.lg }} />
+        <Button label="Go to Today" onPress={() => router.push('/(tabs)/today')} style={{ marginTop: spacing.lg }} />
       </ScreenContainer>
     );
   }
@@ -56,7 +56,7 @@ export default function TrainScreen() {
   };
 
   return (
-    <ScreenContainer contentStyle={{ paddingTop: spacing.md }}>
+    <ScreenContainer contentStyle={{ paddingTop: spacing.md }} tabTitle="Training">
       <View style={styles.topbar}>
         <View style={{ flex: 1 }}>
           <Text style={styles.eyebrow}>Live Session</Text>
@@ -65,7 +65,7 @@ export default function TrainScreen() {
           </Text>
         </View>
         <Pressable
-          onPress={() => router.push('/(tabs)/home')}
+          onPress={() => router.push('/(tabs)/today')}
           accessibilityRole="button"
           accessibilityLabel="Exit session"
           style={styles.exitBtn}

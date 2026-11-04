@@ -151,7 +151,7 @@ export default function ProgressScreen() {
   const recent = useMemo(() => [...ordered].reverse().slice(0, 5), [ordered]);
 
   return (
-    <ScreenContainer>
+    <ScreenContainer tabTitle="Progress">
       <View style={styles.header}>
         <Text style={styles.eyebrow}>Progress</Text>
         <Text style={styles.title}>Performance, not noise.</Text>

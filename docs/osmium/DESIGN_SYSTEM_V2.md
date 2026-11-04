@@ -186,6 +186,7 @@ The v2 inventory is mapped onto existing primitives. "Existing" means the file i
 | `InstrumentDivider` | New: 1px gunmetal rule, optional real tick marks | Build new |
 | `ConsentControl` | New (Phase 3, privacy/consent) | Build new later |
 | Card, Button, Pill, StatusTag, StatTile, EmptyState, ScreenContainer | Existing `src/components/*` | Retain API, restyle via tokens |
+| *(added 4 Nov)* `TabHeader`, `IconButton`, `Text`/`TextInput` wrappers | `src/components/TabHeader.tsx`, `IconButton.tsx`, `Text.tsx` | Built. TabHeader is the persistent header (destination label + Coach and Settings icons); IconButton is a 48pt labelled icon control |
 | `Crest` | VYNKÆR crest mark | **Remove** once EclipseMark exists |
 | `GrainTexture` | VYNKÆR film-grain overlay | **Remove.** Not part of the v2 language |
 

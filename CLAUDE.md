@@ -48,12 +48,16 @@ src/components   Generic, theme-driven UI primitives (Card, CardHeader, Button, 
                  StatTile, ScreenContainer...). See DESIGN.md for the surface/color rules governing
                  how these compose (e.g. what's allowed to sit inside a Card).
 src/features     Screen-specific but multi-file UI (currently just workout/: SetRow, ExerciseCard,
-                 RestTimer, SessionProgress, used by app/(tabs)/train.tsx).
+                 RestTimer, SessionProgress, used by app/(tabs)/training.tsx).
 src/theme        Design tokens (colors, spacing, radius, typography). Screens should not hardcode
                  colors/spacing — pull from here so the dark OSMIUM black/graphite/blue language stays consistent.
-app/             Expo Router file-based routes. app/(tabs)/ is the five-tab shell (home, train,
-                 progress, coach, profile). app/workout/complete.tsx is the post-session feedback
+app/             Expo Router file-based routes. app/(tabs)/ is the four-destination shell (today,
+                 training, progress, recovery). Coach (app/coach, a modal) and Settings (app/settings)
+                 are one tap from every tab header (src/components/TabHeader; screens opt in with
+                 <ScreenContainer tabTitle=...>). app/workout/complete.tsx is the post-session feedback
                  form. app/exercise/[id].tsx is the per-exercise history drill-down from Progress.
+                 Typed routes regenerate when the dev server runs: after adding or renaming a route,
+                 start `npm run web` once before `npm run typecheck`.
 ```
 
 ### The core loop (how a screen actually changes what happens next)

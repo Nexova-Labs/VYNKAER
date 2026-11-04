@@ -73,7 +73,9 @@ npm run typecheck && npm run lint && npm run test -- --runInBand
 - **Acceptance criteria:** `git grep -n "Cinzel" app src` shows only `_layout.tsx` imports (removal comes in a follow-up once confirmed); the micro size is never below 11pt; Home's hero fits in ≤ 2 lines at 375px; splash hides only after the fonts load (existing behavior).
 - **Verify:** browser pass as in task 3; check the network panel for font loads; spot-check Dynamic Type / browser zoom at 200%.
 
-## Task 5: Four-destination navigation shell
+## Task 5: Four-destination navigation shell: **DONE 4 Nov 2026**
+
+> Built as specified, option (a): `today`/`training`/`progress`/`recovery` tabs, `app/coach` modal, `app/settings` stack screen, `TabHeader` (Coach + Settings icons on every tab), `IconButton`, and a Today prompt card that opens the Coach. Recovery shows only logged values (limitations, last-session self-report, demo-labelled) with an honest "check-ins arrive later" state and no scores. `tsc` with regenerated typed routes is clean and rejects the old `/(tabs)/home`. Browser-verified at 375×812: every tab, both header actions, both Coach entry points, back/close, proposal + APPLY gate in the modal, plus deep links to `/settings`, `/workout/complete` and `/exercise/[id]`. Not changed: Today and Coach content are not merged into one screen (roadmap step 4).
 
 - **Files likely to change:** `app/(tabs)/_layout.tsx` (4 tabs), rename `home.tsx` → `today.tsx` and `train.tsx` → `training.tsx`, new `app/(tabs)/recovery.tsx` (honest empty state: "Recovery check-ins arrive in a later build. Limitations are managed in Settings for now." No fake data), move `profile.tsx` → `app/settings/index.tsx` with a header entry button, coach as a `coach` modal route plus an entry point on Today (option (a)); update every `href`/`router.push` (`grep -rn "(tabs)/" app src`); `app/index.tsx` redirect target.
 - **Intended behavior:** Today · Training · Progress · Recovery tabs; Settings and Coach one tap away from Today; all existing functionality still reachable.

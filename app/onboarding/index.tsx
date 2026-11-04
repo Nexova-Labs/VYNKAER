@@ -43,7 +43,7 @@ export default function OnboardingScreen() {
 
   const finish = async () => {
     await completeOnboarding();
-    router.replace('/(tabs)/home');
+    router.replace('/(tabs)/today');
   };
 
   const next = () => {

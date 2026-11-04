@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, TextInput } from '../../src/components/Text';
+import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Button, Pill } from '../../src/components';
+import { Button, IconButton, Pill } from '../../src/components';
 import { useAppState } from '../../src/state';
 import { colors, fontFamily, radius, spacing, typography } from '../../src/theme';
 import { modalityLabel } from '../../src/utils/format';
@@ -60,6 +61,11 @@ function buildAdaptationDiff(
 }
 
 export default function CoachScreen() {
+  const router = useRouter();
+  const goBack = useCallback(() => {
+    if (router.canGoBack()) router.back();
+    else router.replace('/(tabs)/today');
+  }, [router]);
   const { profile, activeWorkout, currentPlan, sendCoachMessage, applyCoachAdaptation } = useAppState();
   const [transcript, setTranscript] = useState<TranscriptMessage[]>([OPENING_MESSAGE]);
   const [draft, setDraft] = useState('');
@@ -135,6 +141,9 @@ export default function CoachScreen() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
         <View style={styles.header}>
+          <View style={styles.closeRow}>
+            <IconButton name="close" label="Close Coach" onPress={goBack} />
+          </View>
           <Text style={styles.eyebrow}>Coach</Text>
           <Text style={styles.title}>Adapt without losing the plan.</Text>
           <Text style={styles.subtitle}>
@@ -257,9 +266,14 @@ const styles = StyleSheet.create({
   flex: {
     flex: 1,
   },
+  closeRow: {
+    alignItems: 'flex-end',
+    marginRight: -spacing.sm,
+    marginBottom: -spacing.sm,
+  },
   header: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xl,
+    paddingTop: spacing.md,
     paddingBottom: spacing.md,
   },
   eyebrow: {

@@ -7,5 +7,5 @@ export default function Index() {
   if (!settings.onboardingComplete) {
     return <Redirect href="/onboarding" />;
   }
-  return <Redirect href="/(tabs)/home" />;
+  return <Redirect href="/(tabs)/today" />;
 }

@@ -31,7 +31,7 @@ Avoided: exclamation points, hype adjectives, celebratory emoji, "AI-powered" as
 
 ## The five destinations
 
-- **Home** — decisive. One generated session, one primary action (Start Workout), one explanation of why. Not a dashboard to browse.
+- **Home** (now **Today**) — decisive. One generated session, one primary action (Start Workout), one explanation of why. Not a dashboard to browse.
 - **Train** — the highest-priority screen. Logging a set should take as few taps as possible; a rest timer and per-exercise progression reasoning are always visible, never buried in a menu.
 - **Progress** — performance, not noise. Trends, volume, adherence, and the push-up milestone, all reading from real logged history rather than a decorative chart.
 - **Coach** — adaptive, but never silent. Every proposed change is a structured, visible proposal (`WorkoutAdaptation`) that requires an explicit **APPLY CHANGE** tap. Nothing changes a workout behind the athlete's back — including the production Claude-backed version this is designed to swap in for later.

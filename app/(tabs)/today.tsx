@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Text } from '../../src/components/Text';
 import { router } from 'expo-router';
 import Animated, {
@@ -20,7 +21,7 @@ import {
   movementPatternLabel,
 } from '../../src/utils/format';
 
-export default function HomeScreen() {
+export default function TodayScreen() {
   const { profile, trainingState, history, activeWorkout, currentPlan, startWorkout, regeneratePlan } = useAppState();
 
   const lastSession = history[history.length - 1];
@@ -28,19 +29,16 @@ export default function HomeScreen() {
 
   const handleStart = () => {
     if (!activeWorkout) startWorkout();
-    router.push('/(tabs)/train');
+    router.push('/(tabs)/training');
   };
 
   return (
-    <ScreenContainer>
+    <ScreenContainer tabTitle="Today">
       <View style={styles.topbar}>
         <View style={{ flex: 1 }}>
           <Text style={styles.eyebrow}>VYNKÆR Training / {profile.displayName}</Text>
           <Text style={styles.title}>Train what comes next.</Text>
           <Text style={styles.subtitle}>Built from your previous work, not random generation.</Text>
-        </View>
-        <View style={styles.avatar}>
-          <Text style={styles.avatarLabel}>{initials(profile.displayName)}</Text>
         </View>
       </View>
 
@@ -81,6 +79,19 @@ export default function HomeScreen() {
       ) : (
         <EmptyState title="Preparing your session" body="Loading your training context." />
       )}
+
+      <Pressable
+        onPress={() => router.push('/coach')}
+        accessibilityRole="button"
+        accessibilityLabel="Open Coach. How are you feeling today?"
+        style={({ pressed }) => [styles.coachPrompt, pressed && styles.coachPromptPressed]}
+      >
+        <View style={{ flex: 1 }}>
+          <Text style={styles.coachPromptTitle}>How are you feeling today?</Text>
+          <Text style={styles.coachPromptBody}>Tell the Coach. Nothing changes until you approve it.</Text>
+        </View>
+        <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+      </Pressable>
 
       <Card style={styles.stateCard}>
         <CardHeader label="Athlete State" meta={`Workout ${trainingState.currentWorkoutNumber}`} />
@@ -141,16 +152,29 @@ function MetaChip({ label }: { label: string }) {
   );
 }
 
-function initials(name: string): string {
-  return name
-    .split(' ')
-    .map((p) => p[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
-}
-
 const styles = StyleSheet.create({
+  coachPrompt: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    minHeight: 64,
+    marginTop: spacing.lg,
+    padding: spacing.lg,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.panel2,
+  },
+  coachPromptPressed: {
+    backgroundColor: colors.controlBg,
+  },
+  coachPromptTitle: {
+    ...typography.h2,
+    marginBottom: 2,
+  },
+  coachPromptBody: {
+    ...typography.caption,
+  },
   topbar: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -168,20 +192,6 @@ const styles = StyleSheet.create({
   subtitle: {
     ...typography.bodyMuted,
     marginTop: 4,
-  },
-  avatar: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    backgroundColor: colors.panel2,
-    borderWidth: 1,
-    borderColor: colors.border,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avatarLabel: {
-    fontWeight: '800',
-    color: colors.textPrimary,
   },
   hero: {
     marginBottom: spacing.lg,

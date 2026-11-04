@@ -8,4 +8,6 @@ export { CardHeader } from './CardHeader';
 export { StatusTag } from './StatusTag';
 export { EmptyState } from './EmptyState';
 export { Crest } from './Crest';
+export { IconButton } from './IconButton';
+export { TabHeader } from './TabHeader';
 export { GrainTexture } from './GrainTexture';

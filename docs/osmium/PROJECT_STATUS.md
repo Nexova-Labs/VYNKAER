@@ -1,6 +1,6 @@
 # OSMIUM — project status (overall résumé)
 
-**As of:** 4 November 2026 · **Phase:** 0 complete; Phase 1 step 1 (colours) done; typography (part of step 2) done
+**As of:** 4 November 2026 · **Phase:** 0 complete; Phase 1: colours, typography and the four-destination navigation done
 **Branch:** `feature/osmium-foundation-2026-11-03` on [`Nexova-Labs/VYNKAER`](https://github.com/Nexova-Labs/VYNKAER) (git remote `nexova`) · base `8a81ce5` (`nexova/main`) · `main` untouched, no PR open.
 **Remote trap:** locally `origin` is the personal fork `yovneeshkhadun/VYNKAER`, one commit behind. Always fetch, push and PR against `nexova`.
 
@@ -31,9 +31,10 @@ OSMIUM — *Private Human Performance Intelligence*, by Nexova Labs — is the r
 | `a4a09a0` | Launcher icon, splash, adaptive-icon layers, monochrome layer and favicon regenerated from the SVGs; `app.json` backgrounds → `#000000` |
 | `f8536d7` | Documentation refresh (all `.md` files) plus this résumé |
 | `8459da0` | **Phase 1 task 3, colours:** `tokens.ts` exports `osmiumColors`; copper hero glow removed from `home.tsx`; tab tint → instrument blue; new `onAccent` token so text on blue fills passes AA; docs updated |
-| *this commit* | **Phase 1 task 4, typography:** Inter + Instrument Serif installed and loaded; Cinzel/EB Garamond removed; `src/components/Text.tsx` (`Text`/`TextInput` wrappers) adopted in 20 files with an ESLint guard; `title`/`heroTitle`/`doctrine`/`eyebrow` retuned; four sub-11px text styles raised to 11; docs updated |
+| `00b6b77` | **Phase 1 task 4, typography:** Inter + Instrument Serif installed and loaded; Cinzel/EB Garamond removed; `src/components/Text.tsx` (`Text`/`TextInput` wrappers) adopted in 20 files with an ESLint guard; `title`/`heroTitle`/`doctrine`/`eyebrow` retuned; four sub-11px text styles raised to 11; docs updated |
+| *this commit* | **Phase 1 task 5, four-destination navigation:** `(tabs)` is today / training / progress / recovery; `coach` is a modal and `settings` a stack route, both one tap from every tab via `TabHeader`; Recovery shell (logged values only, no scores); Today gains a "How are you feeling today?" prompt that opens the Coach; stale links and copy updated; docs updated |
 
-**Not touched:** `src/engine/`, `src/state/`, `src/services/`, `package.json`, the lockfile, and all `vynkaer.*` storage keys. The running UI now uses OSMIUM **colours and fonts**, but is otherwise still VYNKÆR: old radii and spacing, grain texture, Crest, "VYNKÆR" copy, 5 tabs. (Task 4 also touched `app/`, `src/components/`, `src/features/`, `src/state/AppStateContext.tsx` only for the `Text` import, plus `package.json`, the lockfile and `eslint.config.js`.)
+**Not touched:** `src/engine/`, `src/state/`, `src/services/`, `package.json`, the lockfile, and all `vynkaer.*` storage keys. The running UI now uses OSMIUM **colours and fonts**, and four-destination navigation, but is otherwise still VYNKÆR: old radii and spacing, grain texture, Crest, "VYNKÆR" copy, separate Today and Coach content (Coach is a modal). (Task 4 also touched `app/`, `src/components/`, `src/features/`, `src/state/AppStateContext.tsx` only for the `Text` import, plus `package.json`, the lockfile and `eslint.config.js`.)
 
 ## 4. Verification (latest runs)
 
@@ -75,7 +76,7 @@ Full table in [CODEBASE_AUDIT.md §5](CODEBASE_AUDIT.md). The two that matter fi
 
 ## 8. Next plan
 
-Order from [TOMORROW_START_HERE.md](TOMORROW_START_HERE.md): (1) fix D1/D2 test-first; (2) toolchain hygiene to a clean `expo-doctor`; (3) ~~switch runtime colours~~ **done 4 Nov**; (4) ~~install fonts and switch type roles~~ **done 4 Nov**; (5) four-tab shell with a Recovery empty state, Settings and Coach modal. Then roadmap steps 4–12.
+Order from [TOMORROW_START_HERE.md](TOMORROW_START_HERE.md): (1) fix D1/D2 test-first; (2) toolchain hygiene to a clean `expo-doctor`; (3) ~~switch runtime colours~~ **done 4 Nov**; (4) ~~install fonts and switch type roles~~ **done 4 Nov**; (5) ~~four-tab shell~~ **done 4 Nov**. Next: fix D1/D2 (pre-flight), then roadmap step 4 (Today/Coach merge) onward.
 
 ## 9. Standing rules
 

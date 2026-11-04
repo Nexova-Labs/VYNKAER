@@ -37,24 +37,20 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
-        options={{ title: 'HOME', tabBarIcon: TabIcon('home-outline', 'home') }}
+        name="today"
+        options={{ title: 'TODAY', tabBarIcon: TabIcon('sunny-outline', 'sunny') }}
       />
       <Tabs.Screen
-        name="train"
-        options={{ title: 'TRAIN', tabBarIcon: TabIcon('barbell-outline', 'barbell') }}
+        name="training"
+        options={{ title: 'TRAINING', tabBarIcon: TabIcon('barbell-outline', 'barbell') }}
       />
       <Tabs.Screen
         name="progress"
         options={{ title: 'PROGRESS', tabBarIcon: TabIcon('trending-up-outline', 'trending-up') }}
       />
       <Tabs.Screen
-        name="coach"
-        options={{ title: 'COACH', tabBarIcon: TabIcon('chatbubble-ellipses-outline', 'chatbubble-ellipses') }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{ title: 'PROFILE', tabBarIcon: TabIcon('person-outline', 'person') }}
+        name="recovery"
+        options={{ title: 'RECOVERY', tabBarIcon: TabIcon('moon-outline', 'moon') }}
       />
     </Tabs>
   );

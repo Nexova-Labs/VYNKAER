@@ -27,7 +27,7 @@ export default function WorkoutCompleteScreen() {
         <Text style={styles.savedBody}>
           {saved} sets recorded. Progression and modality have been recalculated for your next workout.
         </Text>
-        <Button label="Return Home" onPress={() => router.replace('/(tabs)/home')} fullWidth style={{ marginTop: spacing.xxl }} />
+        <Button label="Return to Today" onPress={() => router.replace('/(tabs)/today')} fullWidth style={{ marginTop: spacing.xxl }} />
       </ScreenContainer>
     );
   }
@@ -36,7 +36,7 @@ export default function WorkoutCompleteScreen() {
     return (
       <ScreenContainer scroll={false} contentStyle={styles.centerFill}>
         <EmptyState title="No session to finish" body="There is no active workout right now." />
-        <Button label="Back to Home" onPress={() => router.replace('/(tabs)/home')} style={{ marginTop: spacing.lg }} />
+        <Button label="Back to Today" onPress={() => router.replace('/(tabs)/today')} style={{ marginTop: spacing.lg }} />
       </ScreenContainer>
     );
   }

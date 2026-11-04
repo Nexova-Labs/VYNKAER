@@ -41,15 +41,15 @@ npm run test         # 42 unit tests covering the training engine
 
 ### Resetting the seeded demo data
 
-Open **Profile → Data → Reset demo data**. This restores Athlete 001, the 13-session seed history, and the seeded training state, and clears any in-progress workout.
+Open **Settings** (gear icon in any tab header) → **Data → Reset demo data**. This restores Athlete 001, the 13-session seed history, and the seeded training state, and clears any in-progress workout.
 
 ## The demo flow
 
-1. Launch → onboarding (skippable) → Home.
-2. Home shows Workout 14, already generated from the seeded history, with a plain-English explanation of why (modality rotation, which lifts are progressing, why cardio moved from 18 to 20 minutes, the current push-up milestone).
-3. **Start Workout** → Train: log sets, adjust weight/reps, use the rest timer, skip or substitute an exercise.
+1. Launch → onboarding (skippable) → Today.
+2. Today shows Workout 14, already generated from the seeded history, with a plain-English explanation of why (modality rotation, which lifts are progressing, why cardio moved from 18 to 20 minutes, the current push-up milestone).
+3. **Start Workout** → Training: log sets, adjust weight/reps, use the rest timer, skip or substitute an exercise.
 4. **Finish & Save** → rate session effort, knee/limitation before and after, cardio minutes → **Session Logged**.
-5. Back on Home, the workout number has advanced, modality has rotated, and load recommendations reflect what was just logged.
+5. Back on Today, the workout number has advanced, modality has rotated, and load recommendations reflect what was just logged.
 6. Progress reflects the new session immediately (strength trend chart, volume, adherence).
 7. Coach can propose a change (e.g. "I only have 40 minutes") — nothing is modified until **APPLY CHANGE** is tapped.
 8. Close and reopen the app — an in-progress workout, or the freshly generated next one, is exactly where you left it.

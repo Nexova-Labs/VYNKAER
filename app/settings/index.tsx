@@ -2,7 +2,9 @@ import React, { useCallback } from 'react';
 import { Alert, Pressable, StyleSheet, Switch, View } from 'react-native';
 import { Text } from '../../src/components/Text';
 
-import { Button, Card, Pill, ScreenContainer, SectionHeader } from '../../src/components';
+import { useRouter } from 'expo-router';
+
+import { Button, Card, IconButton, Pill, ScreenContainer, SectionHeader } from '../../src/components';
 import { useAppState } from '../../src/state';
 import { colors, radius, spacing, typography } from '../../src/theme';
 import { formatRepRange, modalityLabel } from '../../src/utils/format';
@@ -56,8 +58,13 @@ function Chip({
   );
 }
 
-export default function ProfileScreen() {
+export default function SettingsScreen() {
+  const router = useRouter();
   const { profile, trainingState, updateProfile, resetDemoData } = useAppState();
+  const goBack = useCallback(() => {
+    if (router.canGoBack()) router.back();
+    else router.replace('/(tabs)/today');
+  }, [router]);
 
   const setSessionsPerWeek = useCallback(
     (delta: number) => {
@@ -99,8 +106,11 @@ export default function ProfileScreen() {
 
   return (
     <ScreenContainer>
+      <View style={styles.backRow}>
+        <IconButton name="chevron-back" label="Back" onPress={goBack} />
+      </View>
       <View style={styles.header}>
-        <Text style={styles.eyebrow}>Athlete profile</Text>
+        <Text style={styles.eyebrow}>Settings · Athlete profile</Text>
         <Text style={styles.title}>The rules behind the workouts.</Text>
         <Text style={styles.subtitle}>These preferences shape generation and progression.</Text>
       </View>
@@ -293,8 +303,11 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  backRow: {
+    marginLeft: -spacing.sm,
+  },
   header: {
-    paddingTop: spacing.xl,
+    paddingTop: spacing.sm,
     marginBottom: spacing.sm,
   },
   eyebrow: {

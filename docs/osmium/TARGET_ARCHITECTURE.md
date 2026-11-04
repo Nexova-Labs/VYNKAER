@@ -43,7 +43,9 @@
 
 ## 3. Navigation
 
-### Current (verified)
+### Current (updated 4 Nov 2026: **implemented**)
+
+The four-destination shell below is built: `(tabs)/` has today, training, progress, recovery; `coach/` (modal) and `settings/` are stack routes; `TabHeader` gives Coach and Settings access from every tab. The paragraph that follows describes the pre-change five-tab layout.
 `app/(tabs)/_layout.tsx` has 5 tabs: home, train, progress, coach, profile. Stack routes: onboarding, workout/complete, exercise/[id]. Typed routes are on.
 
 ### Target
@@ -53,7 +55,7 @@ app/
   index.tsx                    (redirect → onboarding | (tabs)/today)
   onboarding/index.tsx         (rewritten copy)
   (tabs)/_layout.tsx           4 tabs: Today · Training · Progress · Recovery
-  (tabs)/today.tsx             ← home.tsx + coach.tsx
+  (tabs)/today.tsx             ← home.tsx, with a "How are you feeling today?" prompt that opens the coach modal (coach.tsx became the modal)
   (tabs)/training.tsx          ← train.tsx
   (tabs)/progress.tsx          (kept)
   (tabs)/recovery.tsx          new
