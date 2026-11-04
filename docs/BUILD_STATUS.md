@@ -53,4 +53,4 @@ Verification: `npx tsc --noEmit` and `npx expo lint` clean, `npx jest src/engine
 
 ## OSMIUM migration, Phase 0 (2026-11-03 / 04)
 
-V1 is unchanged functionally. Phase 0 added the OSMIUM audit, design system spec, architecture and roadmap under [`osmium/`](osmium/), a parallel token module (`src/theme/osmium.ts`, not yet imported), draft SVG logo masters, OSMIUM app identifiers and launcher/splash/favicon images. Checks after Phase 0: typecheck ✅, lint ✅, 42/42 tests ✅, `expo-doctor` 3 pre-existing failures. See [osmium/PROJECT_STATUS.md](osmium/PROJECT_STATUS.md).
+V1 is unchanged functionally. Phase 0 added the OSMIUM audit, design system spec, architecture and roadmap under [`osmium/`](osmium/), a parallel token module (`src/theme/osmium.ts`, not yet imported), draft SVG logo masters, OSMIUM app identifiers and launcher/splash/favicon images. Checks after Phase 0: typecheck ✅, lint ✅, 42/42 tests ✅, `expo-doctor` 3 pre-existing failures. On 2026-11-04 the runtime colours were switched to the OSMIUM palette (Phase 1 task 3; copper hero glow removed, `onAccent` token added), verified on the web target. See [osmium/PROJECT_STATUS.md](osmium/PROJECT_STATUS.md).

@@ -9,7 +9,7 @@
 
 **Start with [PROJECT_STATUS.md](PROJECT_STATUS.md), the overall résumé.**
 
-This folder is the hand-off between Phase 0 (audit and preparation, tonight) and Phase 1 (implementation, from 4 November). The in-app UI is unchanged: it still boots as VYNKÆR Training with the copper theme. Beyond the docs, the branch adds a parallel token module that nothing imports (`src/theme/osmium.ts`), the three approved logo PNGs (reference), draft SVG logo masters, OSMIUM app identifiers and OSMIUM launcher/splash/favicon images (see [PROJECT_STATUS.md](PROJECT_STATUS.md)).
+This folder is the hand-off between Phase 0 (audit and preparation, tonight) and Phase 1 (implementation, from 4 November). The in-app **colours are now OSMIUM** (`src/theme/osmium.ts` is live through `tokens.ts`); screens, typography, navigation and copy are still VYNKÆR. Beyond the docs, the branch adds the three approved logo PNGs (reference), draft SVG logo masters, OSMIUM app identifiers and launcher/splash/favicon images (see [PROJECT_STATUS.md](PROJECT_STATUS.md)).
 
 ## Read in this order
 

@@ -1,21 +1,18 @@
 // OSMIUM design tokens — Phase 0, parallel module. NOT yet wired into the app.
 //
-// The running app still reads `./tokens` (VYNKÆR copper). This file is the
-// approved OSMIUM palette (Brand Identity & Design System v2, 3 Nov 2026)
-// shaped so the Phase 1 swap is mechanical: `osmiumColors` carries exactly the
-// same keys as the legacy `colors` object (enforced by `satisfies` below), so
-// every existing `colors.x` call site keeps compiling when tokens.ts switches
-// over. Spec, rationale and contrast measurements: docs/osmium/DESIGN_SYSTEM_V2.md.
+// The approved OSMIUM palette (Brand Identity & Design System v2, 3 Nov 2026).
+// `./tokens` re-exports `osmiumColors` as `colors` (switched on in Phase 1 step 1),
+// so every screen picks the palette up through the existing `colors.x` keys. The key
+// set is enforced by `satisfies Record<OsmiumColorKey, string>` below.
+// Spec, rationale and contrast measurements: docs/osmium/DESIGN_SYSTEM_V2.md.
 //
 // Provenance markers used in comments:
 //   [approved] — a locked brand value from the v2 design system.
 //   [derived]  — chosen during Phase 0 to fill a role the brand doc does not
 //                name; needs design sign-off before it is treated as locked.
 //
-// Deliberately not exported from `src/theme/index.ts` so nothing in the app can
-// pick it up by accident before the Phase 1 migration.
-
-import type { colors as legacyColors } from './tokens';
+// Only the color tokens are active so far; type, spacing, radius, motion and the
+// other exports below are still prepared-but-unused (Phase 1 step 2).
 
 /** The six approved brand colors plus the logo-silver fallback. */
 export const osmiumPalette = {
@@ -28,7 +25,16 @@ export const osmiumPalette = {
   logoSilver: '#E2E5E8', // [approved] monochrome logo fallback only — not a UI text color
 } as const;
 
-// Same key set as the legacy `colors` so Phase 1 is a one-line swap.
+/** The semantic color keys screens and components read. Mirrors the pre-OSMIUM `colors` object. */
+export type OsmiumColorKey =
+  | 'background' | 'backgroundElevated' | 'panel' | 'panelElevated' | 'panel2' | 'controlBg'
+  | 'border' | 'borderSubtle' | 'textPrimary' | 'textSecondary' | 'textTertiary'
+  | 'accent' | 'accentStrong' | 'accentSoft' | 'accentSurface' | 'accentBorder'
+  | 'success' | 'successSurface' | 'warning' | 'warningSurface' | 'danger' | 'dangerSurface'
+  | 'onAccent' | 'bloodOath' | 'bloodOathSurface' | 'bloodOathBorder' | 'overlay' | 'white';
+
+// Same key set as the legacy VYNKÆR `colors` object, so `tokens.ts` can re-export
+// this as `colors` and every existing `colors.x` call site keeps compiling.
 // Measured WCAG contrast ratios are recorded in DESIGN_SYSTEM_V2.md §3.
 export const osmiumColors = {
   background: osmiumPalette.obsidian,
@@ -53,6 +59,10 @@ export const osmiumColors = {
   accentSurface: '#0D1620', // [derived] instrument-blue tinted well for explanation/notice blocks
   accentBorder: '#22374A', // [derived]
 
+  // Text/icons drawn ON an instrument-blue fill. Obsidian is 7.47:1 on #6E9FC9; white would be
+  // only ~2.9:1 and fail AA, so never use `white` on `accent`.
+  onAccent: osmiumPalette.obsidian,
+
   // Semantic colors are independent of the brand accent and exist for safety
   // and usability only.
   success: '#7FAE8C', // [derived]
@@ -70,7 +80,7 @@ export const osmiumColors = {
 
   overlay: 'rgba(0,0,0,0.72)',
   white: '#ffffff',
-} as const satisfies Record<keyof typeof legacyColors, string>;
+} as const satisfies Record<OsmiumColorKey, string>;
 
 /**
  * Typography roles. Font families are PROPOSED open-licence stand-ins for the

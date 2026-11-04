@@ -115,7 +115,7 @@ components:
 
 # Design System: VYNKÆR Training
 
-> **Superseded for colour and typography** by [docs/osmium/DESIGN_SYSTEM_V2.md](docs/osmium/DESIGN_SYSTEM_V2.md) (OSMIUM, approved 3 Nov 2026). This document still describes the code that is running today. Its structural rules (Recessed/Raised Rule, Measured-Value Rule, Single Fill / One Shadow rules) carry forward; the copper/rust palette, Cinzel/Garamond type and the grain/glow treatments are being retired in Phase 1.
+> **Superseded for colour and typography** by [docs/osmium/DESIGN_SYSTEM_V2.md](docs/osmium/DESIGN_SYSTEM_V2.md) (OSMIUM, approved 3 Nov 2026). Since 4 Nov 2026 the running colours are the OSMIUM palette (`src/theme/tokens.ts` exports `osmiumColors`), so every copper/rust hex, "hero glow" and `faded-copper-glow` reference below is **historical**; typography, spacing and components still match this document. Its structural rules (Recessed/Raised Rule, Measured-Value Rule, Single Fill / One Shadow rules) carry forward; the copper/rust palette, Cinzel/Garamond type and the grain/glow treatments are being retired in Phase 1.
 
 ## Overview
 

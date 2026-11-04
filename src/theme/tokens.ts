@@ -1,49 +1,10 @@
-// VYNKÆR design tokens — dark, restrained, copper-accented.
-// One source of truth for color/spacing/typography across the app.
-// Palette calibrated against the VYNKÆR Apparel Brand Bible (Collection 001
-// — Forged Soul): Obsidian/Charcoal dominate 80-90% of any frame, Oxide
-// Copper is the premium/UI accent, Blood Oath red is reserved for the rare
-// "energy" mark (danger/critical states only — see DESIGN.md).
-export const colors = {
-  background: '#0a0a0b', // Obsidian #0A0A0B
-  backgroundElevated: '#111114',
-  panel: '#141417',
-  panelElevated: '#191a1e',
-  panel2: '#1c1c21', // Charcoal #202023 register
-  controlBg: '#2a2a2b', // Raised control surface — sits lighter than a card, for
-  // buttons/steppers/chips that live *on* a card and must read as interactive
-  // rather than informational (see colors.backgroundElevated for the inverse
-  // "recessed well" register used by inset readouts, tags and progress tracks).
-  border: '#26262c',
-  borderSubtle: '#1e1e23',
+// Design tokens. Colors are the approved OSMIUM palette (src/theme/osmium.ts,
+// docs/osmium/DESIGN_SYSTEM_V2.md): obsidian/graphite/gunmetal surfaces, silver and
+// titanium text, instrument blue as the restrained interaction signal. Type, spacing,
+// radius and motion below are still the VYNKÆR values until Phase 1 step 2.
+import { osmiumColors } from './osmium';
 
-  textPrimary: '#efe9e2', // Ash #B8B1A7 register, lifted for body-copy contrast
-  textSecondary: '#9a948d',
-  textTertiary: '#6c6a68',
-
-  accent: '#975a36', // Oxide Copper #975A36
-  accentStrong: '#b97140',
-  accentSoft: '#d9a578',
-  accentSurface: '#1d1614',
-  accentBorder: '#3b302d',
-
-  success: '#7ea583',
-  successSurface: '#182420',
-  warning: '#c98a4b',
-  warningSurface: '#241d15',
-
-  // Blood Oath red — the brand's primary accent, rationed to danger/critical
-  // states and the odd campaign-style mark. Never a second competing "warm"
-  // fill alongside Oxide Copper on the same screen.
-  danger: '#b23c42',
-  dangerSurface: '#241414',
-  bloodOath: '#98181d',
-  bloodOathSurface: '#1e1112',
-  bloodOathBorder: '#3d2224',
-
-  overlay: 'rgba(5,5,6,0.72)',
-  white: '#ffffff',
-} as const;
+export const colors = osmiumColors;
 
 // Three-typeface system (DESIGN.md "The Measured-Value Rule" + brand-bible
 // typography system): Cinzel for display/collection moments (wide tracking,

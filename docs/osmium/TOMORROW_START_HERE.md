@@ -3,8 +3,8 @@
 ## Where things stand
 
 - **Branch:** `feature/osmium-foundation-2026-11-03` on `Nexova-Labs/VYNKAER` (remote `nexova`). Base `8a81ce5` = `nexova/main`. `main` is untouched.
-- **App state:** in-app UI unchanged (VYNKÆR screens, copper tokens). typecheck ✅, lint ✅, 42/42 tests ✅; `expo-doctor` has 3 pre-existing failures. See `git log` for the latest commit.
-- **Added so far:** `docs/osmium/*`, `src/theme/osmium.ts` (not imported), approved logo PNGs (reference), draft SVG masters (`assets/brand/osmium/source/`), OSMIUM `app.json` identifiers, and OSMIUM launcher icon / splash / favicon (draft artwork regenerated from the SVGs; not verified on a device).
+- **App state:** in-app **colours are OSMIUM** (task 3 done); screens, type, navigation and copy are still VYNKÆR. typecheck ✅, lint ✅, 42/42 tests ✅; `expo-doctor` has 3 pre-existing failures. See `git log` for the latest commit.
+- **Added so far:** `docs/osmium/*`, `src/theme/osmium.ts` (now live via `tokens.ts`), approved logo PNGs (reference), draft SVG masters (`assets/brand/osmium/source/`), OSMIUM `app.json` identifiers, and OSMIUM launcher icon / splash / favicon (draft artwork regenerated from the SVGs; not verified on a device).
 - **Remote naming trap:** locally, `origin` is the personal fork `yovneeshkhadun/VYNKAER`, which is **one commit behind**. Push and PR against `nexova`. Run `git fetch nexova` before starting.
 
 ## Before writing code
@@ -48,7 +48,9 @@ npm run typecheck && npm run lint && npm run test -- --runInBand
 - **Acceptance criteria:** `npx expo-doctor` reports 0 failed checks; typecheck, lint and tests are clean; `npm audit --omit=dev` re-run and the delta recorded in CODEBASE_AUDIT.md §7.3.
 - **Verify:** the commands above, plus `npm run web` boots and Home renders (Reanimated `FadeInUp` still animates).
 
-## Task 3: Activate OSMIUM colour tokens
+## Task 3: Activate OSMIUM colour tokens: **DONE 4 Nov 2026**
+
+> Implemented as written, plus a new `onAccent` token (text on blue fills was white at ~2.9:1). Browser-audited at 375×812 on Home, Train (active workout), Progress, Coach and Profile: no warm hues except the intentional red danger border, and no text below 4.5:1. Not re-checked: `workout/complete`, `exercise/[id]` (covered by typecheck and the `onAccent` fix only).
 
 - **Files likely to change**
   - `src/theme/tokens.ts`: `export const colors = osmiumColors` (import from `./osmium`), and update the header comment

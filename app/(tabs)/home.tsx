@@ -1,16 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   Easing,
   FadeInDown,
   FadeInUp,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withSequence,
-  withTiming,
 } from 'react-native-reanimated';
 
 import { Button, Card, CardHeader, Crest, EmptyState, Pill, ScreenContainer, SectionHeader, StatTile } from '../../src/components';
@@ -52,7 +46,6 @@ export default function HomeScreen() {
       {activeWorkout ? (
         <Animated.View entering={FadeInUp.duration(420).easing(Easing.out(Easing.cubic))}>
           <Card elevated style={styles.hero}>
-            <HeroGlow />
             <View style={styles.heroCrest}>
               <Crest size={40} tone="copper" />
             </View>
@@ -66,7 +59,6 @@ export default function HomeScreen() {
       ) : currentPlan ? (
         <Animated.View entering={FadeInUp.duration(420).easing(Easing.out(Easing.cubic))}>
           <Card elevated style={styles.hero}>
-            <HeroGlow />
             <View style={styles.heroCrest}>
               <Crest size={40} tone="copper" />
             </View>
@@ -140,38 +132,6 @@ export default function HomeScreen() {
   );
 }
 
-// The system's one signature flourish (DESIGN.md Overview): a single soft
-// copper glow, always this one corner, never repeated elsewhere on screen.
-// Breathes slowly rather than sitting static — "ambient warmth," per DESIGN.md.
-function HeroGlow() {
-  const breath = useSharedValue(0.75);
-
-  useEffect(() => {
-    breath.value = withRepeat(
-      withSequence(
-        withTiming(1, { duration: 2600, easing: Easing.inOut(Easing.sin) }),
-        withTiming(0.75, { duration: 2600, easing: Easing.inOut(Easing.sin) })
-      ),
-      -1,
-      false
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- `breath` is a stable Reanimated shared-value ref.
-  }, []);
-
-  const animatedStyle = useAnimatedStyle(() => ({ opacity: breath.value }));
-
-  return (
-    <Animated.View style={[styles.heroGlow, animatedStyle]} pointerEvents="none">
-      <LinearGradient
-        colors={['rgba(183,90,55,0.32)', 'rgba(183,90,55,0)']}
-        start={{ x: 0.9, y: 0.05 }}
-        end={{ x: 0.35, y: 0.75 }}
-        style={StyleSheet.absoluteFill}
-      />
-    </Animated.View>
-  );
-}
-
 function MetaChip({ label }: { label: string }) {
   return (
     <View style={styles.metaChip}>
@@ -224,15 +184,6 @@ const styles = StyleSheet.create({
   },
   hero: {
     marginBottom: spacing.lg,
-    overflow: 'hidden',
-  },
-  heroGlow: {
-    position: 'absolute',
-    top: -60,
-    right: -60,
-    width: 220,
-    height: 220,
-    borderRadius: 110,
     overflow: 'hidden',
   },
   heroCrest: {

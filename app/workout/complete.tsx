@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   rpeDotLabelActive: {
-    color: colors.white,
+    color: colors.onAccent,
   },
   savedEyebrow: {
     ...typography.eyebrow,

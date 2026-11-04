@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-> **OSMIUM migration in progress (branch `feature/osmium-foundation-2026-11-03`).** Read [docs/osmium/PROJECT_STATUS.md](docs/osmium/PROJECT_STATUS.md) first. Standing rules for this migration: do not modify `src/engine/` (additive types only, tests first); keep the `vynkaer.*` AsyncStorage keys; never add an AI key to the bundle; every consequential coach change needs explicit approval; no fabricated recovery or performance data. `src/theme/osmium.ts` holds the approved OSMIUM tokens (same keys as `colors`, not yet imported by the app).
+> **OSMIUM migration in progress (branch `feature/osmium-foundation-2026-11-03`).** Read [docs/osmium/PROJECT_STATUS.md](docs/osmium/PROJECT_STATUS.md) first. Standing rules for this migration: do not modify `src/engine/` (additive types only, tests first); keep the `vynkaer.*` AsyncStorage keys; never add an AI key to the bundle; every consequential coach change needs explicit approval; no fabricated recovery or performance data. `src/theme/osmium.ts` holds the approved OSMIUM tokens; its colours are live (`tokens.ts` exports `colors = osmiumColors`). Type, spacing, radius and motion are still VYNKÆR values. Never put `colors.white` text on `colors.accent` (fails AA); use `colors.onAccent`.
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -50,7 +50,7 @@ src/components   Generic, theme-driven UI primitives (Card, CardHeader, Button, 
 src/features     Screen-specific but multi-file UI (currently just workout/: SetRow, ExerciseCard,
                  RestTimer, SessionProgress, used by app/(tabs)/train.tsx).
 src/theme        Design tokens (colors, spacing, radius, typography). Screens should not hardcode
-                 colors/spacing — pull from here so the dark/copper language stays consistent.
+                 colors/spacing — pull from here so the dark OSMIUM black/graphite/blue language stays consistent.
 app/             Expo Router file-based routes. app/(tabs)/ is the five-tab shell (home, train,
                  progress, coach, profile). app/workout/complete.tsx is the post-session feedback
                  form. app/exercise/[id].tsx is the per-exercise history drill-down from Progress.

@@ -4,7 +4,7 @@ Verdicts: **Retain** = keep as is · **Refactor** = same capability, restructure
 
 The evidence for every "exists today" claim is in [CODEBASE_AUDIT.md](CODEBASE_AUDIT.md).
 
-> **Status (4 Nov 2026):** verdicts unchanged. Brand identity is partly applied (identifiers, launcher/splash/favicon drafts); everything else is still to do. See [PROJECT_STATUS.md](PROJECT_STATUS.md).
+> **Status (4 Nov 2026):** verdicts unchanged. Brand identity is partly applied (identifiers, launcher/splash/favicon drafts, runtime colour tokens); everything else is still to do. See [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
 ## Summary
 

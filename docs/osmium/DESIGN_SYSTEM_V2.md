@@ -1,7 +1,7 @@
 # OSMIUM design system — v2 implementation spec
 
 **Governing source:** *OSMIUM Brand Identity & Design System v2* (approved 3 Nov 2026). It supersedes *REBORN Design System v1* and, for color and typography, the VYNKÆR system in [`/DESIGN.md`](../../DESIGN.md).
-**Code:** [`src/theme/osmium.ts`](../../src/theme/osmium.ts). This is a parallel module and **is not imported by the app yet**.
+**Code:** [`src/theme/osmium.ts`](../../src/theme/osmium.ts). **Colours are live** (`src/theme/tokens.ts` exports `colors = osmiumColors`, switched on 4 Nov 2026); the type, spacing, radius, elevation and motion exports are prepared but not yet used.
 **Status:** Values marked *approved* are locked. Values marked *derived* were chosen in Phase 0 to fill roles that v2 doesn't name, and need design sign-off.
 
 ---
@@ -61,6 +61,7 @@ The Recessed/Raised Rule from `/DESIGN.md` carries forward unchanged. Inside a C
 | `accent` | `#975a36` copper | `#6E9FC9` | approved Instrument Blue |
 | `accentStrong` | `#b97140` | `#8DB5D8` | derived. Pressed/emphasis |
 | `accentSoft` | `#d9a578` | `#C5CBD0` | **Intentionally titanium.** See §3.3 |
+| `onAccent` | *(new)* | `#000000` | **New token.** Text/icons drawn on an instrument-blue fill: 7.47:1. White on blue is only ~2.9:1 and fails AA, so `colors.white` must never sit on `colors.accent` |
 | `accentSurface` | `#1d1614` | `#0D1620` | derived. Explanation/notice wells |
 | `accentBorder` | `#3b302d` | `#22374A` | derived |
 
@@ -192,7 +193,7 @@ Every component must ship the full state set (§1) including **insufficient data
 
 | Treatment | Where | Action |
 |---|---|---|
-| Copper hero glow (`rgba(183,90,55,…)` LinearGradient) | `app/(tabs)/home.tsx:166` (the only hard-coded colour outside tokens) | Remove |
+| Copper hero glow (`rgba(183,90,55,…)` LinearGradient) | `app/(tabs)/home.tsx:166` (the only hard-coded colour outside tokens) | **Removed 4 Nov** (component, styles and unused imports) |
 | Gradient under trend line | `app/(tabs)/progress.tsx` | Replace with flat stroke + real gridlines |
 | Grain texture | `src/components/GrainTexture.tsx` via `ScreenContainer` | Remove |
 | Crest mark | `src/components/Crest.tsx` (Home, onboarding) | Replace with EclipseMark |

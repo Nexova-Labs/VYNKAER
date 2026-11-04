@@ -70,7 +70,7 @@ export function Button({
       ]}
     >
       {loading ? (
-        <ActivityIndicator color={variant === 'primary' ? colors.white : colors.textPrimary} />
+        <ActivityIndicator color={variant === 'primary' ? colors.onAccent : colors.textPrimary} />
       ) : (
         <Text
           style={[
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   labelOnAccent: {
-    color: colors.white,
+    color: colors.onAccent,
   },
   labelOnPanel: {
     color: colors.textPrimary,

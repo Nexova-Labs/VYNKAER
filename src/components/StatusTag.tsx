@@ -19,7 +19,7 @@ export function StatusTag({ label, tone }: { label: string; tone: StatusTagTone 
 
 const tones: Record<StatusTagTone, { bg: string; text: string }> = {
   done: { bg: colors.controlBg, text: colors.textSecondary },
-  current: { bg: colors.accent, text: colors.white },
+  current: { bg: colors.accent, text: colors.onAccent },
   queued: { bg: colors.backgroundElevated, text: colors.textTertiary },
 };
 
