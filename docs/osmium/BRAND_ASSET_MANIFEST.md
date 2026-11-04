@@ -34,7 +34,7 @@ On 4 Nov the owner asked for the masters to be redrawn in-house. Five SVGs now l
 3. Confirm the luminous master's filters render the same in the native pipeline (react-native-svg supports masks and gradients but not all filters; the app-side component may need a pre-rasterised bloom or a simplified variant).
 4. Test the small variant on device at 16/24/32/64/128 px.
 
-`assets/*.png` and `app.json` icon/splash paths are **unchanged**. Replacing them is import-checklist step 3 onward, after sign-off. Nothing in the app imports these SVGs yet.
+**Applied 4 Nov 2026 (owner approved "replace"):** the six launcher/splash PNGs in `assets/` were regenerated from these draft SVGs (same filenames, so `app.json` paths are unchanged) and the `app.json` background colours are now `#000000`. The VYNKÆR crest versions remain in git history (commit `680637a`). Specs used: `icon.png` 1024² RGB (no alpha, symbol 75% of canvas); `splash-icon.png` 1024² transparent; `android-icon-foreground.png` 1024² transparent, symbol inside the 66% safe zone; `android-icon-background.png` flat `#000000`; `android-icon-monochrome.png` flat mono; `favicon.png` 256² from the small variant. These are **draft** icons: swap in the signed-off masters when ready. Not yet checked on a device or in an EAS build. The in-app `Crest` component and the "VYNKÆR" text are still VYNKÆR.
 
 ## 2. Current VYNKÆR assets → OSMIUM replacements
 
