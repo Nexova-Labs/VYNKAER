@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Text } from '../../src/components/Text';
 import { useRouter } from 'expo-router';
 import Svg, { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
 

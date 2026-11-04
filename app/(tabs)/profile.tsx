@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import { Alert, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Switch, View } from 'react-native';
+import { Text } from '../../src/components/Text';
 
 import { Button, Card, Pill, ScreenContainer, SectionHeader } from '../../src/components';
 import { useAppState } from '../../src/state';

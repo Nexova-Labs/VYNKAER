@@ -11,7 +11,8 @@ This adds engineering detail to the hand-off *Product & Engineering Roadmap* (ph
 | Phase 0 (audit, docs, tokens module, brand drafts, identifiers, icons) | **Done** |
 | 0 Pre-flight | Not started (D1, D2, doctor findings still open) |
 | 1 Colour tokens | **Done 4 Nov** (`tokens.ts` → `osmiumColors`, hero glow removed, tab tint → blue, `onAccent` fix). Verified on web at 375×812 across all tabs plus an active workout; grain texture, Crest and gradients intentionally left for step 2 |
-| 2–12 | Not started |
+| 2 Shared components | **Started:** typography done 4 Nov (Inter/Instrument Serif installed, Cinzel/Garamond removed, `Text` wrapper + ESLint guard, sub-11pt text raised to 11). Not done: radii, spacing, motion, GrainTexture/Crest removal, reduced-motion, state variants |
+| 3–12 | Not started |
 
 ## Dependency graph
 

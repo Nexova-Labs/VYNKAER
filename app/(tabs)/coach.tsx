@@ -1,15 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Text, TextInput } from '../../src/components/Text';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button, Pill } from '../../src/components';
@@ -353,7 +344,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   diffColLabel: {
-    fontSize: 9,
+    fontSize: 11,
     fontWeight: '800',
     letterSpacing: 0.6,
     textTransform: 'uppercase',

@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Text } from '../../components/Text';
 
 import type { Exercise, ExerciseProgressionState, SetLog, WorkoutExercise } from '../../types';
 import { Button, Card, CardHeader, Pill } from '../../components';

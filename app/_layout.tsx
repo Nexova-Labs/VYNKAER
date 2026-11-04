@@ -9,31 +9,34 @@ import {
   IBMPlexMono_500Medium,
   IBMPlexMono_700Bold,
 } from '@expo-google-fonts/ibm-plex-mono';
-import { Cinzel_600SemiBold, Cinzel_700Bold } from '@expo-google-fonts/cinzel';
 import {
-  EBGaramond_500Medium,
-  EBGaramond_700Bold,
-  EBGaramond_500Medium_Italic,
-} from '@expo-google-fonts/eb-garamond';
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+} from '@expo-google-fonts/inter';
+import {
+  InstrumentSerif_400Regular,
+  InstrumentSerif_400Regular_Italic,
+} from '@expo-google-fonts/instrument-serif';
 
 import { AppStateProvider } from '../src/state';
 import { colors } from '../src/theme';
 
-// Held so the brand's three-typeface system (DESIGN.md "The Measured-Value
-// Rule" + brand-bible typography system — Cinzel display, EB Garamond
-// editorial, IBM Plex Mono numerals) is guaranteed loaded before any screen
-// renders.
+// Held so the OSMIUM type system (Inter UI, Instrument Serif display, IBM Plex Mono data;
+// docs/osmium/DESIGN_SYSTEM_V2.md §4) is loaded before any screen renders.
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
     IBMPlexMono_500Medium,
     IBMPlexMono_700Bold,
-    Cinzel_600SemiBold,
-    Cinzel_700Bold,
-    EBGaramond_500Medium,
-    EBGaramond_700Bold,
-    EBGaramond_500Medium_Italic,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    InstrumentSerif_400Regular,
+    InstrumentSerif_400Regular_Italic,
   });
 
   useEffect(() => {

@@ -3,7 +3,7 @@
 ## Where things stand
 
 - **Branch:** `feature/osmium-foundation-2026-11-03` on `Nexova-Labs/VYNKAER` (remote `nexova`). Base `8a81ce5` = `nexova/main`. `main` is untouched.
-- **App state:** in-app **colours are OSMIUM** (task 3 done); screens, type, navigation and copy are still VYNKÆR. typecheck ✅, lint ✅, 42/42 tests ✅; `expo-doctor` has 3 pre-existing failures. See `git log` for the latest commit.
+- **App state:** in-app **colours and fonts are OSMIUM** (tasks 3 and 4 done); screens, spacing/radii, navigation and copy are still VYNKÆR. typecheck ✅, lint ✅, 42/42 tests ✅; `expo-doctor` has 3 pre-existing failures. See `git log` for the latest commit.
 - **Added so far:** `docs/osmium/*`, `src/theme/osmium.ts` (now live via `tokens.ts`), approved logo PNGs (reference), draft SVG masters (`assets/brand/osmium/source/`), OSMIUM `app.json` identifiers, and OSMIUM launcher icon / splash / favicon (draft artwork regenerated from the SVGs; not verified on a device).
 - **Remote naming trap:** locally, `origin` is the personal fork `yovneeshkhadun/VYNKAER`, which is **one commit behind**. Push and PR against `nexova`. Run `git fetch nexova` before starting.
 
@@ -63,7 +63,9 @@ npm run typecheck && npm run lint && npm run test -- --runInBand
 - **Acceptance criteria:** `git grep -n "975a36\|b97140\|d9a578\|183,90,55"` → no hits in `src/` or `app/`; typecheck clean (proves key parity); each of the 5 screens plus onboarding, complete and exercise/[id] screenshotted at 375×812 with no clipped text and no invisible nested surfaces (the Recessed/Raised Rule).
 - **Verify:** `preview_start vynkaer-web` → walk onboarding → Home → Start → log a set → Finish → Progress → exercise detail → Coach (apply a proposal) → Profile; check the console for errors; take screenshots.
 
-## Task 4: Typography foundation (install alongside, then switch)
+## Task 4: Typography foundation (install alongside, then switch): **DONE 4 Nov 2026**
+
+> Done differently: the fonts were installed and switched in one step, Cinzel/EB Garamond were removed (no references remained), and `src/components/Text.tsx` maps `fontWeight` to static Inter files, enforced by an ESLint rule. Browser-checked at 375×812 on Home, Train, Progress, Coach, Profile and onboarding: only Inter / Instrument Serif / IBM Plex Mono / icon fonts render, no text under 11px, no horizontal overflow. Not opened: `workout/complete`, `exercise/[id]`. The criterion "Home hero ≤ 2 lines" holds (the serif title is one line).
 
 - **Files likely to change:** `package.json` (add `@expo-google-fonts/inter` and `@expo-google-fonts/instrument-serif`, after confirming both exist and work with SDK 57), `app/_layout.tsx` (`useFonts` adds the new faces; keep the old ones for now), `src/theme/tokens.ts` (`fontFamily` gains `ui`, `uiMedium`, `uiSemiBold`; `typography.eyebrow` → Inter 500 uppercase titanium; `title`/`heroTitle` → Instrument Serif; `numeral` keeps Plex Mono and adds `fontVariant: ['tabular-nums']`), plus the 7 files reading `fontFamily.*`.
 - **Intended behavior:** v2 hierarchy, with a display serif for human prompts, a neo-grotesk for everything else and tabular data numerals. No Cinzel visible.

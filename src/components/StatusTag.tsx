@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Text } from './Text';
 
 import { colors, radius, spacing } from '../theme';
 
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
   },
   label: {
-    fontSize: 9,
+    fontSize: 11,
     fontWeight: '800',
     letterSpacing: 0.8,
     textTransform: 'uppercase',

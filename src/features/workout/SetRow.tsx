@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Text, TextInput } from '../../components/Text';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring } from 'react-native-reanimated';
 
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
   },
   unit: {
     ...typography.caption,
-    fontSize: 10,
+    fontSize: 11,
     flexShrink: 0,
   },
   check: {

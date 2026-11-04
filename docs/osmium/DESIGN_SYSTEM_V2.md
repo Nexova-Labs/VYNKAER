@@ -1,7 +1,7 @@
 # OSMIUM design system — v2 implementation spec
 
 **Governing source:** *OSMIUM Brand Identity & Design System v2* (approved 3 Nov 2026). It supersedes *REBORN Design System v1* and, for color and typography, the VYNKÆR system in [`/DESIGN.md`](../../DESIGN.md).
-**Code:** [`src/theme/osmium.ts`](../../src/theme/osmium.ts). **Colours are live** (`src/theme/tokens.ts` exports `colors = osmiumColors`, switched on 4 Nov 2026); the type, spacing, radius, elevation and motion exports are prepared but not yet used.
+**Code:** [`src/theme/osmium.ts`](../../src/theme/osmium.ts). **Colours and fonts are live** (`src/theme/tokens.ts` exports `colors = osmiumColors`, switched on 4 Nov 2026; font families switched later the same day); the type-scale, spacing, radius, elevation and motion exports are prepared but not yet used.
 **Status:** Values marked *approved* are locked. Values marked *derived* were chosen in Phase 0 to fill roles that v2 doesn't name, and need design sign-off.
 
 ---
@@ -110,7 +110,9 @@ Loaded in `app/_layout.tsx` via `@expo-google-fonts/*`, all SIL OFL:
 
 ### 4.2 OSMIUM roles → open-licence stand-ins
 
-**Decision (4 Nov 2026):** ship on the open stand-ins below now; licensing Canela / Neue Haas is deferred to before public launch. Not yet installed.
+**Decision (4 Nov 2026):** ship on the open stand-ins below now; licensing Canela / Neue Haas is deferred to before public launch. **Implemented 4 Nov:** `@expo-google-fonts/inter` 0.4.2 and `instrument-serif` 0.4.1 installed and loaded in `app/_layout.tsx`; `@expo-google-fonts/cinzel` and `eb-garamond` removed. IBM Plex Mono kept for data.
+
+**How it is wired (differs from the original plan):** static fonts ignore `fontWeight`, so each weight is its own family name (`fontFamily.ui/uiMedium/uiSemiBold/uiBold`). Rather than editing ~100 style blocks, `src/components/Text.tsx` exports `Text`/`TextInput` wrappers that map a style's `fontWeight` to the right Inter file; an ESLint `no-restricted-imports` rule forbids `Text`/`TextInput` from `react-native`. Legacy role names (`display`, `editorial*`) remain as aliases to the new families. Tabular numerals were not added because IBM Plex Mono is already monospaced; the `tabularNumerals` helper stays unused. Open: the larger v2 type scale (`osmiumTypeScale`) is not applied yet; only `title` (36/40), `heroTitle` (44/48), `doctrine` (19) and `eyebrow` changed.
 
 | v2 role | v2 reference | Proposed stand-in | Licence | Replaces |
 |---|---|---|---|---|

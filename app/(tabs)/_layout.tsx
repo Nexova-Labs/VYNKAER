@@ -2,7 +2,7 @@ import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import type { ColorValue } from 'react-native';
 
-import { colors } from '../../src/theme';
+import { colors, fontFamily } from '../../src/theme';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -30,8 +30,8 @@ export default function TabsLayout() {
           paddingBottom: 24,
         },
         tabBarLabelStyle: {
+          fontFamily: fontFamily.uiBold,
           fontSize: 11,
-          fontWeight: '700',
           letterSpacing: 0.4,
         },
       }}

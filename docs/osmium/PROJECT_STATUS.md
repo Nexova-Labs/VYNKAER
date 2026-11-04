@@ -1,6 +1,6 @@
 # OSMIUM — project status (overall résumé)
 
-**As of:** 4 November 2026 · **Phase:** 0 complete; Phase 1 step 1 (colours) done
+**As of:** 4 November 2026 · **Phase:** 0 complete; Phase 1 step 1 (colours) done; typography (part of step 2) done
 **Branch:** `feature/osmium-foundation-2026-11-03` on [`Nexova-Labs/VYNKAER`](https://github.com/Nexova-Labs/VYNKAER) (git remote `nexova`) · base `8a81ce5` (`nexova/main`) · `main` untouched, no PR open.
 **Remote trap:** locally `origin` is the personal fork `yovneeshkhadun/VYNKAER`, one commit behind. Always fetch, push and PR against `nexova`.
 
@@ -30,9 +30,10 @@ OSMIUM — *Private Human Performance Intelligence*, by Nexova Labs — is the r
 | `894c6e9` | `app.json` identifiers → OSMIUM (name, slug, scheme `osmium`; bundle/package `com.nexovalabs.osmium`); draft SVG masters |
 | `a4a09a0` | Launcher icon, splash, adaptive-icon layers, monochrome layer and favicon regenerated from the SVGs; `app.json` backgrounds → `#000000` |
 | `f8536d7` | Documentation refresh (all `.md` files) plus this résumé |
-| *this commit* | **Phase 1 task 3, colours:** `tokens.ts` exports `osmiumColors`; copper hero glow removed from `home.tsx`; tab tint → instrument blue; new `onAccent` token so text on blue fills passes AA; docs updated |
+| `8459da0` | **Phase 1 task 3, colours:** `tokens.ts` exports `osmiumColors`; copper hero glow removed from `home.tsx`; tab tint → instrument blue; new `onAccent` token so text on blue fills passes AA; docs updated |
+| *this commit* | **Phase 1 task 4, typography:** Inter + Instrument Serif installed and loaded; Cinzel/EB Garamond removed; `src/components/Text.tsx` (`Text`/`TextInput` wrappers) adopted in 20 files with an ESLint guard; `title`/`heroTitle`/`doctrine`/`eyebrow` retuned; four sub-11px text styles raised to 11; docs updated |
 
-**Not touched:** `src/engine/`, `src/state/`, `src/services/`, `package.json`, the lockfile, and all `vynkaer.*` storage keys. The running UI now uses OSMIUM **colours**, but is otherwise still VYNKÆR: Cinzel/Garamond type, old radii and spacing, grain texture, Crest, "VYNKÆR" copy, 5 tabs.
+**Not touched:** `src/engine/`, `src/state/`, `src/services/`, `package.json`, the lockfile, and all `vynkaer.*` storage keys. The running UI now uses OSMIUM **colours and fonts**, but is otherwise still VYNKÆR: old radii and spacing, grain texture, Crest, "VYNKÆR" copy, 5 tabs. (Task 4 also touched `app/`, `src/components/`, `src/features/`, `src/state/AppStateContext.tsx` only for the `Text` import, plus `package.json`, the lockfile and `eslint.config.js`.)
 
 ## 4. Verification (latest runs)
 
@@ -67,14 +68,14 @@ Full table in [CODEBASE_AUDIT.md §5](CODEBASE_AUDIT.md). The two that matter fi
 ## 7. Still open
 
 1. Designer sign-off on the SVG masters (wordmark letterforms; stroke→outline; glow in react-native-svg). Then replace the draft icons with the final ones.
-2. Install the new fonts (not done); trademark/name clearance; whether the app display name should carry a suffix.
+2. Trademark/name clearance; confirm the open-licence fonts are acceptable for launch (Inter and Instrument Serif are OFL; licensing Canela / Neue Haas is deferred); whether the app display name should carry a suffix.
 3. Native/device verification of the new icon, splash and identifiers (EAS dev build; needs the `react-native-worklets` fix first).
 4. Readiness indicator: whether to have one at all (default: none). Transcript storage and retention. Subscription provider.
 5. Remaining VYNKÆR leftovers: `Crest`, "VYNKÆR" copy in 5 places, `package.json` name, `.claude/launch.json` server name, `reference/` folder, README screenshots.
 
 ## 8. Next plan
 
-Order from [TOMORROW_START_HERE.md](TOMORROW_START_HERE.md): (1) fix D1/D2 test-first; (2) toolchain hygiene to a clean `expo-doctor`; (3) ~~switch runtime colours~~ **done 4 Nov**; (4) install fonts and switch type roles; (5) four-tab shell with a Recovery empty state, Settings and Coach modal. Then roadmap steps 4–12.
+Order from [TOMORROW_START_HERE.md](TOMORROW_START_HERE.md): (1) fix D1/D2 test-first; (2) toolchain hygiene to a clean `expo-doctor`; (3) ~~switch runtime colours~~ **done 4 Nov**; (4) ~~install fonts and switch type roles~~ **done 4 Nov**; (5) four-tab shell with a Recovery empty state, Settings and Coach modal. Then roadmap steps 4–12.
 
 ## 9. Standing rules
 

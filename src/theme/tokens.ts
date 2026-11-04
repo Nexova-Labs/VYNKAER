@@ -1,25 +1,33 @@
 // Design tokens. Colors are the approved OSMIUM palette (src/theme/osmium.ts,
 // docs/osmium/DESIGN_SYSTEM_V2.md): obsidian/graphite/gunmetal surfaces, silver and
 // titanium text, instrument blue as the restrained interaction signal. Type, spacing,
-// radius and motion below are still the VYNKÆR values until Phase 1 step 2.
+// radius and motion below are still the VYNKÆR values until Phase 1 step 2. Fonts: OSMIUM roles below.
 import { osmiumColors } from './osmium';
 
 export const colors = osmiumColors;
 
-// Three-typeface system (DESIGN.md "The Measured-Value Rule" + brand-bible
-// typography system): Cinzel for display/collection moments (wide tracking,
-// uppercase, gothic-performance register), system sans for every other
-// human-authored word, IBM Plex Mono for every standalone measured numeral
-// (weights, reps, timers, deltas, counts). Never mixed within a single
-// sentence — Cinzel and mono are both reserved for isolated display use.
+// OSMIUM type roles (docs/osmium/DESIGN_SYSTEM_V2.md §4). Open-licence stand-ins for the
+// reference faces (licensing Canela / Neue Haas is deferred to before public launch):
+//   display  Instrument Serif   Canela-like editorial serif: human prompts and screen titles
+//   ui       Inter              neo-grotesk: navigation, body, labels, controls
+//   data     IBM Plex Mono      every standalone measured numeral (loads, reps, time)
+// Static fonts carry their weight in the file, so each weight is its own family name. UI text
+// goes through src/components/Text, which maps `fontWeight` onto the right Inter file.
 export const fontFamily = {
-  display: 'Cinzel_600SemiBold',
-  displayBold: 'Cinzel_700Bold',
-  editorial: 'EBGaramond_500Medium',
-  editorialBold: 'EBGaramond_700Bold',
-  editorialItalic: 'EBGaramond_500Medium_Italic',
+  ui: 'Inter_400Regular',
+  uiMedium: 'Inter_500Medium',
+  uiSemiBold: 'Inter_600SemiBold',
+  uiBold: 'Inter_700Bold',
+  serif: 'InstrumentSerif_400Regular',
+  serifItalic: 'InstrumentSerif_400Regular_Italic',
   mono: 'IBMPlexMono_500Medium',
   monoBold: 'IBMPlexMono_700Bold',
+  // Legacy role names kept so existing call sites compile; remapped to the OSMIUM families.
+  display: 'Inter_600SemiBold',
+  displayBold: 'Inter_700Bold',
+  editorial: 'InstrumentSerif_400Regular',
+  editorialBold: 'InstrumentSerif_400Regular',
+  editorialItalic: 'InstrumentSerif_400Regular_Italic',
 } as const;
 
 export const spacing = {
@@ -47,31 +55,30 @@ export const typography = {
     letterSpacing: 1.4,
     textTransform: 'uppercase' as const,
   },
-  // Brand-bible "Display / collection" role: Cinzel, wide tracking, uppercase.
-  // Reserved for the brand micro-label register — eyebrows, tab-adjacent
-  // section marks — never for full sentences.
+  // TechnicalLabel role (v2): Inter SemiBold, small, tracked, uppercase, titanium.
+  // Eyebrows and section marks only, never full sentences.
   eyebrow: {
-    fontFamily: fontFamily.display,
+    fontFamily: fontFamily.uiSemiBold,
     fontSize: 12,
-    letterSpacing: 2,
+    letterSpacing: 1.6,
     textTransform: 'uppercase' as const,
     color: colors.accentSoft,
   },
-  // Brand-bible "Editorial / manifesto" role: EB Garamond, sentence case.
-  // Used for the screen-level taglines ("Train what comes next.") that read
-  // as doctrine fragments, not UI chrome.
+  // Display role (v2 scale 36-44): Instrument Serif, sentence case. Screen-level
+  // titles and other human-facing statements, not UI chrome.
   title: {
-    fontFamily: fontFamily.editorialBold,
-    fontSize: 32,
-    letterSpacing: -0.2,
+    fontFamily: fontFamily.serif,
+    fontSize: 36,
+    lineHeight: 40,
+    letterSpacing: -0.3,
     color: colors.textPrimary,
   },
   heroTitle: {
-    fontFamily: fontFamily.editorialBold,
-    fontSize: 40,
-    letterSpacing: -0.3,
+    fontFamily: fontFamily.serif,
+    fontSize: 44,
+    letterSpacing: -0.4,
     color: colors.textPrimary,
-    lineHeight: 44,
+    lineHeight: 48,
   },
   h2: {
     fontSize: 18,
@@ -88,11 +95,12 @@ export const typography = {
     fontWeight: '400' as const,
     color: colors.textSecondary,
   },
-  // Restrained italic for manifesto/doctrine quotes ("FORGED, NOT BORN.").
+  // Italic display serif for standalone quoted lines (onboarding). Copy is still VYNKÆR's
+  // and is rewritten in the OSMIUM voice in a later step.
   doctrine: {
-    fontFamily: fontFamily.editorialItalic,
-    fontSize: 17,
-    letterSpacing: 0.2,
+    fontFamily: fontFamily.serifItalic,
+    fontSize: 19,
+    letterSpacing: 0,
     color: colors.accentSoft,
   },
   numeral: {

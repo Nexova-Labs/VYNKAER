@@ -83,17 +83,17 @@ export const osmiumColors = {
 } as const satisfies Record<OsmiumColorKey, string>;
 
 /**
- * Typography roles. Font families are PROPOSED open-licence stand-ins for the
- * Canela-like display serif and Neue Haas Grotesk-like UI sans; none of them is
- * installed yet, so these names would not resolve if used today. The decision
- * is open — see DESIGN_SYSTEM_V2.md §4 and TOMORROW_START_HERE.md.
+ * Typography roles. The active font family names live in `fontFamily` (./tokens), loaded in
+ * app/_layout.tsx: Inter (UI), Instrument Serif (display), IBM Plex Mono (data). These are
+ * open-licence stand-ins for Neue Haas Grotesk / Canela; licensing the reference faces is
+ * deferred to before public launch (docs/osmium/DESIGN_SYSTEM_V2.md §4).
  */
 export const osmiumFontRoles = {
-  display: { proposed: 'InstrumentSerif_400Regular', legacy: 'EBGaramond_500Medium' },
-  ui: { proposed: 'Inter_400Regular', legacy: 'System' },
-  uiMedium: { proposed: 'Inter_500Medium', legacy: 'System' },
-  uiSemiBold: { proposed: 'Inter_600SemiBold', legacy: 'System' },
-  data: { proposed: 'IBMPlexMono_500Medium', legacy: 'IBMPlexMono_500Medium' },
+  display: 'InstrumentSerif_400Regular',
+  ui: 'Inter_400Regular',
+  uiMedium: 'Inter_500Medium',
+  uiSemiBold: 'Inter_600SemiBold',
+  data: 'IBMPlexMono_500Medium',
 } as const;
 
 /** Type scale in points, from the v2 spec (display 36-44, headings 22-26, body 15-17, labels 12-13, micro 11+). */

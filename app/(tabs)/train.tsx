@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Text } from '../../src/components/Text';
 import { router } from 'expo-router';
 
 import { Button, EmptyState, ScreenContainer } from '../../src/components';

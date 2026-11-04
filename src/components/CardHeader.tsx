@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Text } from './Text';
 
 import { colors, fontFamily, spacing, typography } from '../theme';
 
 // Reusable card-opening row (brand-bible "measured value" register): a
-// Cinzel eyebrow label on the left, an optional mono meta readout on the
+// Inter eyebrow label on the left, an optional mono meta readout on the
 // right — the pattern every card in the reference direction opens with
 // ("PRIMARY COMPOUND ... PLATE 1 OF 5").
 export function CardHeader({ label, meta }: { label: string; meta?: string }) {
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   },
   label: {
     ...typography.eyebrow,
-    fontSize: 10,
+    fontSize: 11,
   },
   meta: {
     fontFamily: fontFamily.mono,
