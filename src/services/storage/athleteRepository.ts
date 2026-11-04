@@ -1,6 +1,6 @@
 import type { AthleteProfile } from '../../types';
 import { SEED_ATHLETE_PROFILE } from '../../data/seed';
-import { readJSON, writeJSON, StorageKeys } from './storage';
+import { loadOrSeed, writeJSON, StorageKeys } from './storage';
 
 function isValidProfile(value: unknown): value is AthleteProfile {
   if (!value || typeof value !== 'object') return false;
@@ -10,10 +10,8 @@ function isValidProfile(value: unknown): value is AthleteProfile {
 
 export const AthleteRepository = {
   async load(): Promise<AthleteProfile> {
-    const stored = await readJSON<AthleteProfile>(StorageKeys.athleteProfile);
-    if (stored && isValidProfile(stored)) return stored;
-    await writeJSON(StorageKeys.athleteProfile, SEED_ATHLETE_PROFILE);
-    return SEED_ATHLETE_PROFILE;
+    // Seeds only when nothing is stored; unreadable data is quarantined, never silently replaced.
+    return loadOrSeed(StorageKeys.athleteProfile, SEED_ATHLETE_PROFILE, isValidProfile);
   },
 
   async save(profile: AthleteProfile): Promise<void> {

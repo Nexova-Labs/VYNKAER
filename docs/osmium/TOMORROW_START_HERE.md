@@ -24,7 +24,9 @@ npm run typecheck && npm run lint && npm run test -- --runInBand
 
 ---
 
-## Task 1: Fix history overwrite and double progression (D1, D2), test-first
+## Task 1: Fix history overwrite and double progression (D1, D2), test-first: **DONE 4 Nov 2026**
+
+> Done test-first. Progression update extracted to `src/state/progression.ts` (behaviour-preserving) and 21 tests written; 12 failed on the old code (3 D2, 9 D1), then passed after the fixes. D1: `loadOrSeed`, quarantine, `StorageReadError`, retry screen on load, inline error on Finish & Save. D2: `lastLoad` stores the performed load. Live-checked in the browser: a corrupt history value was preserved under `vynkaer.quarantine.*` and the app booted. Not exercised live: the storage-read-failure retry screen (covered by unit tests only) and an in-app full session through the D2 path (covered by the generator-backed tests). `src/engine/` untouched; deviation: the stored value is the prescribed load (`ex.recommendedLoad`), so D3 (use the weights actually logged) is still open.
 
 **Why first:** both defects corrupt the athlete's record, which is the asset the whole product is built on. Neither is visual, so they don't conflict with design work.
 

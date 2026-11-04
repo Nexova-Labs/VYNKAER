@@ -36,7 +36,7 @@ No environment variables, accounts, or API keys are needed. (`expo-doctor` curre
 ```bash
 npm run typecheck
 npm run lint
-npm run test         # 42 unit tests covering the training engine
+npm run test         # 63 unit tests: training engine, storage repositories, progression update
 ```
 
 ### Resetting the seeded demo data

@@ -13,7 +13,7 @@ npm run android        # Android emulator
 npm run web             # Web (used for fast iteration/browser verification)
 npm run typecheck       # tsc --noEmit
 npm run lint             # expo lint (flat ESLint config, eslint-config-expo)
-npm run test             # jest (engine unit tests)
+npm run test             # jest (engine, storage and progression tests)
 npx jest src/engine      # run only the training-engine test suite
 npx jest -t "8/8/8"      # run a single test by name pattern
 ```
@@ -70,5 +70,7 @@ app/             Expo Router file-based routes. app/(tabs)/ is the four-destinat
 
 - `WorkoutExercise.targetRepMin/Max` is overloaded for conditioning entries — a `CONDITIONING`-pattern exercise stores **minutes**, not reps. Always format through `formatExerciseTarget`/`formatExerciseLoad` (`src/utils/format.ts`), never `formatRepRange`/`formatWeight` directly, when the exercise's `movementPattern` might be `CONDITIONING`.
 - Screens must not render before `AppStateProvider` has finished its initial AsyncStorage load — it renders its own loading view internally and only mounts `children` (and therefore the router) once `profile`/`trainingState`/`settings` are all loaded, so `useAppState()` is safe to call unconditionally in any screen under `app/`.
+- Storage reads go through `loadOrSeed` / `readStored` (`src/services/storage/storage.ts`): seed only when a key is genuinely missing; unreadable or invalid values are copied to `vynkaer.quarantine.*` first; a storage failure throws `StorageReadError` and writes nothing. Never reintroduce "null on error means first launch".
+- `ExerciseProgressionState.lastLoad` is the load PERFORMED (see `src/state/progression.ts`), never the next recommendation: the generator re-runs the progression rule on it.
 - Persisted keys live in `StorageKeys` (`src/services/storage/storage.ts`) — add new persisted state there rather than inlining string keys.
 - `Card`'s background is `colors.panel2`. Anything nested inside a `Card` must use `colors.backgroundElevated` (recessed — badges, wells, tracks) or `colors.controlBg` (raised — buttons, chips, the active `SetRow`), never `colors.panel2` itself, or it visually disappears into the card. See DESIGN.md's "Recessed/Raised Rule."

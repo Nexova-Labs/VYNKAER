@@ -1,16 +1,15 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '../components/Text';
 import * as Haptics from 'expo-haptics';
 
-import { colors, typography } from '../theme';
+import { colors, radius, spacing, typography } from '../theme';
 
 import type {
   AppSettings,
   AthleteLimitation,
   AthleteProfile,
   CoachResponse,
-  ExerciseProgressionState,
   GeneratedWorkout,
   LimitationArea,
   SessionFeedback,
@@ -21,7 +20,7 @@ import type {
   WorkoutSession,
 } from '../types';
 import { EXERCISE_LIBRARY } from '../data/exercises';
-import { decideProgression, generateWorkout, getNextModality } from '../engine';
+import { generateWorkout, getNextModality } from '../engine';
 import {
   AthleteRepository,
   SettingsRepository,
@@ -31,6 +30,7 @@ import {
 import { DemoCoachProvider } from '../services/coach';
 import { buildSessionFromGeneratedWorkout } from './sessionBuilder';
 import { applyStructuralAdaptation, computeAdaptationMetaPatch } from './adaptation';
+import { applySessionProgression } from './progression';
 
 const coachProvider = new DemoCoachProvider();
 
@@ -75,6 +75,10 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
   const [activeWorkout, setActiveWorkoutState] = useState<WorkoutSession | null>(null);
   const [currentPlan, setCurrentPlan] = useState<GeneratedWorkout | null>(null);
   const [variantSeed, setVariantSeed] = useState(0);
+  // Set when device storage cannot be read. We then show a retry screen instead of booting on demo
+  // data, which a later save would write over the athlete's real history (audit D1).
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadAttempt, setLoadAttempt] = useState(0);
 
   const setActiveWorkout = useCallback((session: WorkoutSession | null) => {
     setActiveWorkoutState(session);
@@ -99,25 +103,36 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
   );
 
   useEffect(() => {
+    let cancelled = false;
     (async () => {
-      const [loadedProfile, loadedHistory, loadedTrainingState, loadedSettings, loadedActive] = await Promise.all([
-        AthleteRepository.load(),
-        WorkoutRepository.loadHistory(),
-        TrainingStateRepository.load(),
-        SettingsRepository.load(),
-        WorkoutRepository.loadActiveWorkout(),
-      ]);
-      setProfile(loadedProfile);
-      setHistory(loadedHistory);
-      setTrainingState(loadedTrainingState);
-      setSettings(loadedSettings);
-      setActiveWorkoutState(loadedActive);
-      if (!loadedActive) {
-        refreshPlan(0, loadedProfile, loadedTrainingState, loadedHistory);
+      try {
+        const [loadedProfile, loadedHistory, loadedTrainingState, loadedSettings, loadedActive] = await Promise.all([
+          AthleteRepository.load(),
+          WorkoutRepository.loadHistory(),
+          TrainingStateRepository.load(),
+          SettingsRepository.load(),
+          WorkoutRepository.loadActiveWorkout(),
+        ]);
+        if (cancelled) return;
+        setProfile(loadedProfile);
+        setHistory(loadedHistory);
+        setTrainingState(loadedTrainingState);
+        setSettings(loadedSettings);
+        setActiveWorkoutState(loadedActive);
+        if (!loadedActive) {
+          refreshPlan(0, loadedProfile, loadedTrainingState, loadedHistory);
+        }
+        setLoading(false);
+      } catch (error) {
+        if (!cancelled) {
+          setLoadError(error instanceof Error ? error.message : 'Could not read your saved data.');
+        }
       }
-      setLoading(false);
     })();
-  }, [refreshPlan]);
+    return () => {
+      cancelled = true;
+    };
+  }, [refreshPlan, loadAttempt]);
 
   const regeneratePlan = useCallback(() => {
     if (!profile || !trainingState) return;
@@ -310,31 +325,13 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     async (feedback: SessionFeedback) => {
       if (!activeWorkout || !profile || !trainingState) return;
 
-      const nextProgression: Record<string, ExerciseProgressionState> = { ...trainingState.exerciseProgression };
-      for (const ex of activeWorkout.exercises) {
-        if (ex.skipped) continue;
-        const completedSets = ex.sets.filter((s) => s.completed);
-        if (completedSets.length === 0) continue;
-        const libraryExercise = EXERCISE_LIBRARY.find((e) => e.id === ex.exerciseId);
-        const decision = decideProgression(
-          ex.exerciseId,
-          ex.targetRepMin,
-          ex.targetRepMax,
-          completedSets.map((s) => ({ reps: s.reps, rpe: s.rpe })),
-          ex.recommendedLoad,
-          libraryExercise?.loadIncrement ?? 2.5,
-          feedback.sessionRPE
-        );
-        const previous = nextProgression[ex.exerciseId];
-        nextProgression[ex.exerciseId] = {
-          exerciseId: ex.exerciseId,
-          lastLoad: decision.recommendedLoad,
-          lastRepsPerSet: completedSets.map((s) => s.reps),
-          lastCompletedAt: new Date().toISOString(),
-          consecutiveCleanSessions: decision.decision === 'INCREASE' ? (previous?.consecutiveCleanSessions ?? 0) + 1 : 0,
-          trend: decision.decision,
-        };
-      }
+      const nextProgression = applySessionProgression(
+        trainingState.exerciseProgression,
+        activeWorkout.exercises,
+        EXERCISE_LIBRARY,
+        feedback.sessionRPE,
+        new Date().toISOString()
+      );
 
       const completedSession: WorkoutSession = {
         ...activeWorkout,
@@ -467,6 +464,29 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
   if (!value) {
     // Screens never mount before the provider is ready, so useAppState()
     // is never called with a null context.
+    if (loadError) {
+      return (
+        <View style={styles.loadingRoot}>
+          <Text style={styles.errorTitle} accessibilityRole="header">
+            Could not read your saved data
+          </Text>
+          <Text style={styles.errorBody}>
+            Nothing has been changed or replaced. Close other copies of the app, then try again.
+          </Text>
+          <Pressable
+            onPress={() => {
+              setLoadError(null);
+              setLoadAttempt((n) => n + 1);
+            }}
+            accessibilityRole="button"
+            accessibilityLabel="Try loading your saved data again"
+            style={styles.retryButton}
+          >
+            <Text style={styles.retryLabel}>Try again</Text>
+          </Pressable>
+        </View>
+      );
+    }
     return (
       <View style={styles.loadingRoot}>
         <ActivityIndicator color={colors.accentSoft} />
@@ -498,5 +518,30 @@ const styles = StyleSheet.create({
     ...typography.microLabel,
     color: colors.textSecondary,
     marginTop: 4,
+  },
+  errorTitle: {
+    ...typography.h2,
+    textAlign: 'center',
+    paddingHorizontal: spacing.xl,
+  },
+  errorBody: {
+    ...typography.bodyMuted,
+    textAlign: 'center',
+    paddingHorizontal: spacing.xxl,
+  },
+  retryButton: {
+    minHeight: 48,
+    minWidth: 160,
+    marginTop: spacing.md,
+    paddingHorizontal: spacing.xl,
+    borderRadius: radius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.accent,
+  },
+  retryLabel: {
+    ...typography.body,
+    fontWeight: '700',
+    color: colors.onAccent,
   },
 });

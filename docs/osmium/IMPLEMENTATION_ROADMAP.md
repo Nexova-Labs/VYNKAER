@@ -9,7 +9,7 @@ This adds engineering detail to the hand-off *Product & Engineering Roadmap* (ph
 | Step | State |
 |---|---|
 | Phase 0 (audit, docs, tokens module, brand drafts, identifiers, icons) | **Done** |
-| 0 Pre-flight | Not started (D1, D2, doctor findings still open) |
+| 0 Pre-flight | **Partly done 4 Nov:** D1 and D2 fixed test-first (63 tests). Still open: D4, D5, the `expo-doctor` findings, `.env` in `.gitignore` |
 | 1 Colour tokens | **Done 4 Nov** (`tokens.ts` → `osmiumColors`, hero glow removed, tab tint → blue, `onAccent` fix). Verified on web at 375×812 across all tabs plus an active workout; grain texture, Crest and gradients intentionally left for step 2 |
 | 2 Shared components | **Started:** typography done 4 Nov (Inter/Instrument Serif installed, Cinzel/Garamond removed, `Text` wrapper + ESLint guard, sub-11pt text raised to 11). Not done: radii, spacing, motion, GrainTexture/Crest removal, reduced-motion, state variants |
 | 3 Navigation | **Done 4 Nov** (four tabs, Coach modal, Settings route, `TabHeader`, Recovery empty-state shell). Today/Coach are not yet merged into one screen (step 4) |
@@ -31,7 +31,7 @@ This adds engineering detail to the hand-off *Product & Engineering Roadmap* (ph
 ---
 
 ### Step 0: Pre-flight
-- **Scope:** D1 (seed-overwrite on read failure), D2 (double increment), D4 (no-op pain flag), D5 (plan not regenerated after FLAG_LIMITATION); `npx expo install --check`; add `react-native-worklets`; remove `newArchEnabled`; add `.env` to `.gitignore`.
+- **Scope:** ~~D1 (seed-overwrite on read failure), D2 (double increment)~~ *(done 4 Nov)*, D4 (no-op pain flag), D5 (plan not regenerated after FLAG_LIMITATION); `npx expo install --check`; add `react-native-worklets`; remove `newArchEnabled`; add `.env` to `.gitignore`.
 - **Risk:** the D2 fix changes the next recommended load for anyone with logged sessions. Seeds are unaffected (the seed already stores the performed load).
 - **Acceptance:** new tests reproduce D1/D2/D4/D5 and fail before the fix, then pass; the 42 engine tests are unchanged and pass; `expo-doctor` passes all checks; typecheck/lint are clean.
 

@@ -84,7 +84,7 @@ The token *architecture* works: one module, semantic keys, and zero hard-coded c
 
 ## 7. Training engine: **Retain**
 
-**Rationale:** it is deterministic, explainable, tested (42 passing) and isolated from React, storage and AI. It is the architectural embodiment of "a trainer that evolves with you". It needs no change for OSMIUM.
+**Rationale:** it is deterministic, explainable, tested (42 passing, 63 with the state and storage tests) and isolated from React, storage and AI. It is the architectural embodiment of "a trainer that evolves with you". It needs no change for OSMIUM.
 
 **Adjacent fixes (state layer, not engine):** D2 (double increment) and D3 (logged weights and RPE) sit in `AppStateContext.finishWorkout`. The fix is to store the load *performed* and let the generator decide. That matches what the seed already does, so the engine stays as it is.
 
@@ -131,8 +131,8 @@ There is no auth, no server and no data export or deletion. That is correct for 
 | Layer | Today | Add |
 |---|---|---|
 | Engine | 42 tests | Equipment and recovery cases as they are added |
-| State | 0 | `finishWorkout` progression (D2/D3/D4), `applyStructuralAdaptation` per type, approval cannot be bypassed |
-| Storage | 0 | Read-failure must not seed (D1); schema migration |
+| State | 6 (D2 fixed 4 Nov) | `finishWorkout` progression (D3/D4), `applyStructuralAdaptation` per type, approval cannot be bypassed |
+| Storage | 15 (D1 fixed 4 Nov) | Schema migration; surface write failures |
 | Coach | 0 | Intent mapping (D6); proposals are always typed |
 | UI | 0 | At minimum, smoke-render each route with jest-expo; browser verification per the CLAUDE.md rule |
 

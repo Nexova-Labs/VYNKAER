@@ -1,6 +1,6 @@
 import type { WorkoutSession } from '../../types';
 import { SEED_WORKOUT_HISTORY } from '../../data/seed';
-import { readJSON, writeJSON, removeKey, StorageKeys } from './storage';
+import { loadOrSeed, quarantineRaw, readStored, writeJSON, removeKey, StorageKeys } from './storage';
 
 function isValidHistory(value: unknown): value is WorkoutSession[] {
   return Array.isArray(value) && value.every((s) => s && typeof (s as WorkoutSession).id === 'string');
@@ -8,10 +8,10 @@ function isValidHistory(value: unknown): value is WorkoutSession[] {
 
 export const WorkoutRepository = {
   async loadHistory(): Promise<WorkoutSession[]> {
-    const stored = await readJSON<WorkoutSession[]>(StorageKeys.workoutHistory);
-    if (stored && isValidHistory(stored)) return stored;
-    await writeJSON(StorageKeys.workoutHistory, SEED_WORKOUT_HISTORY);
-    return SEED_WORKOUT_HISTORY;
+    // Seeds only on a genuine first launch. If storage cannot be read this throws (StorageReadError)
+    // rather than returning the demo history, because appendCompletedSession would then save it over
+    // the athlete's real log.
+    return loadOrSeed(StorageKeys.workoutHistory, SEED_WORKOUT_HISTORY, isValidHistory);
   },
 
   async saveHistory(history: WorkoutSession[]): Promise<void> {
@@ -26,8 +26,13 @@ export const WorkoutRepository = {
   },
 
   async loadActiveWorkout(): Promise<WorkoutSession | null> {
-    const stored = await readJSON<WorkoutSession>(StorageKeys.activeWorkout);
-    if (stored && typeof stored.id === 'string') return stored;
+    const stored = await readStored<WorkoutSession>(StorageKeys.activeWorkout);
+    if (stored.kind === 'ok' && stored.value && typeof stored.value.id === 'string') return stored.value;
+    if (stored.kind !== 'missing') {
+      // Unusable in-progress session: keep a copy, then clear the key so it is not re-quarantined each launch.
+      await quarantineRaw(StorageKeys.activeWorkout, stored.raw);
+      await removeKey(StorageKeys.activeWorkout);
+    }
     return null;
   },
 

@@ -1,5 +1,5 @@
 import type { AppSettings } from '../../types';
-import { readJSON, writeJSON, StorageKeys } from './storage';
+import { quarantineRaw, readStored, writeJSON, StorageKeys } from './storage';
 
 const DEFAULT_SETTINGS: AppSettings = {
   onboardingComplete: false,
@@ -8,9 +8,13 @@ const DEFAULT_SETTINGS: AppSettings = {
 
 export const SettingsRepository = {
   async load(): Promise<AppSettings> {
-    const stored = await readJSON<AppSettings>(StorageKeys.settings);
-    if (stored && typeof stored.onboardingComplete === 'boolean') {
-      return { ...DEFAULT_SETTINGS, ...stored };
+    const stored = await readStored<AppSettings>(StorageKeys.settings);
+    if (stored.kind === 'ok' && stored.value && typeof stored.value.onboardingComplete === 'boolean') {
+      return { ...DEFAULT_SETTINGS, ...stored.value };
+    }
+    if (stored.kind !== 'missing') {
+      await quarantineRaw(StorageKeys.settings, stored.raw);
+      await writeJSON(StorageKeys.settings, DEFAULT_SETTINGS);
     }
     return DEFAULT_SETTINGS;
   },

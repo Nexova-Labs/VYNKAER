@@ -20,7 +20,7 @@ Every stored datum and every sentence the coach says belongs to exactly one clas
 Classes 1–3 exist but are **not tagged**. Class 4 exists only as `DemoCoachProvider` output, which is rule-based rather than AI, but the treatment is the same. Mixing that already happens:
 
 - `WorkoutExercise.recommendationReason` (derived) is overwritten with `"Reduced by Coach for today only."` when an adaptation applies (`adaptation.ts`), which blends classes 3 and 4 in one field. **Target:** keep the engine's reason and attach an `adaptationId`.
-- `ExerciseProgressionState.lastLoad` stores a *recommendation* (derived) where the seed stores the *performed* load (logged fact). This is defect D2.
+- (Fixed 4 Nov, defect D2.) `ExerciseProgressionState.lastLoad` used to store a *recommendation* (derived) where the seed stores the *performed* load (logged fact). This is defect D2.
 
 ### Target type sketch (Phase 2; not implemented)
 
@@ -96,7 +96,7 @@ Use a server-side Claude model via the Edge Function. Pick the model and paramet
 ## 6. Persistence migration and storage keys
 
 - **Keep `vynkaer.*` AsyncStorage keys.** They are not user-visible. Renaming them needs a migration that can lose data for no product benefit. Add `osmium.schemaVersion` as the first OSMIUM key and run migrations keyed on it.
-- **Fix D1 first:** distinguish *missing* (seed allowed, first launch only) from *unreadable* (never seed; keep the raw value under a quarantine key and surface an error state).
+- **D1 fixed (4 Nov):** distinguish *missing* (seed allowed, first launch only) from *unreadable* (never seed; keep the raw value under a quarantine key and surface an error state).
 - Mark seed data explicitly: add `isDemo: true` to seeded sessions and profile in the migration, so demo data can never be confused with real logs once accounts exist, and is excluded from sync.
 
 ## 7. Privacy

@@ -18,6 +18,7 @@ export default function WorkoutCompleteScreen() {
   const [notes, setNotes] = useState('');
   const [saved, setSaved] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
 
   if (saved != null) {
     return (
@@ -45,17 +46,25 @@ export default function WorkoutCompleteScreen() {
 
   const handleSave = async () => {
     setSaving(true);
-    await finishWorkout({
-      sessionRPE,
-      limitationBefore: clampInt(limitationBefore),
-      limitationAfter: clampInt(limitationAfter),
-      cardioMinutes: clampInt(cardioMinutes, 0, 120),
-      strongestMovement: strongest.trim() || undefined,
-      weakestMovement: weakest.trim() || undefined,
-      notes: notes.trim() || undefined,
-    });
-    setSaving(false);
-    setSaved(setsLogged);
+    setSaveError(false);
+    try {
+      await finishWorkout({
+        sessionRPE,
+        limitationBefore: clampInt(limitationBefore),
+        limitationAfter: clampInt(limitationAfter),
+        cardioMinutes: clampInt(cardioMinutes, 0, 120),
+        strongestMovement: strongest.trim() || undefined,
+        weakestMovement: weakest.trim() || undefined,
+        notes: notes.trim() || undefined,
+      });
+      setSaved(setsLogged);
+    } catch {
+      // finishWorkout appends to history first and throws before touching any state, so the session
+      // is still in progress and nothing was lost. Let the athlete try again.
+      setSaveError(true);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -149,6 +158,11 @@ export default function WorkoutCompleteScreen() {
         />
       </Card>
 
+      {saveError ? (
+        <Text style={styles.saveError} accessibilityRole="alert">
+          Could not save this session. Nothing was lost and it is still in progress. Try again.
+        </Text>
+      ) : null}
       <Button label="FINISH & SAVE" onPress={handleSave} loading={saving} fullWidth style={{ marginTop: spacing.md }} />
     </ScreenContainer>
   );
@@ -243,6 +257,11 @@ const styles = StyleSheet.create({
   savedTitle: {
     ...typography.title,
     textAlign: 'center',
+  },
+  saveError: {
+    ...typography.bodyMuted,
+    color: colors.danger,
+    marginTop: spacing.md,
   },
   savedBody: {
     ...typography.bodyMuted,
