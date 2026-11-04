@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1528 240" width="1528" height="240" role="img" aria-label="OSMIUM">
+  <!--
+    OSMIUM wordmark: custom-drawn extended geometric capitals, widely tracked,
+    redrawn from the approved reference (not traced, not set in a font).
+    Constructed from stroked paths (stroke 9, cap height 72) so it needs no
+    typeface licence. For production, a designer should expand strokes to
+    outlines (v2 asks for "outlined vector artwork"). Transparent canvas.
+    DRAFT: pending design sign-off.
+  -->
+  <defs>
+    <linearGradient id="silver" gradientUnits="userSpaceOnUse" x1="0" y1="84" x2="0" y2="156">
+      <stop offset="0" stop-color="#F1F3F5"/>
+      <stop offset="1" stop-color="#B4BAC0"/>
+    </linearGradient>
+  </defs>
+  <g id="osmium" fill="none" stroke="url(#silver)" stroke-width="9" stroke-linejoin="bevel">
+    <!-- O -->
+    <rect x="69.5" y="88.5" width="115" height="63" rx="24"/>
+    <!-- S -->
+    <path d="M 440 88.5 H 364 A 15.75 15.75 0 0 0 348.25 104.25 A 15.75 15.75 0 0 0 364 120 H 416 A 15.75 15.75 0 0 1 431.75 135.75 A 15.75 15.75 0 0 1 416 151.5 H 340" stroke-linejoin="round"/>
+    <!-- M -->
+    <path d="M 595.5 156 V 84 L 658 134 L 720.5 84 V 156"/>
+    <!-- I -->
+    <path d="M 876 84 V 156"/>
+    <!-- U -->
+    <path d="M 1046.5 84 V 135.75 A 15.75 15.75 0 0 0 1062.25 151.5 H 1141.75 A 15.75 15.75 0 0 0 1157.5 135.75 V 84" stroke-linejoin="round"/>
+    <!-- M -->
+    <path d="M 1333.5 156 V 84 L 1396 134 L 1458.5 84 V 156"/>
+  </g>
+</svg>

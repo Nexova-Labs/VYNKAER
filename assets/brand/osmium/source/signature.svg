@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="OSMIUM">
+  <!--
+    OSMIUM combined signature: wordmark overlaid horizontally across the eclipse
+    (v2 logo C; use sparingly: launch, splash, editorial). Composed from
+    eclipse-master.svg and wordmark.svg. Wordmark is 1.7x the symbol diameter.
+    Includes a black background. DRAFT: pending design sign-off.
+  -->
+  <rect width="1600" height="900" fill="#000000"/>
+  <g transform="translate(288 -62)">
+  
+  <defs>
+    <linearGradient id="e_rim" gradientUnits="userSpaceOnUse" x1="800" y1="214" x2="224" y2="810">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.22" stop-color="#E2E5E8"/>
+      <stop offset="0.45" stop-color="#8C939A"/>
+      <stop offset="0.62" stop-color="#3A4046"/>
+      <stop offset="0.82" stop-color="#6A7177"/>
+      <stop offset="1" stop-color="#9AA1A8"/>
+    </linearGradient>
+    <radialGradient id="e_bloomMask" gradientUnits="userSpaceOnUse" cx="752" cy="298" r="250">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#000"/>
+    </radialGradient>
+    <mask id="e_bloomArea" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+      <rect width="1024" height="1024" fill="url(#e_bloomMask)"/>
+    </mask>
+    <radialGradient id="e_glintMask" gradientUnits="userSpaceOnUse" cx="270" cy="720" r="170">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#000"/>
+    </radialGradient>
+    <mask id="e_glintArea" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+      <rect width="1024" height="1024" fill="url(#e_glintMask)"/>
+    </mask>
+    <filter id="e_blurWide" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="e_blurTight" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>
+  
+  <circle cx="512" cy="512" r="300" fill="#000000"/>
+  
+  <g mask="url(#e_bloomArea)">
+    <circle cx="512" cy="512" r="302" fill="none" stroke="#E2E5E8" stroke-width="34" opacity="0.7" filter="url(#e_blurWide)"/>
+    <circle cx="512" cy="512" r="301" fill="none" stroke="#FFFFFF" stroke-width="9" opacity="0.8" filter="url(#e_blurTight)"/>
+  </g>
+  
+  <g mask="url(#e_glintArea)">
+    <circle cx="512" cy="512" r="301" fill="none" stroke="#C5CBD0" stroke-width="10" opacity="0.45" filter="url(#e_blurTight)"/>
+  </g>
+  
+  <mask id="e_crescent" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+    <circle cx="512" cy="512" r="303" fill="#fff"/>
+    <circle cx="505" cy="519" r="303" fill="#000"/>
+  </mask>
+  <rect width="1024" height="1024" fill="#FFFFFF" mask="url(#e_crescent)" opacity="0.95"/>
+  
+  <circle cx="512" cy="512" r="300" fill="none" stroke="url(#e_rim)" stroke-width="4"/>
+</g>
+  <g transform="translate(242 362.4) scale(0.73)">
+  
+  <defs>
+    <linearGradient id="w_silver" gradientUnits="userSpaceOnUse" x1="0" y1="84" x2="0" y2="156">
+      <stop offset="0" stop-color="#F1F3F5"/>
+      <stop offset="1" stop-color="#B4BAC0"/>
+    </linearGradient>
+  </defs>
+  <g id="w_osmium" fill="none" stroke="url(#w_silver)" stroke-width="9" stroke-linejoin="bevel">
+    
+    <rect x="69.5" y="88.5" width="115" height="63" rx="24"/>
+    
+    <path d="M 440 88.5 H 364 A 15.75 15.75 0 0 0 348.25 104.25 A 15.75 15.75 0 0 0 364 120 H 416 A 15.75 15.75 0 0 1 431.75 135.75 A 15.75 15.75 0 0 1 416 151.5 H 340" stroke-linejoin="round"/>
+    
+    <path d="M 595.5 156 V 84 L 658 134 L 720.5 84 V 156"/>
+    
+    <path d="M 876 84 V 156"/>
+    
+    <path d="M 1046.5 84 V 135.75 A 15.75 15.75 0 0 0 1062.25 151.5 H 1141.75 A 15.75 15.75 0 0 0 1157.5 135.75 V 84" stroke-linejoin="round"/>
+    
+    <path d="M 1333.5 156 V 84 L 1396 134 L 1458.5 84 V 156"/>
+  </g>
+</g>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="OSMIUM eclipse symbol, monochrome">
+  <!--
+    OSMIUM eclipse symbol: MONOCHROME, NO-GLOW variant (v2 section 03).
+    Single colour (#E2E5E8 logo silver), flat, no gradients or filters. Uses
+    an asymmetric crescent plus a thin full ring so the "illuminated upper-right"
+    reads without any glow. For Android themed icons and one-colour use.
+    DRAFT: pending design sign-off.
+  -->
+  <!-- thin full ring -->
+  <circle cx="512" cy="512" r="300" fill="none" stroke="#E2E5E8" stroke-width="3"/>
+  <!-- upper-right crescent: circle minus an offset circle (flat fill, tapers to a point) -->
+  <mask id="crescent" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+    <circle cx="512" cy="512" r="301.5" fill="#fff"/>
+    <circle cx="502" cy="522" r="301.5" fill="#000"/>
+  </mask>
+  <rect width="1024" height="1024" fill="#E2E5E8" mask="url(#crescent)"/>
+</svg>

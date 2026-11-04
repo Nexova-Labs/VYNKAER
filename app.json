@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "VYNKÆR Training",
-    "slug": "vynkaer-training",
-    "scheme": "vynkaer",
+    "name": "OSMIUM",
+    "slug": "osmium",
+    "scheme": "osmium",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,11 +11,11 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.nexovalabs.vynkaertraining",
+      "bundleIdentifier": "com.nexovalabs.osmium",
       "buildNumber": "1"
     },
     "android": {
-      "package": "com.nexovalabs.vynkaertraining",
+      "package": "com.nexovalabs.osmium",
       "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#0a0a0b",

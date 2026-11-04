@@ -43,13 +43,25 @@ The design hand-off archive (`OSMIUM_Complete_Design_and_Project_Handoff_2026-11
 - **Three approved logo PNGs**, copied to `assets/brand/osmium/reference/`.
 - **UI concept boards** (12) and **reference photos** (5). These are visual exploration only and are **not committed**. The v2 doc says so explicitly, and some boards show a warm gold that is *not* part of the palette.
 
-## Unresolved decisions (need an owner)
+## Decisions taken (4 Nov 2026)
+
+| # | Decision | Outcome |
+|---|---|---|
+| 1 | Typefaces | **Open-licence stand-ins now (Instrument Serif + Inter; keep IBM Plex Mono). Licensing Canela / Neue Haas stays open until before public launch.** The swap is a token change |
+| 2 | Vector logo masters | **Claude redraws them as SVG** (drafts in `assets/brand/osmium/source/`, pending design sign-off). Icons and splash are not replaced yet |
+| 3 | App identifiers | **Changed to OSMIUM now** (`osmium` slug and scheme, `com.nexovalabs.osmium` bundle/package). Nothing is published, so no migration. `vynkaer.*` storage keys are unchanged |
+| 4 | Coach placement | **Inside Today plus a coach modal reachable from every tab header** (TARGET_ARCHITECTURE.md §3 option (a)). Four tabs |
+
+## Still unresolved (need an owner)
+
+> Items 1, 3 and the coach-placement part of item 5 below were resolved on 4 Nov; see the table above. They remain listed so the original reasoning is preserved.
+
 
 These items are listed again in the relevant documents. None of them were decided in Phase 0:
 
 1. **Production typefaces and licences.** v2 names Canela and Neue Haas Grotesk only as stylistic references. Open-licence stand-ins are proposed in DESIGN_SYSTEM_V2.md §4.
-2. **Vector logo masters.** v2 requires clean SVG/PDF masters and says the PNGs must not be traced. Until a designer delivers them, no app icon can be replaced.
-3. **App identifiers.** Should `com.nexovalabs.vynkaertraining`, the `vynkaer` URL scheme and the `vynkaer-training` slug change? See CODEBASE_AUDIT.md §9.
+2. **Vector logo masters (draft SVGs exist, need design sign-off).** v2 requires clean SVG/PDF masters and says the PNGs must not be traced. Until a designer delivers them, no app icon can be replaced.
+3. **App identifiers (decided: change to OSMIUM).** Should `com.nexovalabs.vynkaertraining`, the `vynkaer` URL scheme and the `vynkaer-training` slug change? See CODEBASE_AUDIT.md §9.
 4. **Trademark clearance** for the OSMIUM name and mark. v2 states that the creative approval is not legal clearance.
 5. **The fifth tab.** v2 allows at most four primary destinations. Profile has to move somewhere; see the options in TARGET_ARCHITECTURE.md §3.
 6. **Persisted storage keys** (`vynkaer.*`). Keep them or migrate them. Recommendation: keep them, see DATA_AND_AI_STRATEGY.md §6.

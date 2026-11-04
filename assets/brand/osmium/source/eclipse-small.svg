@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="OSMIUM eclipse symbol, small sizes">
+  <!--
+    OSMIUM eclipse symbol: SMALL-SIZE variant for 16-64px (favicon, nav).
+    v2 section 03: "replace delicate rim effects with a thicker, flat outline
+    when legibility requires". Flat stroke, larger symbol on the canvas
+    (r=380, 74% of width), asymmetric weight via a heavier upper-right arc.
+    DRAFT: pending design sign-off; verify at 16/24/32/64/128px.
+  -->
+  <rect width="1024" height="1024" fill="#000000"/>
+  <circle cx="512" cy="512" r="380" fill="none" stroke="#9AA1A8" stroke-width="30"/>
+  <path d="M 512 132 A 380 380 0 0 1 892 512" fill="none" stroke="#F1F3F5" stroke-width="56" stroke-linecap="round" transform="rotate(-8 512 512)"/>
+</svg>

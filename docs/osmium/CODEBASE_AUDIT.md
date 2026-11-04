@@ -149,7 +149,7 @@ These were **not** edited in Phase 0, to keep the diff to OSMIUM preparation. Fi
 | `package.json` `name` | `vynkaer-training` | Cosmetic |
 | AsyncStorage keys | `vynkaer.*` | Renaming orphans existing on-device data unless migrated. Recommendation: keep them (DATA_AND_AI_STRATEGY.md §6) |
 
-**None changed in Phase 0.**
+**None changed in Phase 0.** *Update 4 Nov 2026:* the owner decided to change `name`, `slug`, `scheme`, `ios.bundleIdentifier` and `android.package` to OSMIUM values now (nothing is published, so there is nothing to migrate); see README.md "Decisions taken". `package.json` `name` and the `vynkaer.*` storage keys are intentionally unchanged.
 
 ## 10. Technical debt (prioritised)
 

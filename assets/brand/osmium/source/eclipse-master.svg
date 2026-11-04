@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="OSMIUM eclipse symbol">
+  <!--
+    OSMIUM eclipse symbol: MASTER (luminous). Transparent canvas; place on #000000.
+    Redrawn as clean vector from the approved reference
+    (assets/brand/osmium/reference/OSMIUM_Eclipse_Symbol.png); the raster was
+    NOT traced. Geometry: true circle r=300 at the canvas centre (symbol = 58.6%
+    of canvas width). Illumination: brightest upper-right (~45deg), subtle
+    secondary glint lower-left, dim along the shadowed arc. No lettering.
+    DRAFT: pending design sign-off (see docs/osmium/BRAND_ASSET_MANIFEST.md).
+  -->
+  <defs>
+    <linearGradient id="rim" gradientUnits="userSpaceOnUse" x1="800" y1="214" x2="224" y2="810">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.22" stop-color="#E2E5E8"/>
+      <stop offset="0.45" stop-color="#8C939A"/>
+      <stop offset="0.62" stop-color="#3A4046"/>
+      <stop offset="0.82" stop-color="#6A7177"/>
+      <stop offset="1" stop-color="#9AA1A8"/>
+    </linearGradient>
+    <radialGradient id="bloomMask" gradientUnits="userSpaceOnUse" cx="752" cy="298" r="250">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#000"/>
+    </radialGradient>
+    <mask id="bloomArea" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+      <rect width="1024" height="1024" fill="url(#bloomMask)"/>
+    </mask>
+    <radialGradient id="glintMask" gradientUnits="userSpaceOnUse" cx="270" cy="720" r="170">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#000"/>
+    </radialGradient>
+    <mask id="glintArea" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+      <rect width="1024" height="1024" fill="url(#glintMask)"/>
+    </mask>
+    <filter id="blurWide" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="blurTight" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>
+  <!-- black disc -->
+  <circle cx="512" cy="512" r="300" fill="#000000"/>
+  <!-- upper-right bloom -->
+  <g mask="url(#bloomArea)">
+    <circle cx="512" cy="512" r="302" fill="none" stroke="#E2E5E8" stroke-width="34" opacity="0.7" filter="url(#blurWide)"/>
+    <circle cx="512" cy="512" r="301" fill="none" stroke="#FFFFFF" stroke-width="9" opacity="0.8" filter="url(#blurTight)"/>
+  </g>
+  <!-- lower-left glint -->
+  <g mask="url(#glintArea)">
+    <circle cx="512" cy="512" r="301" fill="none" stroke="#C5CBD0" stroke-width="10" opacity="0.45" filter="url(#blurTight)"/>
+  </g>
+  <!-- tapering crescent: circle minus an offset circle, thickest toward the upper-right -->
+  <mask id="crescent" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+    <circle cx="512" cy="512" r="303" fill="#fff"/>
+    <circle cx="505" cy="519" r="303" fill="#000"/>
+  </mask>
+  <rect width="1024" height="1024" fill="#FFFFFF" mask="url(#crescent)" opacity="0.95"/>
+  <!-- crisp rim -->
+  <circle cx="512" cy="512" r="300" fill="none" stroke="url(#rim)" stroke-width="4"/>
+</svg>

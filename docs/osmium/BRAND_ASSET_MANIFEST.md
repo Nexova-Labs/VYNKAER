@@ -16,6 +16,26 @@ Copied unchanged from the hand-off archive `01_Approved_Brand_Assets/` to [`asse
 
 **Not committed:** `03_UI_Concepts/` (12 generated boards, ~20 MB) and `04_Reference_Images/` (5 photos). They are exploration only, some show the non-approved gold, and they are too large for the app repo. They remain in the hand-off archive.
 
+## 1b. Redrawn SVG masters (draft, 4 Nov 2026)
+
+On 4 Nov the owner asked for the masters to be redrawn in-house. Five SVGs now live in [`assets/brand/osmium/source/`](../../assets/brand/osmium/source/). They were drawn from the approved references (the pixels were **not traced**) and rendered and compared visually with the references before commit.
+
+| File | Role | Notes |
+|---|---|---|
+| `eclipse-master.svg` | A. Symbol, luminous | True circle r=300 on a 1024 canvas, transparent. Asymmetric illumination: tapering crescent plus bloom toward the upper-right, a dim lower-left glint, and a dim shadowed arc. Uses gradients, masks and blur filters (allowed for the luminous master; v2 reserves "luminous finish" for large hero uses) |
+| `eclipse-mono.svg` | A. Symbol, monochrome, no glow | Flat `#E2E5E8`, no gradients or filters (mask only). Thin ring plus a flat tapering crescent. For Android themed icons |
+| `eclipse-small.svg` | A. Symbol, 16–64 px | Flat thicker outline on black, per v2 section 03. Legible at 32 px in the render check |
+| `wordmark.svg` | B. Wordmark | Extended geometric capitals, stroke-built (stroke 9, cap height 72), silver vertical gradient. **Strokes are not expanded to outlines** |
+| `signature.svg` | C. Combined signature | Wordmark across the eclipse, wordmark = 1.7× symbol diameter, on black |
+
+**Status: DRAFT, not production.** Open items for a human designer before these are final:
+1. Sign off on the geometry against the approved art (especially the wordmark letterforms: the reference has slightly different S terminals and a lower M vertex).
+2. Expand wordmark strokes to outlines (v2: "outlined vector artwork") and optimise paths.
+3. Confirm the luminous master's filters render the same in the native pipeline (react-native-svg supports masks and gradients but not all filters; the app-side component may need a pre-rasterised bloom or a simplified variant).
+4. Test the small variant on device at 16/24/32/64/128 px.
+
+`assets/*.png` and `app.json` icon/splash paths are **unchanged**. Replacing them is import-checklist step 3 onward, after sign-off. Nothing in the app imports these SVGs yet.
+
 ## 2. Current VYNKÆR assets → OSMIUM replacements
 
 | Slot | Config key (`app.json`) | Current file | Current content | OSMIUM replacement | Spec for the replacement |
@@ -38,7 +58,7 @@ Copied unchanged from the hand-off archive `01_Approved_Brand_Assets/` to [`asse
 
 | # | Deliverable | Format | Owner | Blocks |
 |---|---|---|---|---|
-| 1 | Eclipse symbol vector master: true circular path, illumination map | SVG + PDF | Design | Icon, adaptive icon, splash, favicon, `EclipseMark` |
+| 1 | Eclipse symbol vector master: true circular path, illumination map | SVG + PDF | **Draft done** (§1b); needs design sign-off | Icon, adaptive icon, splash, favicon, `EclipseMark` |
 | 2 | Eclipse **no-glow monochrome** variant | SVG | Design | Android themed icon, small sizes |
 | 3 | Eclipse small-size variant (flat thicker outline) | SVG, verified at 16–128px | Design | Favicon, notification icon |
 | 4 | Wordmark outlined vector | SVG + PDF | Design | `OsmiumWordmark`, headers |

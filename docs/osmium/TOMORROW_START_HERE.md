@@ -16,7 +16,7 @@ npm ci
 npm run typecheck && npm run lint && npm run test -- --runInBand
 ```
 
-These decisions block later steps but not tasks 1–3. Get an owner on each today:
+**Update (4 Nov): the four decisions below are now taken** (fonts → open stand-ins; logos → drafted in-house, pending sign-off; app IDs → already changed to OSMIUM; coach → inside Today + modal). See README.md "Decisions taken". The original list is kept for context:
 1. Fonts: Instrument Serif + Inter stand-ins, or licence Canela / Neue Haas? (blocks task 4)
 2. Who delivers the vector logo masters, and when? (blocks icon/splash; BRAND_ASSET_MANIFEST.md §3)
 3. Bundle ID / scheme: keep `com.nexovalabs.vynkaertraining` + `vynkaer`, or change to OSMIUM before auth? (blocks step 11)
