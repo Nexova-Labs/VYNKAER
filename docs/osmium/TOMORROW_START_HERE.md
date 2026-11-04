@@ -41,7 +41,9 @@ npm run typecheck && npm run lint && npm run test -- --runInBand
 - **Acceptance criteria:** the new tests fail on the current code and pass after the fix; the 42 existing engine tests pass unchanged; `git diff --stat src/engine` is empty.
 - **Verify:** `npx jest src/state src/services`; `npm run test -- --runInBand`; then in the browser (`preview_start vynkaer-web`) log a session with all sets at the top of the range, finish, and confirm on Home that the new load is exactly +1 increment.
 
-## Task 2: Toolchain hygiene (expo-doctor to green)
+## Task 2: Toolchain hygiene (expo-doctor to green): **DONE 4 Nov 2026**
+
+> `npx expo-doctor` 21/21. Removed `newArchEnabled`; `npx expo install react-native-worklets` (0.10.1); `npx expo install --fix` (8 SDK 57 patch bumps); added `.env`, `.env.*` (keeping `.env.example`) to `.gitignore`. Deviation: also ran a **non-breaking** `npm audit fix` (not `--force`) after inspecting its dry run: it moves `shell-quote` 1.10 to 1.12 (the one critical advisory) and patch-bumps typescript-eslint. Production advisories 29 to 24 (0 critical, 5 high); the rest need `expo-router@58` (SDK 58), left for a planned upgrade. `package-lock.json` churned heavily (about 1,500 lines) from those updates. Re-verified: typecheck, lint, 63/63 tests, and the app on web (all tabs, Coach modal, Settings, animations visible, no console or server errors). Not done: a native build.
 
 - **Files likely to change:** `package.json`, `package-lock.json`, `app.json` (remove `newArchEnabled`), `.gitignore` (add `.env`).
 - **Intended behavior:** dependencies aligned to SDK 57 patch versions; `react-native-worklets` declared; no dead config.

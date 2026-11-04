@@ -29,7 +29,7 @@ npm run android
 npm run web
 ```
 
-No environment variables, accounts, or API keys are needed. (`expo-doctor` currently reports 3 pre-existing issues; see [docs/osmium/CODEBASE_AUDIT.md §1.1](docs/osmium/CODEBASE_AUDIT.md).) All data lives in `AsyncStorage` on-device.
+No environment variables, accounts, or API keys are needed. `npx expo-doctor` passes all 21 checks. All data lives in `AsyncStorage` on-device.
 
 ### Checks
 

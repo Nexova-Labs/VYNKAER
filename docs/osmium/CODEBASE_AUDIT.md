@@ -3,7 +3,7 @@
 **Audited:** 3 November 2026, branch `feature/osmium-foundation-2026-11-03` at base `8a81ce5` (`nexova/main`).
 **Method:** I read the source, not just the README. Every claim below was checked against the files named. Where something is inferred and not executed, it says so.
 
-> **Post-audit changes (4 Nov 2026):** the findings below describe the code as audited. Since then, `app.json` identifiers, launcher/splash/favicon images, docs the colour tokens (`tokens.ts` → OSMIUM palette, hero glow removed, `onAccent` added) and the fonts (Inter / Instrument Serif; `Text` wrapper; Cinzel/EB Garamond removed) changed; **D1 and D2 were fixed on 4 Nov 2026 (see their rows); D3-D10 are still open** and the engine, state and services code is untouched. Typecheck/lint/tests were re-run after each commit with the same results.
+> **Post-audit changes (4 Nov 2026):** the findings below describe the code as audited. Since then, `app.json` identifiers, launcher/splash/favicon images, docs the colour tokens (`tokens.ts` → OSMIUM palette, hero glow removed, `onAccent` added) and the fonts (Inter / Instrument Serif; `Text` wrapper; Cinzel/EB Garamond removed) changed; **D1 and D2 were fixed on 4 Nov 2026 (see their rows), and the §1.1 toolchain findings and the `.env` gitignore gap were resolved the same day; D3-D10 are still open** and the engine, state and services code is untouched. Typecheck/lint/tests were re-run after each commit with the same results.
 
 ---
 
@@ -28,13 +28,15 @@ Run on Windows 11, Node v24.18.0, npm 11.16.0, after a clean `npm ci`:
 | `npm run typecheck` (`tsc --noEmit`) | **Pass**, exit 0, no output. Includes the new `src/theme/osmium.ts` |
 | `npm run lint` (`expo lint`) | **Pass**, exit 0, no warnings |
 | `npm run test -- --runInBand` | **Pass at audit time.** 3 suites, **42/42 tests**, 14.7s (now 5 suites, 63 tests after the D1/D2 fixes) (`rotationEngine`, `progressionEngine`, `workoutGenerator`) |
-| `npx expo-doctor` | **3 checks failed** (pre-existing; see §1.1) |
-| `npm audit` (all deps) | 57 advisories: 5 low, 44 moderate, 7 high, 1 critical |
-| `npm audit --omit=dev` | 29 advisories: 1 low, 20 moderate, 7 high, 1 critical (see §7.3) |
+| `npx expo-doctor` | **3 checks failed at audit time.** *Resolved 4 Nov: now 21/21 pass (see §1.1).* |
+| `npm audit` (all deps) | 57 advisories at audit time: 5 low, 44 moderate, 7 high, 1 critical. *After 4 Nov hygiene: 52 (5 low, 42 moderate, 5 high, 0 critical).* |
+| `npm audit --omit=dev` | 29 advisories at audit time: 1 low, 20 moderate, 7 high, 1 critical (see §7.3). *After 4 Nov: 24 (1 low, 18 moderate, 5 high, 0 critical).* |
 
 No failures were introduced by Phase 0. All failures above already exist on `main`.
 
-### 1.1 `expo-doctor` findings (pre-existing)
+### 1.1 `expo-doctor` findings (pre-existing; **all resolved 4 Nov 2026**)
+
+> Fixed by removing `newArchEnabled` from `app.json`, `npx expo install react-native-worklets` (now a direct dependency, `0.10.1`), and `npx expo install --fix` (expo 57.0.31, expo-router 57.0.29, expo-linking, expo-splash-screen, expo-dev-client, jest-expo patch bumps). `npx expo-doctor`: 21/21 checks pass. The text below is the original finding.
 
 1. **`app.json` schema:** `newArchEnabled` is no longer an allowed property in SDK 57. The New Architecture is the default, so the key is dead config. *Fix:* remove the key. Low risk.
 2. **Missing peer dependency `react-native-worklets`**, required by `react-native-reanimated@4.5.1`. It is present transitively in `node_modules` but not declared directly. Doctor warns the app "may crash outside of Expo Go". Reanimated is used in `home.tsx`, `onboarding/index.tsx`, `Button.tsx`, `RestTimer.tsx` and `SetRow.tsx`. *Fix:* `npx expo install react-native-worklets`. **Do this before any EAS dev build.**
@@ -116,7 +118,7 @@ These were found by reading the code. None were fixed in Phase 0 (the scope was 
 
 - No secrets in tracked files. I searched for `api_key|secret|sk-ant|password|token` assignments. The only hit is `reference/hotlink-ui-builder/.env.example` with the placeholder `GEMINI_API_KEY="MY_GEMINI_API_KEY"`. It is not a secret, but it belongs to an unrelated Gemini prototype. Consider removing it from the repo.
 - No AI key exists in the mobile bundle. The coach is local and the stub keeps the key server-side. **Keep it that way.**
-- `.gitignore` covers `.env*.local`, `*.key`, `*.p8`, `*.p12`, `*.jks`, `*.pem`, `*.mobileprovision`. It does **not** ignore plain `.env`. Add `.env` before any backend work.
+- `.gitignore` covers `.env*.local`, `*.key`, `*.p8`, `*.p12`, `*.jks`, `*.pem`, `*.mobileprovision`. It did **not** ignore plain `.env` *(fixed 4 Nov: `.gitignore` now ignores `.env` and `.env.*`, keeping `.env.example`)*. Add `.env` before any backend work.
 
 ### 7.2 Data
 
@@ -126,7 +128,7 @@ These were found by reading the code. None were fixed in Phase 0 (the scope was 
 
 ### 7.3 Dependencies
 
-Production-path advisories: 7 high, 1 critical. Almost all sit in **build and CLI tooling** that is not shipped in the app bundle: `shell-quote` (critical, via `@expo/cli`), `node-forge`, `source-map-js`, `zod`. The direct one is `expo-router` (via `query-string`/`decode-uri-component`). Recommended action: run `npx expo install --check` within SDK 57 and re-audit. Do not use `npm audit fix --force`; it proposes `expo@51` and SDK 58 jumps.
+**Update 4 Nov:** after `expo install --fix` and a non-breaking `npm audit fix` (shell-quote 1.10 to 1.12, typescript-eslint patch bumps) the production-path count fell from 29 to 24: **0 critical**, 5 high. The remaining highs are `expo-router` (direct) with its `decode-uri-component` and `query-string` dependencies, `zod` and `@expo/cli`; the router fix is `expo-router@58`, a major SDK 58 upgrade, so they stay open until the SDK upgrade. Original finding: 7 high, 1 critical. Almost all sit in **build and CLI tooling** that is not shipped in the app bundle: `shell-quote` (critical, via `@expo/cli`), `node-forge`, `source-map-js`, `zod`. The direct one is `expo-router` (via `query-string`/`decode-uri-component`). Recommended action: run `npx expo install --check` within SDK 57 and re-audit. Do not use `npm audit fix --force`; it proposes `expo@51` and SDK 58 jumps.
 
 ## 8. Documentation accuracy
 
@@ -159,6 +161,6 @@ These were **not** edited in Phase 0, to keep the diff to OSMIUM preparation. Fi
 2. No tests for `src/state` and the coach. The approval gate and finish-workout path are the product's core promises and are untested.
 3. A single 501-line context re-renders every consumer on each set edit. Fine at today's scale. Split by concern (session vs profile vs history) before adding Recovery and the Coach memory.
 4. Silent persistence failures (`writeJSON` swallows errors). The user is never told a set failed to save.
-5. Doctor findings (worklets peer, patch drift, dead `newArchEnabled`).
+5. ~~Doctor findings (worklets peer, patch drift, dead `newArchEnabled`).~~ Fixed 4 Nov.
 6. `ProgressionDecisionType` has `DELOAD`/`SUBSTITUTE` with no producer. `LIMITATION_FLAGS` has no-op areas.
 7. `reference/` (2.1 MB) is tracked in the app repo. Consider moving it out once OSMIUM supersedes it.

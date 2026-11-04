@@ -9,7 +9,7 @@ This adds engineering detail to the hand-off *Product & Engineering Roadmap* (ph
 | Step | State |
 |---|---|
 | Phase 0 (audit, docs, tokens module, brand drafts, identifiers, icons) | **Done** |
-| 0 Pre-flight | **Partly done 4 Nov:** D1 and D2 fixed test-first (63 tests). Still open: D4, D5, the `expo-doctor` findings, `.env` in `.gitignore` |
+| 0 Pre-flight | **Mostly done 4 Nov:** D1 and D2 fixed test-first (63 tests); `expo-doctor` 21/21; `.env` ignored. Still open: D4, D5. (Original note: `.env` in `.gitignore` |
 | 1 Colour tokens | **Done 4 Nov** (`tokens.ts` → `osmiumColors`, hero glow removed, tab tint → blue, `onAccent` fix). Verified on web at 375×812 across all tabs plus an active workout; grain texture, Crest and gradients intentionally left for step 2 |
 | 2 Shared components | **Started:** typography done 4 Nov (Inter/Instrument Serif installed, Cinzel/Garamond removed, `Text` wrapper + ESLint guard, sub-11pt text raised to 11). Not done: radii, spacing, motion, GrainTexture/Crest removal, reduced-motion, state variants |
 | 3 Navigation | **Done 4 Nov** (four tabs, Coach modal, Settings route, `TabHeader`, Recovery empty-state shell). Today/Coach are not yet merged into one screen (step 4) |
@@ -107,5 +107,5 @@ This adds engineering detail to the hand-off *Product & Engineering Roadmap* (ph
 | Vector logo masters arrive late | Medium | Blocks icon/splash/brand components only | Everything else proceeds; brand components behind one file each |
 | Font licensing (if Canela/Neue Haas are chosen) | Medium | Delays the step 2 typography sub-task | Ship on open-licence stand-ins; the swap is a token change |
 | Bundle-ID decision deferred too long | Medium | Expensive after store submission or OAuth setup | Decide before step 11; nothing is published today |
-| No native device verification so far | High | Native-only bugs (haptics, Alert, splash) | EAS dev build after step 0 (worklets fix); device pass per phase |
+| No native device verification so far | High | Native-only bugs (haptics, Alert, splash) | EAS dev build now possible (worklets fix); device pass per phase |
 | Coach LLM proposes unsafe changes | Low (gated) | Trust | Closed union + engine-computed loads + APPLY gate + tests |

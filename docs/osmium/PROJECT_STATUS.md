@@ -33,9 +33,10 @@ OSMIUM — *Private Human Performance Intelligence*, by Nexova Labs — is the r
 | `8459da0` | **Phase 1 task 3, colours:** `tokens.ts` exports `osmiumColors`; copper hero glow removed from `home.tsx`; tab tint → instrument blue; new `onAccent` token so text on blue fills passes AA; docs updated |
 | `00b6b77` | **Phase 1 task 4, typography:** Inter + Instrument Serif installed and loaded; Cinzel/EB Garamond removed; `src/components/Text.tsx` (`Text`/`TextInput` wrappers) adopted in 20 files with an ESLint guard; `title`/`heroTitle`/`doctrine`/`eyebrow` retuned; four sub-11px text styles raised to 11; docs updated |
 | `3994e79` | **Phase 1 task 5, four-destination navigation:** `(tabs)` is today / training / progress / recovery; `coach` is a modal and `settings` a stack route, both one tap from every tab via `TabHeader`; Recovery shell (logged values only, no scores); Today gains a "How are you feeling today?" prompt that opens the Coach; stale links and copy updated; docs updated |
-| *this commit* | **Pre-flight: D1 and D2 fixed, test-first:** new `loadOrSeed` / quarantine / `StorageReadError` in storage, retry screen on a failed load, inline error on a failed save; progression update extracted to `src/state/progression.ts` and fixed to store the performed load; 21 new tests (63 total); docs updated |
+| `4dde46d` | **Pre-flight: D1 and D2 fixed, test-first:** new `loadOrSeed` / quarantine / `StorageReadError` in storage, retry screen on a failed load, inline error on a failed save; progression update extracted to `src/state/progression.ts` and fixed to store the performed load; 21 new tests (63 total); docs updated |
+| *this commit* | **Toolchain hygiene:** removed dead `newArchEnabled`; `react-native-worklets` declared (0.10.1); SDK 57 patch bumps (`expo-doctor` 21/21); non-breaking `npm audit fix` clears the critical advisory; `.env` ignored; app re-verified on web |
 
-**Not touched:** `src/engine/`, `package.json` (apart from the font packages), and the existing `vynkaer.*` storage keys (one new key prefix, `vynkaer.quarantine.`, was added). `src/state/` and `src/services/` changed only for the D1/D2 fixes. The running UI now uses OSMIUM **colours and fonts**, and four-destination navigation, but is otherwise still VYNKÆR: old radii and spacing, grain texture, Crest, "VYNKÆR" copy, separate Today and Coach content (Coach is a modal). (Task 4 also touched `app/`, `src/components/`, `src/features/`, `src/state/AppStateContext.tsx` only for the `Text` import, plus `package.json`, the lockfile and `eslint.config.js`.)
+**Not touched:** `src/engine/`, `package.json` (apart from the font packages, worklets and the SDK 57 patch bumps), and the existing `vynkaer.*` storage keys (one new key prefix, `vynkaer.quarantine.`, was added). `src/state/` and `src/services/` changed only for the D1/D2 fixes. The running UI now uses OSMIUM **colours and fonts**, and four-destination navigation, but is otherwise still VYNKÆR: old radii and spacing, grain texture, Crest, "VYNKÆR" copy, separate Today and Coach content (Coach is a modal). (Task 4 also touched `app/`, `src/components/`, `src/features/`, `src/state/AppStateContext.tsx` only for the `Text` import, plus `package.json`, the lockfile and `eslint.config.js`.)
 
 ## 4. Verification (latest runs)
 
@@ -47,8 +48,8 @@ OSMIUM — *Private Human Performance Intelligence*, by Nexova Labs — is the r
 | `npm run test -- --runInBand` | Pass, **63/63** (5 suites: engine 42, storage repositories 15, progression 6) |
 | `npx expo config --type public` | Pass (shows OSMIUM identifiers) |
 | Web run (Metro, 375×812) | Pass for the colour change: app renders as "OSMIUM"; DOM audit of Home, Train (active workout), Progress, Coach, Profile found no warm hues (except the red danger border) and no text below 4.5:1. `workout/complete` and `exercise/[id]` not opened |
-| `npx expo-doctor` | **3 failures, all pre-existing:** `newArchEnabled` not in schema; `react-native-worklets` peer missing; 8 patch versions behind SDK 57 |
-| `npm audit --omit=dev` | 29 advisories (1 critical, 7 high), mostly build tooling; fix via `expo install --check`, not `audit fix --force` |
+| `npx expo-doctor` | **21/21 pass** (was 3 failures: dead `newArchEnabled`, missing `react-native-worklets` peer, 8 patch versions behind; all fixed 4 Nov) |
+| `npm audit --omit=dev` | 24 advisories (1 low, 18 moderate, **5 high, 0 critical**), down from 29 with 1 critical. Remaining highs need the SDK 58 major upgrade (`expo-router@58`); `audit fix --force` deliberately not used |
 | Native build / device / web run | **Not performed** |
 
 ## 5. Known defects (open, none fixed yet)
@@ -71,13 +72,13 @@ Full table in [CODEBASE_AUDIT.md §5](CODEBASE_AUDIT.md). **D1 and D2 were fixed
 
 1. Designer sign-off on the SVG masters (wordmark letterforms; stroke→outline; glow in react-native-svg). Then replace the draft icons with the final ones.
 2. Trademark/name clearance; confirm the open-licence fonts are acceptable for launch (Inter and Instrument Serif are OFL; licensing Canela / Neue Haas is deferred); whether the app display name should carry a suffix.
-3. Native/device verification of the new icon, splash and identifiers (EAS dev build; needs the `react-native-worklets` fix first).
+3. Native/device verification of the new icon, splash and identifiers (EAS dev build; the `react-native-worklets` prerequisite is now met).
 4. Readiness indicator: whether to have one at all (default: none). Transcript storage and retention. Subscription provider.
 5. Remaining VYNKÆR leftovers: `Crest`, "VYNKÆR" copy in 5 places, `package.json` name, `.claude/launch.json` server name, `reference/` folder, README screenshots.
 
 ## 8. Next plan
 
-Order from [TOMORROW_START_HERE.md](TOMORROW_START_HERE.md): (1) ~~fix D1/D2 test-first~~ **done 4 Nov**; (2) toolchain hygiene to a clean `expo-doctor`; (3) ~~switch runtime colours~~ **done 4 Nov**; (4) ~~install fonts and switch type roles~~ **done 4 Nov**; (5) ~~four-tab shell~~ **done 4 Nov**. Next: finish pre-flight (toolchain hygiene; D4/D5), then roadmap step 4 (Today/Coach merge) onward.
+Order from [TOMORROW_START_HERE.md](TOMORROW_START_HERE.md): (1) ~~fix D1/D2 test-first~~ **done 4 Nov**; (2) ~~toolchain hygiene to a clean `expo-doctor`~~ **done 4 Nov**; (3) ~~switch runtime colours~~ **done 4 Nov**; (4) ~~install fonts and switch type roles~~ **done 4 Nov**; (5) ~~four-tab shell~~ **done 4 Nov**. Next: finish pre-flight (D4/D5), then roadmap step 4 (Today/Coach merge) onward.
 
 ## 9. Standing rules
 
