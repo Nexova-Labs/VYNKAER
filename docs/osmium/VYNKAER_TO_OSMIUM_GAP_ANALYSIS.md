@@ -13,7 +13,7 @@ The evidence for every "exists today" claim is in [CODEBASE_AUDIT.md](CODEBASE_A
 | Brand identity | **Replace** | Name, mark, voice and copper identity are all VYNKÆR-specific |
 | Design tokens | **Refactor** | The token architecture is sound; values change. A same-key swap is already prepared |
 | Typography | **Replace** (display/UI) · **Retain** (data) | Cinzel and Garamond don't match v2. Plex Mono fits the tabular-data role |
-| Navigation | **Refactor** | 5 tabs → 4 destinations; Home and Coach merge. *Shell done 4 Nov (Coach is a modal); full Today/Coach merge is roadmap step 4* |
+| Navigation | **Refactor** | 5 tabs → 4 destinations; Home and Coach merge. *Shell done 4 Nov (Coach is a modal) and the Today/Coach merge done 4 Nov (conversation embedded in Today); (original note: full Today/Coach merge is roadmap step 4* |
 | Main screens | **Refactor** ×3 · **Build new** ×1 | Today, Training and Progress evolve from existing screens. Recovery is new |
 | Workout experience | **Retain + Extend** | Logging, rest timer, resume and substitute all work. Add instructions, undo and a substitution drawer |
 | Training engine | **Retain** | Deterministic, explained, tested. Fix two state-layer bugs around it |

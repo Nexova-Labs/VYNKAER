@@ -1,6 +1,6 @@
 # OSMIUM — project status (overall résumé)
 
-**As of:** 4 November 2026 · **Phase:** 0 complete; Phase 1: colours, typography and the four-destination navigation done
+**As of:** 4 November 2026 · **Phase:** 0 complete; Phase 1: colours, typography, four-destination navigation and the Today/Coach merge done
 **Branch:** `feature/osmium-foundation-2026-11-03` on [`Nexova-Labs/VYNKAER`](https://github.com/Nexova-Labs/VYNKAER) (git remote `nexova`) · base `8a81ce5` (`nexova/main`) · `main` untouched, no PR open.
 **Remote trap:** locally `origin` is the personal fork `yovneeshkhadun/VYNKAER`, one commit behind. Always fetch, push and PR against `nexova`.
 
@@ -34,9 +34,10 @@ OSMIUM — *Private Human Performance Intelligence*, by Nexova Labs — is the r
 | `00b6b77` | **Phase 1 task 4, typography:** Inter + Instrument Serif installed and loaded; Cinzel/EB Garamond removed; `src/components/Text.tsx` (`Text`/`TextInput` wrappers) adopted in 20 files with an ESLint guard; `title`/`heroTitle`/`doctrine`/`eyebrow` retuned; four sub-11px text styles raised to 11; docs updated |
 | `3994e79` | **Phase 1 task 5, four-destination navigation:** `(tabs)` is today / training / progress / recovery; `coach` is a modal and `settings` a stack route, both one tap from every tab via `TabHeader`; Recovery shell (logged values only, no scores); Today gains a "How are you feeling today?" prompt that opens the Coach; stale links and copy updated; docs updated |
 | `4dde46d` | **Pre-flight: D1 and D2 fixed, test-first:** new `loadOrSeed` / quarantine / `StorageReadError` in storage, retry screen on a failed load, inline error on a failed save; progression update extracted to `src/state/progression.ts` and fixed to store the performed load; 21 new tests (63 total); docs updated |
-| *this commit* | **Toolchain hygiene:** removed dead `newArchEnabled`; `react-native-worklets` declared (0.10.1); SDK 57 patch bumps (`expo-doctor` 21/21); non-breaking `npm audit fix` clears the critical advisory; `.env` ignored; app re-verified on web |
+| `046dc52` | **Toolchain hygiene:** removed dead `newArchEnabled`; `react-native-worklets` declared (0.10.1); SDK 57 patch bumps (`expo-doctor` 21/21); non-breaking `npm audit fix` clears the critical advisory; `.env` ignored; app re-verified on web |
+| *this commit* | **Phase 1 step 4, Today / Coach merge:** new `src/features/coach/` (shared in-memory conversation provider, `resolveProposal` approval logic, thread with APPLY CHANGE / Dismiss, composer with four quick phrases, `CoachCard`); Today leads with the plan and the Coach card, with "Why this session" as its own card; the Coach modal reuses the same conversation (replaces the old 400-line screen); 8 new tests (71 total) |
 
-**Not touched:** `src/engine/`, `package.json` (apart from the font packages, worklets and the SDK 57 patch bumps), and the existing `vynkaer.*` storage keys (one new key prefix, `vynkaer.quarantine.`, was added). `src/state/` and `src/services/` changed only for the D1/D2 fixes. The running UI now uses OSMIUM **colours and fonts**, and four-destination navigation, but is otherwise still VYNKÆR: old radii and spacing, grain texture, Crest, "VYNKÆR" copy, separate Today and Coach content (Coach is a modal). (Task 4 also touched `app/`, `src/components/`, `src/features/`, `src/state/AppStateContext.tsx` only for the `Text` import, plus `package.json`, the lockfile and `eslint.config.js`.)
+**Not touched:** `src/engine/`, `package.json` (apart from the font packages, worklets and the SDK 57 patch bumps), and the existing `vynkaer.*` storage keys (one new key prefix, `vynkaer.quarantine.`, was added). `src/state/` and `src/services/` changed only for the D1/D2 fixes. The running UI now uses OSMIUM **colours and fonts**, four-destination navigation and a merged Today/Coach, but is otherwise still VYNKÆR: old radii and spacing, grain texture, Crest, "VYNKÆR" copy. (Task 4 also touched `app/`, `src/components/`, `src/features/`, `src/state/AppStateContext.tsx` only for the `Text` import, plus `package.json`, the lockfile and `eslint.config.js`.)
 
 ## 4. Verification (latest runs)
 
@@ -45,7 +46,7 @@ OSMIUM — *Private Human Performance Intelligence*, by Nexova Labs — is the r
 | `npm ci` | Success (1056 packages; lockfile unchanged) |
 | `npm run typecheck` | Pass |
 | `npm run lint` | Pass |
-| `npm run test -- --runInBand` | Pass, **63/63** (5 suites: engine 42, storage repositories 15, progression 6) |
+| `npm run test -- --runInBand` | Pass, **71/71** (6 suites: engine 42, storage 15, progression 6, coach conversation 8) |
 | `npx expo config --type public` | Pass (shows OSMIUM identifiers) |
 | Web run (Metro, 375×812) | Pass for the colour change: app renders as "OSMIUM"; DOM audit of Home, Train (active workout), Progress, Coach, Profile found no warm hues (except the red danger border) and no text below 4.5:1. `workout/complete` and `exercise/[id]` not opened |
 | `npx expo-doctor` | **21/21 pass** (was 3 failures: dead `newArchEnabled`, missing `react-native-worklets` peer, 8 patch versions behind; all fixed 4 Nov) |
@@ -78,7 +79,7 @@ Full table in [CODEBASE_AUDIT.md §5](CODEBASE_AUDIT.md). **D1 and D2 were fixed
 
 ## 8. Next plan
 
-Order from [TOMORROW_START_HERE.md](TOMORROW_START_HERE.md): (1) ~~fix D1/D2 test-first~~ **done 4 Nov**; (2) ~~toolchain hygiene to a clean `expo-doctor`~~ **done 4 Nov**; (3) ~~switch runtime colours~~ **done 4 Nov**; (4) ~~install fonts and switch type roles~~ **done 4 Nov**; (5) ~~four-tab shell~~ **done 4 Nov**. Next: finish pre-flight (D4/D5), then roadmap step 4 (Today/Coach merge) onward.
+Order from [TOMORROW_START_HERE.md](TOMORROW_START_HERE.md): (1) ~~fix D1/D2 test-first~~ **done 4 Nov**; (2) ~~toolchain hygiene to a clean `expo-doctor`~~ **done 4 Nov**; (3) ~~switch runtime colours~~ **done 4 Nov**; (4) ~~install fonts and switch type roles~~ **done 4 Nov**; (5) ~~four-tab shell~~ **done 4 Nov**. Next: finish pre-flight (D4/D5; D3 if wanted), then roadmap step 5 (Training) onward.
 
 ## 9. Standing rules
 

@@ -20,6 +20,7 @@ import {
   InstrumentSerif_400Regular_Italic,
 } from '@expo-google-fonts/instrument-serif';
 
+import { CoachConversationProvider } from '../src/features/coach';
 import { AppStateProvider } from '../src/state';
 import { colors } from '../src/theme';
 
@@ -51,21 +52,23 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <AppStateProvider>
-          <StatusBar style="light" />
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: { backgroundColor: colors.background },
-              animation: 'fade',
-            }}
-          >
-            <Stack.Screen name="onboarding" />
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="workout/complete" options={{ animation: 'slide_from_bottom' }} />
-            <Stack.Screen name="exercise/[id]" options={{ animation: 'slide_from_right' }} />
-            <Stack.Screen name="coach/index" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
-            <Stack.Screen name="settings/index" options={{ animation: 'slide_from_right' }} />
-          </Stack>
+          <CoachConversationProvider>
+            <StatusBar style="light" />
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                contentStyle: { backgroundColor: colors.background },
+                animation: 'fade',
+              }}
+            >
+              <Stack.Screen name="onboarding" />
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="workout/complete" options={{ animation: 'slide_from_bottom' }} />
+              <Stack.Screen name="exercise/[id]" options={{ animation: 'slide_from_right' }} />
+              <Stack.Screen name="coach/index" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+              <Stack.Screen name="settings/index" options={{ animation: 'slide_from_right' }} />
+            </Stack>
+          </CoachConversationProvider>
         </AppStateProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

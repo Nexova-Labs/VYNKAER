@@ -176,7 +176,7 @@ The v2 inventory is mapped onto existing primitives. "Existing" means the file i
 |---|---|---|
 | `EclipseMark` | New `src/components/brand/EclipseMark.tsx` rendering the approved **vector** master via `react-native-svg` | **Blocked** on the vector master (see BRAND_ASSET_MANIFEST.md) |
 | `OsmiumWordmark` | New `src/components/brand/OsmiumWordmark.tsx` (SVG) | **Blocked** on the vector master |
-| `CoachPrompt` | Evolve `coach.tsx` composer plus Home's "why this session" notice | Refactor |
+| `CoachPrompt` | `src/features/coach/CoachCard.tsx` (+ `CoachComposer`, `CoachThread`): "How are you feeling today?" prompt, four quick phrases, reviewable proposals. "Why this session" is its own card on Today | **Built 4 Nov** |
 | `SessionSummary` | Evolve Home's plan card and `workout/complete.tsx` | Refactor |
 | `ExerciseSetRow` | Existing `src/features/workout/SetRow.tsx` (DONE/NOW/QUEUE) | Retain + restyle |
 | `SubstitutionDrawer` | New bottom sheet over the existing `applyStructuralAdaptation('SUBSTITUTE_EXERCISE')` | Build new (UI only) |

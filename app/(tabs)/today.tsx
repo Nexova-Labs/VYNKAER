@@ -1,6 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, View } from 'react-native';
 import { Text } from '../../src/components/Text';
 import { router } from 'expo-router';
 import Animated, {
@@ -11,6 +10,7 @@ import Animated, {
 
 import { Button, Card, CardHeader, Crest, EmptyState, Pill, ScreenContainer, SectionHeader, StatTile } from '../../src/components';
 import { EXERCISE_LIBRARY } from '../../src/data/exercises';
+import { CoachCard } from '../../src/features/coach';
 import { useAppState } from '../../src/state';
 import { colors, fontFamily, radius, spacing, typography } from '../../src/theme';
 import {
@@ -80,18 +80,20 @@ export default function TodayScreen() {
         <EmptyState title="Preparing your session" body="Loading your training context." />
       )}
 
-      <Pressable
-        onPress={() => router.push('/coach')}
-        accessibilityRole="button"
-        accessibilityLabel="Open Coach. How are you feeling today?"
-        style={({ pressed }) => [styles.coachPrompt, pressed && styles.coachPromptPressed]}
-      >
-        <View style={{ flex: 1 }}>
-          <Text style={styles.coachPromptTitle}>How are you feeling today?</Text>
-          <Text style={styles.coachPromptBody}>Tell the Coach. Nothing changes until you approve it.</Text>
-        </View>
-        <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
-      </Pressable>
+      <CoachCard />
+
+      {currentPlan && currentPlan.generationExplanation.length > 0 ? (
+        <Card style={styles.whyCard}>
+          <CardHeader label="Why this session" />
+          <View style={styles.notice}>
+            {currentPlan.generationExplanation.map((line, i) => (
+              <Text key={i} style={styles.noticeLine}>
+                {line}
+              </Text>
+            ))}
+          </View>
+        </Card>
+      ) : null}
 
       <Card style={styles.stateCard}>
         <CardHeader label="Athlete State" meta={`Workout ${trainingState.currentWorkoutNumber}`} />
@@ -101,15 +103,6 @@ export default function TodayScreen() {
           <StatTile value={`${lastLimitation}/10`} label="Last limitation" />
           <StatTile value={`${trainingState.lastCardioMinutes}m`} label="Last cardio" />
         </View>
-        {currentPlan && currentPlan.generationExplanation.length > 0 ? (
-          <View style={styles.notice}>
-            {currentPlan.generationExplanation.map((line, i) => (
-              <Text key={i} style={styles.noticeLine}>
-                {line}
-              </Text>
-            ))}
-          </View>
-        ) : null}
       </Card>
 
       <SectionHeader title="Generated session" caption="Based on previous performance + rotation rules" />
@@ -153,27 +146,8 @@ function MetaChip({ label }: { label: string }) {
 }
 
 const styles = StyleSheet.create({
-  coachPrompt: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-    minHeight: 64,
+  whyCard: {
     marginTop: spacing.lg,
-    padding: spacing.lg,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.panel2,
-  },
-  coachPromptPressed: {
-    backgroundColor: colors.controlBg,
-  },
-  coachPromptTitle: {
-    ...typography.h2,
-    marginBottom: 2,
-  },
-  coachPromptBody: {
-    ...typography.caption,
   },
   topbar: {
     flexDirection: 'row',

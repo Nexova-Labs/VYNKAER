@@ -13,7 +13,8 @@ This adds engineering detail to the hand-off *Product & Engineering Roadmap* (ph
 | 1 Colour tokens | **Done 4 Nov** (`tokens.ts` → `osmiumColors`, hero glow removed, tab tint → blue, `onAccent` fix). Verified on web at 375×812 across all tabs plus an active workout; grain texture, Crest and gradients intentionally left for step 2 |
 | 2 Shared components | **Started:** typography done 4 Nov (Inter/Instrument Serif installed, Cinzel/Garamond removed, `Text` wrapper + ESLint guard, sub-11pt text raised to 11). Not done: radii, spacing, motion, GrainTexture/Crest removal, reduced-motion, state variants |
 | 3 Navigation | **Done 4 Nov** (four tabs, Coach modal, Settings route, `TabHeader`, Recovery empty-state shell). Today/Coach are not yet merged into one screen (step 4) |
-| 4–12 | Not started |
+| 4 Today / Coach | **Done 4 Nov** (Coach conversation embedded in Today as the primary prompt; one shared conversation also backs the Coach modal; APPLY CHANGE / Dismiss; four quick phrases; "Why this session" card shows `generationExplanation` verbatim; Start above the fold). Not done: a readiness check-in (needs Recovery inputs, step 7), voice entry, persisted transcript |
+| 5–12 | Not started |
 
 ## Dependency graph
 
@@ -53,7 +54,7 @@ This adds engineering detail to the hand-off *Product & Engineering Roadmap* (ph
 - **Risk:** typed-route breakage (caught by `tsc`); losing Profile's limitation editor before Recovery owns it, so it stays in Settings until step 7.
 - **Acceptance:** `tsc` clean; every route reachable; onboarding → Today; the deep link `/(tabs)/today` works on web.
 
-### Step 4: Today / Coach
+### Step 4: Today / Coach: **DONE 4 Nov 2026** (see status table; verified on web at 375×812: Start button bottom at y=453, a proposal leaves the plan at ~60 min until APPLY then ~40, Dismiss changes nothing, the modal shows the same thread)
 - **Depends on:** 3.
 - **Scope:** merge the Home plan card, the "why" explanation and the coach composer; "How are you feeling today?" primary prompt; proposals with APPLY / DISMISS; chips ≤ 4; one primary action.
 - **Acceptance:** a proposal can't change the plan without APPLY (test); the explanation lines shown equal `currentPlan.generationExplanation`; Start Session is above the fold at 375×812.

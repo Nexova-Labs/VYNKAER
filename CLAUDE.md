@@ -47,8 +47,11 @@ src/state        AppStateContext is the one React context the whole app reads/wr
 src/components   Generic, theme-driven UI primitives (Card, CardHeader, Button, Pill, StatusTag,
                  StatTile, ScreenContainer...). See DESIGN.md for the surface/color rules governing
                  how these compose (e.g. what's allowed to sit inside a Card).
-src/features     Screen-specific but multi-file UI (currently just workout/: SetRow, ExerciseCard,
-                 RestTimer, SessionProgress, used by app/(tabs)/training.tsx).
+src/features     Screen-specific but multi-file UI: workout/ (SetRow, ExerciseCard, RestTimer,
+                 SessionProgress; used by app/(tabs)/training.tsx) and coach/ (shared in-memory
+                 conversation, thread with APPLY/Dismiss proposals, composer with four quick phrases,
+                 CoachCard embedded in Today; the same conversation backs the app/coach modal).
+                 Proposals are resolved only through resolveProposal() in coach/conversation.ts.
 src/theme        Design tokens (colors, spacing, radius, typography). Screens should not hardcode
                  colors/spacing — pull from here so the dark OSMIUM black/graphite/blue language stays consistent.
 app/             Expo Router file-based routes. app/(tabs)/ is the four-destination shell (today,
